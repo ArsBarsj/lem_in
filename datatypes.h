@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/15 23:23:26 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/16 01:52:56 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,14 @@ void				init_arr(int *arr, int size);
 
 t_graph				*graph_new(int verts_n);
 void				graph_del(t_graph **g);
+void				graph_link_add(t_graph *g, int from, int to);
+void				graph_link_del(t_graph *g, int from, int to);
+
 t_queue				*queue_new(int id);
 void				queue_push(t_queue **head, t_queue *elem);
 int					queue_pop(t_queue **head);
 void				queue_del(t_queue **head);
+
 t_node				*node_new(int id, char *name);
 void				node_del(t_node **n);
 

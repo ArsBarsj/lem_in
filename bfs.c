@@ -6,13 +6,34 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:08:24 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/15 23:23:38 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/16 02:58:06 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "datatypes.h"
+
+void	bfs_setup(t_queue **q, int start, int *visited, t_graph *g)
+{
+	if (q && g)
+	{
+		*q = queue_new(start);
+		init_arr(visited, g->verts_n);
+		visited[start] = 1;
+		g->nodes[start]->distance = 0;
+	}
+}
+
+void	bfs_update_state(t_queue **q, int i, int *visited, t_graph *g, int curr)
+{
+	if (q && g)
+	{
+		queue_push(q, queue_new(i));
+		visited[i] = 1;
+		g->nodes[i]->distance = g->nodes[curr]->distance + 1;
+	}
+}
 
 int		bfs(int start_id, int end_id, t_graph *graph)
 {
@@ -22,10 +43,7 @@ int		bfs(int start_id, int end_id, t_graph *graph)
 	int		current;
 	t_queue	*q;
 
-	q = queue_new(start_id);
-	init_arr(visited, graph->verts_n);
-	visited[start_id] = 1;
-	graph->nodes[start_id]->distance = 0;
+	bfs_setup(&q, start_id, visited, graph);
 	while (q)
 	{
 		current = queue_pop(&q);
@@ -33,11 +51,7 @@ int		bfs(int start_id, int end_id, t_graph *graph)
 		while (i < graph->verts_n)
 		{
 			if (graph->matrix[current][i] && !visited[i])
-			{
-				queue_push(&q, queue_new(i));
-				visited[i] = 1;
-				graph->nodes[i]->distance = graph->nodes[current]->distance + 1;
-			}
+				bfs_update_state(&q, i, visited, graph, current);
 			i++;
 		}
 		if (current == end_id)

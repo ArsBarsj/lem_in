@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 01:33:36 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/15 23:47:57 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/16 01:52:18 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,4 +119,22 @@ t_graph		*graph_new(int verts_n)
 	if (g->matrix == NULL)
 		return (NULL);
 	return (g);
+}
+
+void		graph_link_add(t_graph *g, int from, int to)
+{
+	if (g)
+	{
+		g->matrix[from][to] = 1;
+		g->matrix[to][from] = 1;
+	}
+}
+
+void		graph_link_del(t_graph *g, int from, int to)
+{
+	if (g)
+	{
+		g->matrix[from][to] = 0;
+		g->matrix[to][from] = 0;
+	}
 }
