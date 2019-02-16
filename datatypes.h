@@ -3,15 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   datatypes.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arseny <arseny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/15 23:23:26 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/16 01:56:37 by arseny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DATATYPES_H
 # define DATATYPES_H
+
+typedef struct 		s_config
+{
+	int				ants;
+	char			*start;
+	char			*end;
+}					t_config;
+
 
 typedef struct		s_node
 {
