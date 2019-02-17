@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:19:16 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/17 15:59:24 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/18 02:16:16 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int		main(int argc, char *argv[])
 		scanf("%d %d", &i, &j);
 		while (i >= 0 && j >= 0)
 		{
-			graph_link_add(graph, i, j);
+			graph_link_add(graph, i, j, 2);
 			scanf("%d %d", &i, &j);
 		}
 		printf("Введи номер старта: ");
@@ -51,18 +51,18 @@ int		main(int argc, char *argv[])
 	{
 		graph = graph_new(10);
 		init_nodes(&graph);
-		graph_link_add(graph, 0, 1);
-		graph_link_add(graph, 1, 3);
-		graph_link_add(graph, 3, 5);
-		graph_link_add(graph, 5, 6);
-		graph_link_add(graph, 5, 9);
-		graph_link_add(graph, 7, 8);
-		graph_link_add(graph, 8, 9);
-		graph_link_add(graph, 0, 2);
-		graph_link_add(graph, 2, 4);
-		graph_link_add(graph, 4, 6);
-		graph_link_add(graph, 6, 7);
-		graph_link_add(graph, 7, 9);
+		graph_link_add(graph, 0, 1, 2);
+		graph_link_add(graph, 1, 3, 2);
+		graph_link_add(graph, 3, 5, 2);
+		graph_link_add(graph, 5, 6, 2);
+		graph_link_add(graph, 5, 9, 2);
+		graph_link_add(graph, 7, 8, 2);
+		graph_link_add(graph, 8, 9, 2);
+		graph_link_add(graph, 0, 2, 2);
+		graph_link_add(graph, 2, 4, 2);
+		graph_link_add(graph, 4, 6, 2);
+		graph_link_add(graph, 6, 7, 2);
+		graph_link_add(graph, 7, 9, 2);
 		start = 0;
 		end = 9;
 	}
@@ -71,7 +71,10 @@ int		main(int argc, char *argv[])
 
 	distance = bfs(start, end, graph);
 	printf("\nDistance  =  %d\n", distance);
-	bfs_path(start, end, graph);
+	// bfs_path(start, end, graph);
+	printf("Total ways: %d\n", find_paths_number(graph, start, end));
+	get_paths(graph, start, end);
+	// print_matrix(graph->matrix, graph->verts_n);
 	graph_del(&graph);
 	return (0);
 }

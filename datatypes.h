@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/17 23:22:28 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/18 02:14:32 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct		s_graph
 {
 	int				verts_n;
 	int				**matrix;
+	int				**matrix_copy;
 	t_node			**nodes;
 }					t_graph;
 
@@ -38,18 +39,25 @@ void				init_arr(int *arr, int size, int value);
 
 t_graph				*graph_new(int verts_n);
 void				graph_del(t_graph **g);
-void				graph_link_add(t_graph *g, int from, int to);
-void				graph_link_del(t_graph *g, int from, int to);
+void				graph_link_add(t_graph *g, int from, int to, int copy);
+void				graph_link_del(t_graph *g, int from, int to, int copy);
+void				graph_close_node(t_graph *g , int node);
+void				graph_close_path(t_graph *g, t_dqueue *path, int start, int end);
+void				graph_restore_copy(t_graph *g);
 
 t_dqueue			*dqueue_new(int id);
 void				dqueue_push(t_dqueue **head, t_dqueue *elem);
 void				dqueue_push_front(t_dqueue **head, t_dqueue *elem);
 int					dqueue_pop(t_dqueue **head);
+int					dqueue_peak(t_dqueue *head);
 void				dqueue_del(t_dqueue **head);
 
 t_node				*node_new(int id, char *name);
 void				node_del(t_node **n);
 
-int		bfs(int start_id, int end_id, t_graph *graph);
-int		*bfs_path(int start, int end, t_graph *g);
+int					bfs(int start_id, int end_id, t_graph *graph);
+t_dqueue			*bfs_path(int start, int end, t_graph *g);
+
+int	find_paths_number(t_graph *g, int start, int end);
+t_dqueue	**get_paths(t_graph *g, int start, int end);
 #endif

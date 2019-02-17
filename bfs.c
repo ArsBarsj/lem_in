@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:08:24 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/17 23:33:16 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/18 02:10:22 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		bfs(int start_id, int end_id, t_graph *graph)
 		i = 0;
 		while (i < graph->verts_n)
 		{
-			if (graph->matrix[current][i] && !visited[i])
+			if (graph->matrix_copy[current][i] && !visited[i])
 				bfs_update_state(&q, i, visited, graph, current);
 			i++;
 		}
@@ -86,7 +86,7 @@ int		bfs_modified(int start_id, int end_id, t_graph *g, int *pred)
 		i = 0;
 		while (i < g->verts_n)
 		{
-			if (g->matrix[current][i] && !visited[i])
+			if (g->matrix_copy[current][i] && !visited[i])
 				bfs_mod_update(&q, i, current, visited, pred);
 			i++;
 		}
@@ -99,7 +99,7 @@ int		bfs_modified(int start_id, int end_id, t_graph *g, int *pred)
 	return (0);
 }
 
-int		*bfs_path(int start, int end, t_graph *g)
+t_dqueue	*bfs_path(int start, int end, t_graph *g)
 {
 	int			pred[g->verts_n];
 	int			dist[g->verts_n];
@@ -109,7 +109,7 @@ int		*bfs_path(int start, int end, t_graph *g)
 	init_arr(pred, g->verts_n, -1);
 	init_arr(dist, g->verts_n, 2147483647);
 	if (!bfs_modified(start, end, g, pred))
-		exit(0);
+		return (NULL);
 	crawl = end;
 	path = dqueue_new(crawl);
 	while (pred[crawl] != -1)
@@ -117,9 +117,5 @@ int		*bfs_path(int start, int end, t_graph *g)
 		dqueue_push_front(&path, dqueue_new(pred[crawl]));
 		crawl = pred[crawl];
 	}
-	while (path)
-	{
-		printf("%d ", dqueue_pop(&path));
-	}
-	return (0);
+	return (path);
 }

@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:15:52 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/17 23:22:07 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/18 00:26:30 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,15 @@ void	dqueue_push(t_dqueue **head, t_dqueue *elem)
 	}
 	else
 		(*head) = elem;	
+}
+
+int		dqueue_peak(t_dqueue *head)
+{
+	if (head)
+	{
+		return (head->node_id);
+	}
+	return (-1);
 }
 
 int		dqueue_pop(t_dqueue **head)
