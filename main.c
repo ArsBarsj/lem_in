@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:19:16 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/16 02:30:56 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/17 15:59:24 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int		main(int argc, char *argv[])
 
 	distance = bfs(start, end, graph);
 	printf("\nDistance  =  %d\n", distance);
+	bfs_path(start, end, graph);
 	graph_del(&graph);
 	return (0);
 }

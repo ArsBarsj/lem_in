@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 01:33:36 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/16 01:52:18 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/17 15:47:11 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include "datatypes.h"
 
-void	init_arr(int *arr, int size)
+void	init_arr(int *arr, int size, int value)
 {
 	int	i;
 
@@ -23,7 +23,7 @@ void	init_arr(int *arr, int size)
 		i = 0;
 		while (i < size)
 		{
-			arr[i] = 0;
+			arr[i] = value;
 			i++;
 		}
 	}

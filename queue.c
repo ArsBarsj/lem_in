@@ -6,18 +6,18 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:15:52 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/15 23:22:59 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/17 23:22:07 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "datatypes.h"
 
-t_queue		*queue_new(int id)
+t_dqueue		*dqueue_new(int id)
 {
-	t_queue	*q;
+	t_dqueue	*q;
 
-	q = (t_queue *)malloc(sizeof(t_queue));
+	q = (t_dqueue *)malloc(sizeof(t_dqueue));
 	if (q == NULL)
 		return (NULL);
 	q->next = NULL;
@@ -25,9 +25,18 @@ t_queue		*queue_new(int id)
 	return (q);
 }
 
-void	queue_push(t_queue **head, t_queue *elem)
+void	dqueue_push_front(t_dqueue **head, t_dqueue *elem)
 {
-	t_queue	*tmp;
+	if (head && (*head) && elem)
+	{
+		elem->next = *head;
+		*head = elem;
+	}
+}
+
+void	dqueue_push(t_dqueue **head, t_dqueue *elem)
+{
+	t_dqueue	*tmp;
 
 	if (head && (*head) && elem)
 	{
@@ -40,10 +49,10 @@ void	queue_push(t_queue **head, t_queue *elem)
 		(*head) = elem;	
 }
 
-int		queue_pop(t_queue **head)
+int		dqueue_pop(t_dqueue **head)
 {
 	int		ret;
-	t_queue	*tmp;
+	t_dqueue	*tmp;
 
 	if (head)
 	{
@@ -56,9 +65,9 @@ int		queue_pop(t_queue **head)
 	return (-1);
 }
 
-void	queue_del(t_queue **head)
+void	dqueue_del(t_dqueue **head)
 {
-	t_queue	*tmp;
+	t_dqueue	*tmp;
 
 	if (head && (*head))
 	{
