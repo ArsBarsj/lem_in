@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   node.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arseny <arseny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 19:51:53 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/15 23:16:14 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/18 18:40:01 by arseny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "datatypes.h"
 
-t_node		*node_new(int id, char *name)
+t_node		*node_new(int id, char *name, int x, int y)
 {
 	t_node	*new_node;
 
@@ -23,6 +23,8 @@ t_node		*node_new(int id, char *name)
 	new_node->id = id;
 	new_node->name = name;
 	new_node->distance = 2147483647;
+	new_node->x = x;
+	new_node->y = y;
 	return (new_node);
 }
 

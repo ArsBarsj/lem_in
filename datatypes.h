@@ -6,7 +6,7 @@
 /*   By: arseny <arseny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/16 01:56:37 by arseny           ###   ########.fr       */
+/*   Updated: 2019/02/18 18:39:31 by arseny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 typedef struct 		s_config
 {
 	int				ants;
-	char			*start;
-	char			*end;
+	int				start_id;
+	int				end_id;
+	t_node			*head;
 }					t_config;
 
 
@@ -26,6 +27,9 @@ typedef struct		s_node
 	char			*name;
 	int				id;
 	int				distance;
+	int				x;
+	int				y;
+	t_node			*next;
 }					t_node;
 
 
@@ -50,7 +54,7 @@ t_queue				*queue_new(int id);
 void				queue_push(t_queue **head, t_queue *elem);
 int					queue_pop(t_queue **head);
 void				queue_del(t_queue **head);
-t_node				*node_new(int id, char *name);
+t_node				*node_new(int id, char *name, int x, int y);
 void				node_del(t_node **n);
 
 int		bfs(int start_id, int end_id, t_graph *graph);
