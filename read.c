@@ -13,32 +13,39 @@
 #include "datatypes.h"
 #include "lemin.h"
 
-t_config	*ft_read_map(int fd, t_config **config)
+int         ft_read_map(int fd, t_config **config)
 {
 	char	*line;
 	int		start;
 	int		end;
 
 	if (!ft_read_ants(&line, config, fd))
-		return (NULL);
-	else if (!ft_read_rooms(&line, config, fd))
-		return (NULL); // add clear all mallocs
-	return (*config);
+		return (0);
+//	else if (!ft_read_rooms(&line, config, fd))
+//		return (NULL); // add clear all mallocs
+	free(line);
+	return (1);
 }
 
 int			ft_read_ants(char **line, t_config **config, int fd)
 {
-	get_next_line(fd, line);
-	while (ft_is_comm(*line) || ft_is_cmd(*line))
+	if (get_next_line(fd, line) > 0)
 	{
-		if (ft_is_start(*line))
-			return (0);
-		get_next_line(fd, line);
+		while (ft_is_comm(*line) || ft_is_cmd(*line)) {
+			if (ft_is_start(*line))
+				return (0);
+			free(*line);
+			if (get_next_line(fd, line) <= 0 && *line)
+				return (0);
+		}
+		if (ft_check_ant(*line))
+		{
+			(*config)->ants = ft_atoi(*line);
+			return (1);
+		}
 	}
-	if (!ft_check_ant(*line))
-		return (0);
-	(*config)->ants = ft_atoi(*line);
-	return (1);
+	free(*line);
+	return (0);
 }
 
 int			ft_read_rooms(char **line, t_config **config, int fd)
@@ -51,11 +58,11 @@ int			ft_read_rooms(char **line, t_config **config, int fd)
 	get_next_line(fd, line);
 	while (ft_is_comm(*line) || ft_is_cmd(*line) || ft_is_room(*line))
 	{
-		if (ft_is_start(line) && !ft_manage_cmd(line, config, ft_is_start(line), id))
+		if (ft_is_start(*line) && !ft_manage_cmd(*line, config, ft_is_start(*line), id))
 			return (0);
 		else if (ft_is_room(*line) && ft_check_room(*line))
 		{
-			prev = ft_add_node(line, id++, prev);
+			prev = ft_add_node(*line, id++, prev);
 			if (id == 1)
 				(*config)->head = prev;
 		}
@@ -80,10 +87,11 @@ int 		main(int argc, char **argv)
 	config->start_id = 14;
 	config->head = NULL;
 	int	fd = open(argv[1], O_RDONLY);
-	config = ft_read_map(fd, &config);
+	int x = ft_read_map(fd, &config);
 	if (config)
-		printf("%d\n", config->ants);
+		printf("%d\nreturn of read_map = %d", config->ants, x);
 	else 
 		printf("ERROR\n");
+	free(config);
 	return (0);
 }

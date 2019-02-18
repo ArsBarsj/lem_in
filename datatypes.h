@@ -13,15 +13,6 @@
 #ifndef DATATYPES_H
 # define DATATYPES_H
 
-typedef struct 		s_config
-{
-	int				ants;
-	int				start_id;
-	int				end_id;
-	t_node			*head;
-}					t_config;
-
-
 typedef struct		s_node
 {
 	char			*name;
@@ -29,8 +20,17 @@ typedef struct		s_node
 	int				distance;
 	int				x;
 	int				y;
-	t_node			*next;
+	void			*next;
 }					t_node;
+
+
+typedef struct 		s_config
+{
+	int				ants;
+	int				start_id;
+	int				end_id;
+	t_node			*head;
+}					t_config;
 
 
 typedef struct		s_graph
