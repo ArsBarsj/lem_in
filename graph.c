@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 01:33:36 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/18 02:21:44 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/18 23:52:03 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ void		graph_del(t_graph **g)
 			del_tab((*g)->matrix, (*g)->verts_n);
 		if ((*g)->matrix_copy)
 			del_tab((*g)->matrix_copy, (*g)->verts_n);
+		if ((*g)->ants)
+			ants_del((*g)->ants);
 		i = 0;
 		while (i < (*g)->verts_n)
 		{
@@ -108,7 +110,50 @@ void		graph_del(t_graph **g)
 	}
 }
 
-t_graph		*graph_new(int verts_n)
+void		ants_del(t_ant **ants)
+{
+	int	i;
+
+	i  = 0;
+	if (ants && *ants)
+	{
+		while (ants[i])
+		{
+			free(ants[i]);
+			i++;
+		}
+		free(ants);
+	}
+}
+
+t_ant		**ant_new_list(t_graph *g, int n, int place)
+{
+	t_ant	**ants;
+	int		i;
+
+	ants = (t_ant **)malloc(sizeof(t_ant *) * n + 1);
+	if (!ants)
+		return (NULL);
+	i = 0;
+	while (i < n)
+	{
+		ants[i] = (t_ant *)malloc(sizeof(t_ant));
+		if (!ants[i])
+		{
+			ants_del(ants);
+			return (NULL); // need free or exit
+		}
+		ants[i]->id = i;
+		ants[i]->step = 0;
+		ants[i]->path_id = 0;
+		ants[i]->node = g->nodes[place];
+		i++;
+	}
+	ants[i] = NULL;
+	return (ants);
+}
+
+t_graph		*graph_new(int verts_n, int ants_n)
 {
 	t_graph		*g;
 
@@ -119,6 +164,8 @@ t_graph		*graph_new(int verts_n)
 	g->matrix = adjmatrix_new(verts_n);
 	g->matrix_copy = adjmatrix_new(verts_n);
 	g->nodes = (t_node **)malloc((verts_n + 1) * sizeof(t_node *));
+	g->ants_n = ants_n;
+	g->ants = ant_new_list(g, ants_n, 0); // Start instead 0
 	if (g->matrix == NULL)
 		return (NULL);
 	return (g);
@@ -167,22 +214,23 @@ void		graph_close_node(t_graph *g , int node)
 	}
 }
 
-void		graph_close_path(t_graph *g, t_dqueue *path, int start, int end)
+void		graph_close_path(t_graph *g, t_path *path, int start, int end)
 {
-	t_dqueue	*ptr;
+	// t_dqueue	*ptr;
+	int			i;
 
 	if (g && path)
 	{
-		ptr = path;
-		while (path)
+		i = 0;
+		// ptr = path;
+		while (path->path[i])
 		{
-			if (path->node_id != start && path->node_id != end)
-				graph_close_node(g, path->node_id);
-			else if (path->node_id == start)
-				graph_link_del(g, start, path->next->node_id, 1);
-			path = path->next;
+			if (path->path[i]->id != start && path->path[i]->id != end)
+				graph_close_node(g, path->path[i]->id);
+			else if (path->path[i]->id == start)
+				graph_link_del(g, start, path->path[i + 1]->id, 1);
+			i++;
 		}
-		path = ptr;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:19:16 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/18 02:16:16 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/18 23:57:48 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	init_nodes(t_graph **g);
 int		main(int argc, char *argv[])
 {
 	t_graph	*graph;
-	int		distance;
+	// int		distance;
 	int		verts;
 	int		i = 0;
 	int		j = 0;
@@ -33,7 +33,7 @@ int		main(int argc, char *argv[])
 	{
 		printf("Введи кол-во комнат: ");
 		scanf("%d", &verts);
-		graph = graph_new(verts);
+		graph = graph_new(verts, 3);
 		init_nodes(&graph);
 		printf("Введи пары связей (-1 -1 для завершения):\n");
 		scanf("%d %d", &i, &j);
@@ -49,7 +49,7 @@ int		main(int argc, char *argv[])
 	}
 	else
 	{
-		graph = graph_new(10);
+		graph = graph_new(10, 20);
 		init_nodes(&graph);
 		graph_link_add(graph, 0, 1, 2);
 		graph_link_add(graph, 1, 3, 2);
@@ -63,17 +63,29 @@ int		main(int argc, char *argv[])
 		graph_link_add(graph, 4, 6, 2);
 		graph_link_add(graph, 6, 7, 2);
 		graph_link_add(graph, 7, 9, 2);
+		while (i < 10)
+		{
+			graph->nodes[i] = node_new(i, ft_itoa(i));
+			i++;
+		}
+		i = 0;
+		while (i < 20)
+		{
+			graph->ants[i]->node = graph->nodes[0];
+			i++;
+		}
 		start = 0;
 		end = 9;
 	}
 	print_matrix(graph->matrix, graph->verts_n);
 
 
-	distance = bfs(start, end, graph);
-	printf("\nDistance  =  %d\n", distance);
+	// distance = bfs(start, end, graph);
+	// printf("\nDistance  =  %d\n", distance);
 	// bfs_path(start, end, graph);
 	printf("Total ways: %d\n", find_paths_number(graph, start, end));
-	get_paths(graph, start, end);
+	// get_paths(graph, start, end);
+	solve(graph, start, end);
 	// print_matrix(graph->matrix, graph->verts_n);
 	graph_del(&graph);
 	return (0);

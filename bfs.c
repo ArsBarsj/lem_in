@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:08:24 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/18 02:10:22 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/19 00:23:39 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,23 +99,54 @@ int		bfs_modified(int start_id, int end_id, t_graph *g, int *pred)
 	return (0);
 }
 
-t_dqueue	*bfs_path(int start, int end, t_graph *g)
+int		path_len_innr(int *pred, int n)
+{
+	int	i;
+	int	count;
+
+	i = n;
+	count = 1;
+	while (pred[i] != -1)
+	{
+		i = pred[i];
+		count++;
+	}
+	return (count);
+}
+
+t_node	**bfs_path(int start, int end, t_graph *g)
 {
 	int			pred[g->verts_n];
 	int			dist[g->verts_n];
-	t_dqueue	*path;
+	t_node		**path;
 	int			crawl;
+	int			i;
 
 	init_arr(pred, g->verts_n, -1);
 	init_arr(dist, g->verts_n, 2147483647);
 	if (!bfs_modified(start, end, g, pred))
 		return (NULL);
+	i = path_len_innr(pred, end);
+	path = (t_node **)malloc(sizeof(t_node *) * i + 1);
+	if (!path)
+		return (NULL);
+	path[i] = NULL;
 	crawl = end;
-	path = dqueue_new(crawl);
+	i--;
+	path[i--] = g->nodes[end];
+	// i--;
+	// path = dqueue_new(crawl);
 	while (pred[crawl] != -1)
 	{
-		dqueue_push_front(&path, dqueue_new(pred[crawl]));
+		// dqueue_push_front(&path, dqueue_new(pred[crawl]));
+		// printf("%d node , i=%d\n", pred[crawl], i);
+		path[i] = g->nodes[pred[crawl]];
 		crawl = pred[crawl];
+		i--;
 	}
+	// i = 0;
+	// while (path[i])
+		// printf("%d->", path[i++]->id);
+	// printf("\ni = %d\n", i);
 	return (path);
 }

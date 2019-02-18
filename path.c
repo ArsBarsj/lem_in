@@ -1,39 +1,57 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   node.c                                             :+:      :+:    :+:   */
+/*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/15 19:51:53 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/18 21:01:02 by artemiy          ###   ########.fr       */
+/*   Created: 2019/02/18 18:01:44 by artemiy           #+#    #+#             */
+/*   Updated: 2019/02/18 21:23:13 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "datatypes.h"
 
-t_node		*node_new(int id, char *name)
+int		path_len(t_node **path)
 {
-	t_node	*new_node;
+	int	len;
 
-	new_node = (t_node *)malloc(sizeof(t_node));
-	if (new_node == NULL)
-		return (NULL);
-	new_node->id = id;
-	new_node->name = name;
-	new_node->distance = 2147483647;
-	new_node->is_free = 1;
-	return (new_node);
+	if (path)
+	{
+		len  = 0;
+		while (path[len])
+		{
+			len++;
+		}
+		return (len);
+	}
+	return (-1);
 }
 
-void		node_del(t_node **n)
+t_path	*path_new(t_node **path)
 {
-	if (n && *n)
+	t_path	*p;
+
+	if (path)
 	{
-		if ((*n)->name)
-			free((*n)->name);
-		free(*n);
-		*n = NULL;
+		p = (t_path *)malloc(sizeof(t_path));
+		if (!p)
+			return (NULL);
+		p->path = path;
+		p->len = path_len(path) - 1;
+		return (p);
+	}
+	return (NULL);
+}
+
+void	path_del(t_path **p)
+{
+	if (p && *p)
+	{
+		if ((*p)->path)
+			free((*p)->path);
+		free((*p));
+		*p = NULL;
 	}
 }
