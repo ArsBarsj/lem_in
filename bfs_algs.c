@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/19 00:37:16 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/19 03:24:36 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int	find_paths_number(t_graph *g, int start, int end)
 				graph_close_node(g, node_id);
 			else if (node_id == start && path[i + 1] && path[i + 1]->id == end)
 				graph_link_del(g, start, end, 1);
-			// path_del(&path[i++]);
 			i++;
 		}
+		free(path);
 	}
 	graph_restore_copy(g);
 	return (counter);
@@ -48,7 +48,7 @@ t_path	**get_paths(t_graph *g, int start, int end)
 	int			i;
 
 	paths_num = find_paths_number(g, start, end);
-	paths = (t_path **)malloc(sizeof(t_path *) * paths_num + 1);
+	paths = (t_path **)malloc(sizeof(t_path *) * (paths_num + 1));
 	if (!paths)
 		return (NULL);
 	i = 0;
@@ -60,16 +60,23 @@ t_path	**get_paths(t_graph *g, int start, int end)
 	}
 	paths[i] = NULL;
 	graph_restore_copy(g);
-	// i = 0;
-	// while (paths[i])
-	// {
-	// 	ft_printf("LEN= %d\n", paths[i]->len);
-	// 	while (paths[i]->path)
-	// 		ft_printf("%d->", dqueue_pop(&paths[i]->path));
-	// 	i++;
-	// 	ft_printf("\n");
-	// }
 	return (paths);
+}
+
+void	paths_del(t_path ***p)
+{
+	int	i;
+
+	i = 0;
+	while (p && (*p)[i])
+	{
+		free((*p)[i]->path);
+		free((*p)[i]);
+		(*p)[i] = NULL;
+		i++;
+	}
+	free(*p);
+	*p = NULL;
 }
 
 int		solve(t_graph *g, int start, int end)
@@ -92,25 +99,19 @@ int		solve(t_graph *g, int start, int end)
 			if (g->ants[ant_i] && g->ants[ant_i]->node->id == start)
 			{
 				i = 0;
-				// ft_printf("ant_i %d\n", ant_i);
 				while (i < paths_n && g->ants_n - (paths[i]->len - paths[0]->len) >= 2)
-				{
 					i++;
-				}
 				i = (i == 0 ? 0 : i - 1);
 				while (i >= 0 && !ant_move(&g->ants[ant_i], g, paths[i], end))
 					i--;
 				g->ants[ant_i]->path_id = i;
 			}
 			else if (g->ants[ant_i])
-			{
 				ant_move(&g->ants[ant_i], g, paths[g->ants[ant_i]->path_id], end);
-			}
-			// ft_printf("ant_i %d\n", ant_i);
 			ant_i++;
 		}
-		ft_printf("\n"); // End of step
-		// exit(0);
+		ft_printf("\n");
 	}
+	paths_del(&paths);
 	return (0);
 }

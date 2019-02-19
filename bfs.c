@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:08:24 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/19 00:23:39 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/19 03:24:01 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,26 +127,18 @@ t_node	**bfs_path(int start, int end, t_graph *g)
 	if (!bfs_modified(start, end, g, pred))
 		return (NULL);
 	i = path_len_innr(pred, end);
-	path = (t_node **)malloc(sizeof(t_node *) * i + 1);
+	path = (t_node **)malloc(sizeof(t_node *) * (i + 1));
 	if (!path)
 		return (NULL);
 	path[i] = NULL;
 	crawl = end;
 	i--;
 	path[i--] = g->nodes[end];
-	// i--;
-	// path = dqueue_new(crawl);
 	while (pred[crawl] != -1)
 	{
-		// dqueue_push_front(&path, dqueue_new(pred[crawl]));
-		// printf("%d node , i=%d\n", pred[crawl], i);
 		path[i] = g->nodes[pred[crawl]];
 		crawl = pred[crawl];
 		i--;
 	}
-	// i = 0;
-	// while (path[i])
-		// printf("%d->", path[i++]->id);
-	// printf("\ni = %d\n", i);
 	return (path);
 }

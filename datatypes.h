@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/19 00:30:34 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/19 03:20:07 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct		s_path
 
 
 void				init_arr(int *arr, int size, int value);
-void		ants_del(t_ant **ants);
+void		ants_del(t_ant ***ants);
 
 t_graph				*graph_new(int verts_n, int ants_n);
 void				graph_del(t_graph **g);

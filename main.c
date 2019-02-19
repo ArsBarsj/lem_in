@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:19:16 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/18 23:57:48 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/19 03:29:17 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		main(int argc, char *argv[])
 	else
 	{
 		graph = graph_new(10, 20);
-		init_nodes(&graph);
+		//init_nodes(&graph);
 		graph_link_add(graph, 0, 1, 2);
 		graph_link_add(graph, 1, 3, 2);
 		graph_link_add(graph, 3, 5, 2);
@@ -65,7 +65,7 @@ int		main(int argc, char *argv[])
 		graph_link_add(graph, 7, 9, 2);
 		while (i < 10)
 		{
-			graph->nodes[i] = node_new(i, ft_itoa(i));
+			graph->nodes[i]->name = ft_itoa(i);
 			i++;
 		}
 		i = 0;
@@ -83,7 +83,7 @@ int		main(int argc, char *argv[])
 	// distance = bfs(start, end, graph);
 	// printf("\nDistance  =  %d\n", distance);
 	// bfs_path(start, end, graph);
-	printf("Total ways: %d\n", find_paths_number(graph, start, end));
+	// printf("Total ways: %d\n", find_paths_number(graph, start, end));
 	// get_paths(graph, start, end);
 	solve(graph, start, end);
 	// print_matrix(graph->matrix, graph->verts_n);

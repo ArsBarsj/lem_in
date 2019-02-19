@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 01:33:36 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/18 23:52:03 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/19 03:32:19 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,9 @@ void		graph_del(t_graph **g)
 		if ((*g)->matrix_copy)
 			del_tab((*g)->matrix_copy, (*g)->verts_n);
 		if ((*g)->ants)
-			ants_del((*g)->ants);
+			ants_del(&(*g)->ants);
 		i = 0;
-		while (i < (*g)->verts_n)
+		while ((*g)->nodes && (*g)->nodes[i])
 		{
 			node_del(&((*g)->nodes[i]));
 			i++;
@@ -110,19 +110,20 @@ void		graph_del(t_graph **g)
 	}
 }
 
-void		ants_del(t_ant **ants)
+void		ants_del(t_ant ***ants)
 {
 	int	i;
 
 	i  = 0;
 	if (ants && *ants)
 	{
-		while (ants[i])
+		while (ants && (*ants)[i])
 		{
-			free(ants[i]);
+			free((*ants)[i]);
 			i++;
 		}
-		free(ants);
+		free(*ants);
+		*ants = NULL;
 	}
 }
 
@@ -131,7 +132,7 @@ t_ant		**ant_new_list(t_graph *g, int n, int place)
 	t_ant	**ants;
 	int		i;
 
-	ants = (t_ant **)malloc(sizeof(t_ant *) * n + 1);
+	ants = (t_ant **)malloc(sizeof(t_ant *) * (n + 1));
 	if (!ants)
 		return (NULL);
 	i = 0;
@@ -140,7 +141,7 @@ t_ant		**ant_new_list(t_graph *g, int n, int place)
 		ants[i] = (t_ant *)malloc(sizeof(t_ant));
 		if (!ants[i])
 		{
-			ants_del(ants);
+			ants_del(&ants);
 			return (NULL); // need free or exit
 		}
 		ants[i]->id = i;
@@ -156,7 +157,9 @@ t_ant		**ant_new_list(t_graph *g, int n, int place)
 t_graph		*graph_new(int verts_n, int ants_n)
 {
 	t_graph		*g;
+	int			i;
 
+	i = 0;
 	g = (t_graph *)malloc(sizeof(t_graph));
 	if (g == NULL)
 		return (NULL);
@@ -164,6 +167,14 @@ t_graph		*graph_new(int verts_n, int ants_n)
 	g->matrix = adjmatrix_new(verts_n);
 	g->matrix_copy = adjmatrix_new(verts_n);
 	g->nodes = (t_node **)malloc((verts_n + 1) * sizeof(t_node *));
+	if (!g->nodes)
+		graph_del(&g);
+	while (i < g->verts_n)
+	{
+		g->nodes[i] = node_new(i, NULL);
+		i++;
+	}
+	g->nodes[i] = NULL;
 	g->ants_n = ants_n;
 	g->ants = ant_new_list(g, ants_n, 0); // Start instead 0
 	if (g->matrix == NULL)

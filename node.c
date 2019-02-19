@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 19:51:53 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/18 21:01:02 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/19 03:20:37 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ t_node		*node_new(int id, char *name)
 
 void		node_del(t_node **n)
 {
-	if (n && *n)
+	if (n && (*n))
 	{
 		if ((*n)->name)
 			free((*n)->name);
-		free(*n);
-		*n = NULL;
+		free((*n));
+		(*n) = NULL;
 	}
 }
