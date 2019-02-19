@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   datatypes.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arseny <arseny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/18 23:16:52 by arseny           ###   ########.fr       */
+/*   Updated: 2019/02/19 23:58:21 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct 		s_config
 	int				start_id;
 	int				end_id;
 	t_node			*head;
+	int				**links;
 }					t_config;
 
 
@@ -57,6 +58,5 @@ void				queue_del(t_queue **head);
 t_node				*node_new(int id, char *name, int x, int y);
 t_node				*ft_add_node(char *line, int id, t_node *prev);
 void				node_del(t_node **n);
-
 int		bfs(int start_id, int end_id, t_graph *graph);
 #endif

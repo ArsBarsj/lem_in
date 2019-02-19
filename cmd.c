@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arseny <arseny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 18:18:58 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/18 23:53:08 by arseny           ###   ########.fr       */
+/*   Updated: 2019/02/19 23:37:42 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int		ft_is_start(char *line)
 {
-	static int flag[2];
+	// static int flag[2];
 
 	if (ft_strequ(line, "##start"))
 		return (1);
