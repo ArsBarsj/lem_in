@@ -61,24 +61,21 @@ int			ft_read_rooms(char **line, t_config **config, int fd, int flag[2])
 	id = 0;
 	prev = NULL;
 	while (get_next_line(fd, line) > 0 &&
-			(ft_is_comm(*line) || ft_is_cmd(*line) || ft_is_room(*line)))
+			(ft_is_comm(*line) || ft_is_cmd(*line) || ft_is_room(*line)
+			|| ft_strlen(*line) == 0))
 	{
 		if ((ft_is_start(*line) && !ft_manage_cmd(config, ft_is_start(*line), id, flag)) ||
-				(ft_is_room(*line) && !ft_check_room(*line)))
-		{
-			node_del(&(*config)->head);
+				(ft_is_room(*line) && !ft_check_room(*line)) || ft_strlen(*line) == 0)
 			return (0);
-		}
 		else if (ft_is_room(*line) && ft_check_room(*line))
 		{
 			prev = ft_add_node(*line, id++, prev);
 			if (id == 1)
 				(*config)->head = prev;
 		}
-		free(*line);
+		if (ft_strlen(*line) != 0)
+			free(*line);
 	}
-	if (ft_strlen(*line) == 0)
-		return (0);
 	return (1);
 }
 
