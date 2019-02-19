@@ -16,15 +16,18 @@
 int         ft_read_map(int fd, t_config **config)
 {
 	char	*line;
-	int		start;
-	int		end;
+	int     flag[2];
 
+	flag[0] = -1;
+	flag[1] = -1;
 	if (!ft_read_ants(&line, config, fd))
 		return (0);
-	else if (!ft_read_rooms(&line, config, fd))
+	else if (!ft_read_rooms(&line, config, fd, flag))
 	{
+		if ((*config)->head)
+			node_del(&(*config)->head);
 		free(line);
-		return (0); // add clear all mallocs
+		return (0);
 	}
 	return (1);
 }
@@ -50,7 +53,7 @@ int			ft_read_ants(char **line, t_config **config, int fd)
 	return (0);
 }
 
-int			ft_read_rooms(char **line, t_config **config, int fd)
+int			ft_read_rooms(char **line, t_config **config, int fd, int flag[2])
 {
 	int		id;
 	t_node	*prev;
@@ -60,11 +63,10 @@ int			ft_read_rooms(char **line, t_config **config, int fd)
 	while (get_next_line(fd, line) > 0 &&
 			(ft_is_comm(*line) || ft_is_cmd(*line) || ft_is_room(*line)))
 	{
-		if ((ft_is_start(*line) && !ft_manage_cmd(config, ft_is_start(*line), id)) ||
+		if ((ft_is_start(*line) && !ft_manage_cmd(config, ft_is_start(*line), id, flag)) ||
 				(ft_is_room(*line) && !ft_check_room(*line)))
 		{
 			node_del(&(*config)->head);
-			free(*line);
 			return (0);
 		}
 		else if (ft_is_room(*line) && ft_check_room(*line))
@@ -75,6 +77,8 @@ int			ft_read_rooms(char **line, t_config **config, int fd)
 		}
 		free(*line);
 	}
+	if (ft_strlen(*line) == 0)
+		return (0);
 	return (1);
 }
 
