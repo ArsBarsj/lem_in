@@ -13,9 +13,9 @@ $(NAME): $(obj)
 libft/libft.a:
 	make -C libft/
 clean:
-	make -C libft/ clean
-	rm -f $(obj)
+	@make -C libft/ clean
+	@rm -f $(obj)
 fclean: clean
 	make -C libft/ fclean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 re: fclean all

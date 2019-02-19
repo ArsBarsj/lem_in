@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:19:16 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/19 03:29:17 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/19 17:16:08 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	init_nodes(t_graph **g);
 int		main(int argc, char *argv[])
 {
 	t_graph	*graph;
-	// int		distance;
+	int		ants_n;
 	int		verts;
 	int		i = 0;
 	int		j = 0;
@@ -31,10 +31,16 @@ int		main(int argc, char *argv[])
 
 	if (argc > 1 && !strcmp(argv[1], "-i"))
 	{
+		printf("Введи номер старта: ");
+		scanf("%d", &start);
+		printf("Введи номер финиша: ");
+		scanf("%d", &end);
 		printf("Введи кол-во комнат: ");
 		scanf("%d", &verts);
-		graph = graph_new(verts, 3);
-		init_nodes(&graph);
+		printf("Введи кол-во муравьев: ");
+		scanf("%d", &ants_n);
+		graph = graph_new(verts, ants_n, start);
+		// init_nodes(&graph);
 		printf("Введи пары связей (-1 -1 для завершения):\n");
 		scanf("%d %d", &i, &j);
 		while (i >= 0 && j >= 0)
@@ -42,15 +48,23 @@ int		main(int argc, char *argv[])
 			graph_link_add(graph, i, j, 2);
 			scanf("%d %d", &i, &j);
 		}
-		printf("Введи номер старта: ");
-		scanf("%d", &start);
-		printf("Введи номер финиша: ");
-		scanf("%d", &end);
+		i = 0;
+		while (i < verts)
+		{
+			graph->nodes[i]->name = ft_itoa(i);
+			i++;
+		}
+		i = 0;
+		while (i < ants_n)
+		{
+			graph->ants[i]->node = graph->nodes[start];
+			i++;
+		}
 	}
 	else
 	{
-		graph = graph_new(10, 20);
-		//init_nodes(&graph);
+		graph = graph_new(10, 20, 0);
+
 		graph_link_add(graph, 0, 1, 2);
 		graph_link_add(graph, 1, 3, 2);
 		graph_link_add(graph, 3, 5, 2);

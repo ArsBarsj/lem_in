@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 01:33:36 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/19 03:32:19 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/19 17:20:49 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ t_ant		**ant_new_list(t_graph *g, int n, int place)
 	return (ants);
 }
 
-t_graph		*graph_new(int verts_n, int ants_n)
+t_graph		*graph_new(int verts_n, int ants_n, int start)
 {
 	t_graph		*g;
 	int			i;
@@ -176,10 +176,15 @@ t_graph		*graph_new(int verts_n, int ants_n)
 	}
 	g->nodes[i] = NULL;
 	g->ants_n = ants_n;
-	g->ants = ant_new_list(g, ants_n, 0); // Start instead 0
+	g->ants = ant_new_list(g, ants_n, start); // Start instead 0
 	if (g->matrix == NULL)
 		return (NULL);
 	return (g);
+}
+
+t_graph		*graph_create(void)
+{
+	;
 }
 
 void		graph_link_add(t_graph *g, int from, int to, int copy)
@@ -227,13 +232,11 @@ void		graph_close_node(t_graph *g , int node)
 
 void		graph_close_path(t_graph *g, t_path *path, int start, int end)
 {
-	// t_dqueue	*ptr;
 	int			i;
 
 	if (g && path)
 	{
 		i = 0;
-		// ptr = path;
 		while (path->path[i])
 		{
 			if (path->path[i]->id != start && path->path[i]->id != end)
