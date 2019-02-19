@@ -18,7 +18,7 @@ int			ft_is_start(char *line);
 int         ft_read_map(int fd, t_config **config);
 int			ft_read_ants(char **line, t_config **config, int fd);
 int			ft_read_rooms(char **line, t_config **config, int fd);
-int			ft_manage_cmd(char *line, t_config **config, int flag, int id);
+int			ft_manage_cmd(t_config **config, int flag, int id);
 
 void		ft_clean_str_arr(char **arr);
 int			ft_all_digit(char *str);

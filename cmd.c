@@ -22,16 +22,22 @@ int		ft_is_start(char *line)
 	return (0);
 }
 
-int		ft_manage_cmd(char *line, t_config **config, int flag, int id)
+int		ft_manage_cmd(t_config **config, int flag, int id)
 {
 	if (flag == 1 && (*config)->start_id)
 		return (0);
 	else if (flag == 2 &&  (*config)->end_id)
 		return (0);
 	else if (flag == 1)
+	{
 		(*config)->start_id = id;
+		return (1);
+	}
 	else if (flag == 2)
+	{
 		(*config)->end_id = id;
+		return(1);
+	}
 	return (0);
 }
 

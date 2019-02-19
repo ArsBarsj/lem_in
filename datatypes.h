@@ -13,15 +13,15 @@
 #ifndef DATATYPES_H
 # define DATATYPES_H
 
-typedef struct		s_node
+typedef struct		        s_node
 {
-	char			*name;
-	int				id;
-	int				distance;
-	int				x;
-	int				y;
-	void			*next;
-}					t_node;
+	char			        *name;
+	int				        id;
+	int				        distance;
+	int				        x;
+	int				        y;
+	struct s_node			*next;
+}					        t_node;
 
 
 typedef struct 		s_config

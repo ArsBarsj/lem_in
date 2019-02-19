@@ -54,7 +54,7 @@ int		ft_check_room(char *room)
 		}
 	}
 	ft_clean_str_arr(set);
-	return (0);
+	return (1);
 }
 
 int		ft_is_room(char *line)

@@ -22,7 +22,7 @@ t_node		*node_new(int id, char *name, int x, int y)
 	if (new_node == NULL)
 		return (NULL);
 	new_node->id = id;
-	new_node->name = name;
+	new_node->name = ft_strdup(name);
 	new_node->distance = 2147483647;
 	new_node->x = x;
 	new_node->y = y;
@@ -35,7 +35,7 @@ void		node_del(t_node **n)
 	t_node	*next;
 	if (n && *n)
 	{
-		while (n)
+		while (*n)
 		{
 			if ((*n)->name)
 				free((*n)->name);
@@ -56,8 +56,12 @@ t_node		*ft_add_node(char *line, int id, t_node *prev)
 		return (NULL);
 	room = node_new(id, opts[0], ft_atoi(opts[1]), ft_atoi(opts[2]));
 	if (!room)
+	{
+		ft_clean_str_arr(opts);
 		return (NULL);
+	}
 	if (prev)
 		prev->next = room;
+	ft_clean_str_arr(opts);
 	return (room);
 }
