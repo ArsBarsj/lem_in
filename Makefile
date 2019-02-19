@@ -1,4 +1,4 @@
-SRCI = read.c check_input.c utils.c
+SRCI = read.c check_input.c utils.c node.c cmd.c
 OBJI = $(SRCI:.c=.o)
 LIB = libft/libft.a
 FLAGS = -Werror -Wall -Wextra
@@ -12,7 +12,7 @@ $(LIB):
 $(NAME): $(OBJI)
 	$(GCC) $(FLAGS) $(OBJI) -L libft -lft -o $(NAME)
 %.o: %.c
-	$(GCC) $(FLAGS) -c $< -o $@ -I.
+	$(GCC) $(FLAGS) -c -g $< -o $@ -I.
 clean:
 	rm -f *.o
 	make -C libft/ clean

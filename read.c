@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   read.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arseny <arseny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/18 23:58:22 by arseny           ###   ########.fr       */
+/*   Updated: 2019/02/20 00:04:15 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "datatypes.h"
+//#include "datatypes.h"
+#include <stdio.h>
 #include "lemin.h"
+int		ft_read_links(char **line, t_config **config, int fd);
 
 int         ft_read_map(int fd, t_config **config)
 {
@@ -29,6 +31,8 @@ int         ft_read_map(int fd, t_config **config)
 		free(line);
 		return (0);
 	}
+	else if (!ft_read_links(&line, config, fd))
+		return (0);
 	return (1);
 }
 
@@ -82,7 +86,110 @@ int			ft_read_rooms(char **line, t_config **config, int fd, int flag[2])
 	return (1);
 }
 
-#include <stdio.h>
+int		ft_list_len(t_node *head)
+{
+	int		len;
+
+	len = 0;
+	if (head)
+	{
+		while (head)
+		{
+			len++;
+			head = head->next;
+		}
+	}
+	return (len);
+}
+
+int		**ft_create_links(t_config **config)
+{
+	int		i;
+	int		j;
+	int		rooms_len;
+	int		**links;
+
+	rooms_len = ft_list_len((*config)->head);
+	if (!(links = (int **)malloc(sizeof(int *) * rooms_len)))
+		return (NULL); // Free everything
+	i = 0;
+	while (i < rooms_len)
+	{
+		links[i] = (int *)malloc(sizeof(int) * rooms_len);
+		if (!links[i])
+		{
+			return (NULL);// Free everything
+		}
+		j = 0;
+		while (j < rooms_len)
+			links[i][j++] = 0; // Use here init_arr from master branch.
+		i++;
+	}
+	return (links);
+}
+
+int		ft_get_id_by_name(char *name, t_node *head)
+{
+	int	id;
+
+	id = -1;
+	if (head && name)
+	{
+		while (head)
+		{
+			id++;
+			if (ft_strequ(head->name, name))
+				return (id);
+			head = head->next;
+		}
+	}
+	return (id);
+}
+
+int		ft_str_arr_len(char **arr)
+{
+	int	i;
+
+	i = 0;
+	if (arr)
+	{
+		while (arr[i])
+			i++;
+	}
+	return (i);
+}
+
+int		ft_read_links(char **line, t_config **config, int fd)
+{
+	char	**splited;
+	int		from;
+	int		to;
+
+	if (!((*config)->links = ft_create_links(config)))
+		return (0);
+	splited = ft_strsplit(*line, '-');
+	from = ft_get_id_by_name(splited[0], (*config)->head);
+	to  = ft_get_id_by_name(splited[1], (*config)->head);
+	(*config)->links[from][to] = 1;
+	(*config)->links[to][from] = 1;
+	free(*line);
+	while (get_next_line(fd, line) > 0)
+	{
+		printf("%s\n", *line);
+		if (!(splited = ft_strsplit(*line, '-')) || ft_str_arr_len(splited) > 2)
+		{
+			return (0); // Free everything
+		}
+		from = ft_get_id_by_name(splited[0], (*config)->head);
+		to  = ft_get_id_by_name(splited[1], (*config)->head);
+		(*config)->links[from][to] = 1;
+		(*config)->links[to][from] = 1;
+		free(*line);
+		ft_clean_str_arr(splited);
+	}
+	return (1);
+}
+
 int 		main(int argc, char **argv)
 {
 	(void)argc;
@@ -93,7 +200,6 @@ int 		main(int argc, char **argv)
 	config->end_id = 0;
 	config->start_id = 0;
 	config->head = NULL;
-
 	int	fd = open(argv[1], O_RDONLY);
 	int x = ft_read_map(fd, &config);
 
@@ -102,6 +208,7 @@ int 		main(int argc, char **argv)
 	else 
 		printf("ERROR\n");
 
+	print_matrix(config->links, ft_list_len(config->head));
 	node_del(&config->head);
 	free(config);
 	return (0);

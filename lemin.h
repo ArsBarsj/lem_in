@@ -22,4 +22,7 @@ int		    ft_manage_cmd(t_config **config, int flag, int id, int flags[2]);
 
 void		ft_clean_str_arr(char **arr);
 int			ft_all_digit(char *str);
+
+
+void	print_matrix(int **m, int size);;
 #endif
