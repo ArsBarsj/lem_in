@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arseny <arseny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 19:51:53 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/18 23:29:01 by arseny           ###   ########.fr       */
+/*   Updated: 2019/02/20 22:15:21 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_node		*node_new(int id, char *name, int x, int y)
 	new_node->x = x;
 	new_node->y = y;
 	new_node->next = NULL;
+	new_node->is_free = 1;
 	return (new_node);
 }
 
