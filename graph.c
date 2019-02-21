@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 01:33:36 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/22 00:24:06 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/22 00:49:27 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,16 +283,14 @@ void		graph_restore_copy(t_graph *g)
 
 	if (g)
 	{
-		i = 0;
-		while (i < g->verts_n)
+		i = -1;
+		while (++i < g->verts_n)
 		{
-			j = 0;
-			while (j < g->verts_n)
+			j = -1;
+			while (++j < g->verts_n)
 			{
 				g->matrix_copy[i][j] = g->matrix[i][j];
-				j++;
 			}
-			i++;
 		}
 	}
 }
