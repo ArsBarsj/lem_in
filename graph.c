@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 01:33:36 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/21 03:35:00 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/22 00:24:06 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,14 @@ void	adj_matrix_init(int **m, int size)
 	int	i;
 	int	j;
 
-	i = 0;
-	while (i < size)
+	i = -1;
+	while (++i < size)
 	{
-		j = 0;
-		while (j < size)
+		j = -1;
+		while (++j < size && !(m[i][j] = 0))
 		{
-			m[i][j] = 0;
-			j++;
+			;
 		}
-		i++;
 	}
 }
 
@@ -208,11 +206,11 @@ t_graph		*graph_create(t_config *cfg)
 			g->matrix_copy[i][j] = cfg->links[i][j];
 		}
 	}
-	i = 0;
-	while (i < g->ants_n)
+	i = -1;
+	head = g->nodes[cfg->start_id];
+	while (++i < g->ants_n)
 	{
-		g->ants[i]->node = g->nodes[cfg->start_id];
-		i++;
+		g->ants[i]->node = head;
 	}
 	return (g);
 }
