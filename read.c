@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/21 23:34:31 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/21 23:39:26 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,15 +137,13 @@ int		**ft_create_links(t_config **config)
 
 int		ft_get_id_by_name(char *name, t_node *head)
 {
-	int	id;
-
-	id = -1;
 	while (head && ft_strcmp(head->name, name))
 	{
-		id++;
 		head = head->next;
 	}
-	return (id);
+	if (head)
+		return (head->id);
+	return (-1);
 }
 
 int		ft_str_arr_len(char **arr)
