@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/21 19:50:50 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/21 21:29:32 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int         ft_read_map(int fd, t_config **config)
 		return (0);
 	}
 	links = ft_read_links(&line, config, fd);
-	printf("%d\n", links);
+	// printf("%d\n", links);
 	if (!links)
 		return (0);
 	// free(line);
@@ -84,7 +84,10 @@ int			ft_read_rooms(char **line, t_config **config, int fd, int flag[2])
 				(*config)->head = prev;
 		}
 		if (ft_strlen(*line) != 0)
+		{
 			free(*line);
+			*line = NULL;
+		}
 	}
 	return (1);
 }
@@ -170,7 +173,7 @@ int		ft_set_link(char *line, t_config **config)
 	int		to;
 
 	// printf("%s\n", line);
-	if (ft_is_comm(line) || ft_is_cmd(line))
+	if (line && (ft_is_comm(line) || ft_is_cmd(line)))
 		return (1);
 	if (!ft_is_link(line) || !(splited = ft_strsplit(line, '-')))
 	{
@@ -182,6 +185,7 @@ int		ft_set_link(char *line, t_config **config)
 	if (from < 0 || to < 0)
 	{
 		free(line);
+		ft_clean_str_arr(splited);
 		return (0);
 	}
 	(*config)->links[from][to] = 1;
@@ -217,15 +221,20 @@ int 		main(int argc, char **argv)
 	t_graph	*g;
 
 	config = (t_config *)malloc(sizeof(t_config));
+	config->head = NULL;
+	config->end_id = -1;
+	config->start_id = -1;
 	int	fd = open(argv[1], O_RDONLY);
 	int x = ft_read_map(fd, &config);
 
+	if (config->start_id < 0 || config->end_id < 0 || config->start_id == config->end_id)
+		error();
 	if (config && x)
 	{
 		printf("Ants number: %d\nStart id = %d\nEnd id = %d\n", config->ants, config->start_id, config->end_id);
 		printf("Links matrix:\n");
-		print_matrix(config->links, ft_list_len(config->head));
-		printf("Nodes(%d):\n", config->rooms_n);
+		// print_matrix(config->links, ft_list_len(config->head));
+		// printf("Nodes(%d):\n", config->rooms_n);
 		// head = config->head;
 		// tmp = head;
 		// while (head)
@@ -236,10 +245,7 @@ int 		main(int argc, char **argv)
 		// head = tmp;
 	}
 	else
-	{
-		printf("ERROR %d\n", x);
-		exit(0);
-	}
+		error();
 	g = graph_create(config);
 	printf("%d - start_id        -> %d\n", config->start_id, config->end_id);
 	solve(g, config->start_id, config->end_id);
