@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/21 21:29:32 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/21 21:37:53 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ int		ft_get_id_by_name(char *name, t_node *head)
 		while (head)
 		{
 			id++;
-			if (ft_strequ(head->name, name))
+			if (ft_strcmp(head->name, name) == 0)
 				return (id);
 			head = head->next;
 		}
