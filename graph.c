@@ -187,6 +187,7 @@ t_graph		*graph_create(t_config *cfg)
 	t_node	*head;
 	int		i;
 	int		j;
+	int     tmp;
 
 	if (!(g = graph_new(cfg->rooms_n, cfg->ants)))
 		return (NULL);
@@ -197,10 +198,11 @@ t_graph		*graph_create(t_config *cfg)
 		head = head->next;
 	}
 	i = -1;
-	while (++i < g->verts_n)
+	tmp = g->verts_n;
+	while (++i < tmp)
 	{
 		j = -1;
-		while (++j < g->verts_n)
+		while (++j < tmp)
 		{
 			g->matrix[i][j] = cfg->links[i][j];
 			g->matrix_copy[i][j] = cfg->links[i][j];
