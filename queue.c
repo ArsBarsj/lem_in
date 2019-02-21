@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:15:52 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/18 00:26:30 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/22 00:34:59 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int		dqueue_peak(t_dqueue *head)
 
 int		dqueue_pop(t_dqueue **head)
 {
-	int		ret;
+	int			ret;
 	t_dqueue	*tmp;
 
 	if (head)

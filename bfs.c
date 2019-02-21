@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:08:24 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/19 03:24:01 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/22 00:31:56 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,20 +75,21 @@ int		bfs(int start_id, int end_id, t_graph *graph)
 int		bfs_modified(int start_id, int end_id, t_graph *g, int *pred)
 {
 	int			i;
+	int			verts_n;
 	int			visited[g->verts_n];
 	int			current;
 	t_dqueue	*q;
 
 	bfs_setup(&q, start_id, visited, g);
+	verts_n = g->verts_n;
 	while (q)
 	{
 		current = dqueue_pop(&q);
-		i = 0;
-		while (i < g->verts_n)
+		i = -1;
+		while (++i < verts_n)
 		{
 			if (g->matrix_copy[current][i] && !visited[i])
 				bfs_mod_update(&q, i, current, visited, pred);
-			i++;
 		}
 		if (current == end_id)
 		{
