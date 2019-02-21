@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 19:51:53 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/20 22:15:21 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/21 00:16:01 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_node		*node_new(int id, char *name, int x, int y)
 	return (new_node);
 }
 
-void		node_del(t_node **n)
+void		node_list_del(t_node **n)
 {
 	t_node	*next;
 	if (n && *n)
@@ -44,6 +44,16 @@ void		node_del(t_node **n)
 			free(*n);
 			*n = next;
 		}
+	}
+}
+
+void		node_del(t_node **n)
+{
+	if (n && *n)
+	{
+		if ((*n)->name)
+			free((*n)->name);
+		free(*n);
 	}
 }
 

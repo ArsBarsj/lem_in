@@ -6,13 +6,14 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 01:33:36 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/19 17:20:49 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/21 03:35:00 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "datatypes.h"
+#include "libft/libft.h"
 
 void	init_arr(int *arr, int size, int value)
 {
@@ -127,7 +128,7 @@ void		ants_del(t_ant ***ants)
 	}
 }
 
-t_ant		**ant_new_list(t_graph *g, int n, int place)
+t_ant		**ant_new_list(int n)
 {
 	t_ant	**ants;
 	int		i;
@@ -147,19 +148,19 @@ t_ant		**ant_new_list(t_graph *g, int n, int place)
 		ants[i]->id = i;
 		ants[i]->step = 0;
 		ants[i]->path_id = 0;
-		ants[i]->node = g->nodes[place];
+		ants[i]->node = NULL;
 		i++;
 	}
 	ants[i] = NULL;
 	return (ants);
 }
 
-t_graph		*graph_new(int verts_n, int ants_n, int start)
+t_graph		*graph_new(int verts_n, int ants_n)
 {
 	t_graph		*g;
-	int			i;
+	// int			i;
 
-	i = 0;
+	// i = 0;
 	g = (t_graph *)malloc(sizeof(t_graph));
 	if (g == NULL)
 		return (NULL);
@@ -169,22 +170,51 @@ t_graph		*graph_new(int verts_n, int ants_n, int start)
 	g->nodes = (t_node **)malloc((verts_n + 1) * sizeof(t_node *));
 	if (!g->nodes)
 		graph_del(&g);
-	while (i < g->verts_n)
-	{
-		g->nodes[i] = node_new(i, NULL);
-		i++;
-	}
-	g->nodes[i] = NULL;
+	// while (i < g->verts_n)
+	// {
+		// g->nodes[i] = node_new(i, NULL, 0, 0);
+		// i++;
+	// }
+	g->nodes[verts_n] = NULL;
 	g->ants_n = ants_n;
-	g->ants = ant_new_list(g, ants_n, start); // Start instead 0
+	g->ants = ant_new_list(ants_n); // Start instead 0
 	if (g->matrix == NULL)
 		return (NULL);
 	return (g);
 }
 
-t_graph		*graph_create(void)
+t_graph		*graph_create(t_config *cfg)
 {
-	;
+	t_graph	*g;
+	t_node	*head;
+	int		i;
+	int		j;
+
+	if (!(g = graph_new(cfg->rooms_n, cfg->ants)))
+		return (NULL);
+	head = cfg->head;
+	while (head)
+	{
+		g->nodes[head->id] = head;
+		head = head->next;
+	}
+	i = -1;
+	while (++i < g->verts_n)
+	{
+		j = -1;
+		while (++j < g->verts_n)
+		{
+			g->matrix[i][j] = cfg->links[i][j];
+			g->matrix_copy[i][j] = cfg->links[i][j];
+		}
+	}
+	i = 0;
+	while (i < g->ants_n)
+	{
+		g->ants[i]->node = g->nodes[cfg->start_id];
+		i++;
+	}
+	return (g);
 }
 
 void		graph_link_add(t_graph *g, int from, int to, int copy)

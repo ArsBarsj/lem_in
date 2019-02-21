@@ -6,33 +6,39 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/20 00:04:15 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/21 19:50:50 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //#include "datatypes.h"
 #include <stdio.h>
 #include "lemin.h"
+
 int		ft_read_links(char **line, t_config **config, int fd);
 
 int         ft_read_map(int fd, t_config **config)
 {
 	char	*line;
 	int     flag[2];
+	int		links;
 
 	flag[0] = -1;
 	flag[1] = -1;
+	line = NULL;
 	if (!ft_read_ants(&line, config, fd))
 		return (0);
 	else if (!ft_read_rooms(&line, config, fd, flag))
 	{
 		if ((*config)->head)
-			node_del(&(*config)->head);
+			node_list_del(&(*config)->head);
 		free(line);
 		return (0);
 	}
-	else if (!ft_read_links(&line, config, fd))
+	links = ft_read_links(&line, config, fd);
+	printf("%d\n", links);
+	if (!links)
 		return (0);
+	// free(line);
 	return (1);
 }
 
@@ -47,7 +53,7 @@ int			ft_read_ants(char **line, t_config **config, int fd)
 		}
 		free(*line);
 	}
-	if (ft_check_ant(*line))
+	if (*line && ft_check_ant(*line))
 	{
 		(*config)->ants = ft_atoi(*line);
 		free(*line);
@@ -107,6 +113,7 @@ int		**ft_create_links(t_config **config)
 	int		**links;
 
 	rooms_len = ft_list_len((*config)->head);
+	(*config)->rooms_n = rooms_len;
 	if (!(links = (int **)malloc(sizeof(int *) * rooms_len)))
 		return (NULL); // Free everything
 	i = 0;
@@ -140,7 +147,7 @@ int		ft_get_id_by_name(char *name, t_node *head)
 			head = head->next;
 		}
 	}
-	return (id);
+	return (-1);
 }
 
 int		ft_str_arr_len(char **arr)
@@ -156,33 +163,47 @@ int		ft_str_arr_len(char **arr)
 	return (i);
 }
 
-int		ft_read_links(char **line, t_config **config, int fd)
+int		ft_set_link(char *line, t_config **config)
 {
 	char	**splited;
 	int		from;
 	int		to;
 
-	if (!((*config)->links = ft_create_links(config)))
+	// printf("%s\n", line);
+	if (ft_is_comm(line) || ft_is_cmd(line))
+		return (1);
+	if (!ft_is_link(line) || !(splited = ft_strsplit(line, '-')))
+	{
+		free(line);
 		return (0);
-	splited = ft_strsplit(*line, '-');
+	}
 	from = ft_get_id_by_name(splited[0], (*config)->head);
 	to  = ft_get_id_by_name(splited[1], (*config)->head);
+	if (from < 0 || to < 0)
+	{
+		free(line);
+		return (0);
+	}
 	(*config)->links[from][to] = 1;
 	(*config)->links[to][from] = 1;
+	ft_clean_str_arr(splited);
+	return (1);
+}
+
+int		ft_read_links(char **line, t_config **config, int fd)
+{
+	int		ret;
+
+	if (!((*config)->links = ft_create_links(config)))
+		return (0);
+	if (!(ret = ft_set_link(*line, config)))
+		return (0);
 	free(*line);
 	while (get_next_line(fd, line) > 0)
 	{
-		printf("%s\n", *line);
-		if (!(splited = ft_strsplit(*line, '-')) || ft_str_arr_len(splited) > 2)
-		{
-			return (0); // Free everything
-		}
-		from = ft_get_id_by_name(splited[0], (*config)->head);
-		to  = ft_get_id_by_name(splited[1], (*config)->head);
-		(*config)->links[from][to] = 1;
-		(*config)->links[to][from] = 1;
+		if (!(ret = ft_set_link(*line, config)))
+			return (0);
 		free(*line);
-		ft_clean_str_arr(splited);
 	}
 	return (1);
 }
@@ -191,22 +212,40 @@ int 		main(int argc, char **argv)
 {
 	(void)argc;
 	t_config *config;
+	// t_node	*head;
+	// t_node	*tmp;
+	t_graph	*g;
 
 	config = (t_config *)malloc(sizeof(t_config));
-	config->ants = 0;
-	config->end_id = 0;
-	config->start_id = 0;
-	config->head = NULL;
 	int	fd = open(argv[1], O_RDONLY);
 	int x = ft_read_map(fd, &config);
 
-	if (config)
-		printf("%d\nreturn of read_map = %d\n", config->ants, x);
-	else 
-		printf("ERROR\n");
-
-	print_matrix(config->links, ft_list_len(config->head));
-	node_del(&config->head);
+	if (config && x)
+	{
+		printf("Ants number: %d\nStart id = %d\nEnd id = %d\n", config->ants, config->start_id, config->end_id);
+		printf("Links matrix:\n");
+		print_matrix(config->links, ft_list_len(config->head));
+		printf("Nodes(%d):\n", config->rooms_n);
+		// head = config->head;
+		// tmp = head;
+		// while (head)
+		// {
+			// printf("%5s [%d]\n",head->name, head->id);
+			// head = head->next;
+		// }
+		// head = tmp;
+	}
+	else
+	{
+		printf("ERROR %d\n", x);
+		exit(0);
+	}
+	g = graph_create(config);
+	printf("%d - start_id        -> %d\n", config->start_id, config->end_id);
+	solve(g, config->start_id, config->end_id);
+	// node_list_del(&config->head);
+	graph_del(&g);
+	del_tab(config->links, config->rooms_n);
 	free(config);
 	return (0);
 }

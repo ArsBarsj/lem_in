@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/19 17:05:50 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/21 19:54:08 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,22 @@ void	select_path(t_graph *g, int end, t_path **paths, int paths_n, int ant_i)
 	int	i;
 
 	i = 0;
+	if (paths_n == 1 || paths[0]->len == 1)
+	{
+		ant_move(&g->ants[ant_i], g, paths[0], end);
+		// ft_printf("%d\n", ant_i);
+		if (g->ants[ant_i])
+			g->ants[ant_i]->path_id = 0;
+		return ;
+	}
 	while (i < paths_n && g->ants_n - (paths[i]->len - paths[0]->len) >= 2)
 		i++;
 	i = (i == 0 ? 0 : i - 1);
 	while (i >= 0 && !ant_move(&g->ants[ant_i], g, paths[i], end))
 		i--;
-	g->ants[ant_i]->path_id = i;
+	// ft_printf("%d", i);
+	if (g->ants[ant_i])
+		g->ants[ant_i]->path_id = i;
 }
 
 int		solve(t_graph *g, int start, int end)
@@ -116,14 +126,20 @@ int		solve(t_graph *g, int start, int end)
 	if (!(paths = get_paths(g, start, end)))
 		exit(0);
 	paths_n = count_paths(paths);
+	if (!paths_n)
+		error();
+	ft_printf("%d ways\n", paths_n);
 	total_ants = g->ants_n;
 	while (g->ants_n)
 	{
 		ant_i = 0;
 		while (ant_i < total_ants)
 		{
+			// ft_printf("%d\n", ant_i);
 			if (g->ants[ant_i] && g->ants[ant_i]->node->id == start)
+			{
 				select_path(g, end, paths, paths_n, ant_i);
+			}
 			else if (g->ants[ant_i])
 				ant_move(&g->ants[ant_i], g, paths[g->ants[ant_i]->path_id], end);
 			ant_i++;

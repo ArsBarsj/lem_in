@@ -6,12 +6,19 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 02:19:46 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/19 23:59:53 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/21 19:54:57 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "lemin.h"
+#include "datatypes.h"
+
+void	error(void)
+{
+	ft_printf("Error\n");
+	exit(0);
+}
 
 void	ft_clean_str_arr(char **arr)
 {

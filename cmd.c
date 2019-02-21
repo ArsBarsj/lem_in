@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 18:18:58 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/19 23:37:42 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/21 00:05:45 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,4 @@ int		ft_manage_cmd(t_config **config, int flag, int id, int flags[2])
 		return(1);
 	}
 	return (0);
-}
-
-int		ft_is_link(char *line)
-{
-	char **set;
-	int len;
-
-	set = ft_strsplit(line, '-');
-	if (!set)
-		return (0);
-	len = 0;
-	while (set[len])
-		len++;
-	if (len != 2)
-		return (0);
-	return (1);
 }

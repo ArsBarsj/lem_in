@@ -14,6 +14,7 @@ int			ft_is_room(char *line);
 int			ft_is_comm(char *line);
 int			ft_is_cmd(char *line);
 int			ft_is_start(char *line);
+int			ft_is_link(char *line);
 
 int         ft_read_map(int fd, t_config **config);
 int			ft_read_ants(char **line, t_config **config, int fd);
@@ -24,5 +25,6 @@ void		ft_clean_str_arr(char **arr);
 int			ft_all_digit(char *str);
 
 
-void	print_matrix(int **m, int size);;
+void	print_matrix(int **m, int size);
+int		ft_str_arr_len(char **arr);
 #endif

@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/20 22:15:13 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/21 19:55:09 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct 		s_config
 	int				start_id;
 	int				end_id;
 	t_node			*head;
+	int				rooms_n;
 	int				**links;
 }					t_config;
 
@@ -64,11 +65,11 @@ typedef struct		s_path
 	int				len;
 }					t_path;
 
-
+void	error(void);
 void				init_arr(int *arr, int size, int value);
 void		ants_del(t_ant ***ants);
 
-t_graph				*graph_new(int verts_n, int ants_n, int start);
+t_graph				*graph_new(int verts_n, int ants_n);
 void				graph_del(t_graph **g);
 t_node				*ft_add_node(char *line, int id, t_node *prev);
 void				node_del(t_node **n);
@@ -87,13 +88,16 @@ int					dqueue_peak(t_dqueue *head);
 void				dqueue_del(t_dqueue **head);
 
 t_node				*node_new(int id, char *name, int x, int y);
+void				node_list_del(t_node **n);
 void				node_del(t_node **n);
 
 int					bfs(int start_id, int end_id, t_graph *graph);
 t_node				**bfs_path(int start, int end, t_graph *g);
 
 t_path				*path_new(t_node **path);
+t_graph				*graph_create(t_config *cfg);
 void				path_del(t_path **p);
+void				del_tab(int **tab, int size);
 
 int	find_paths_number(t_graph *g, int start, int end);
 t_path	**get_paths(t_graph *g, int start, int end);

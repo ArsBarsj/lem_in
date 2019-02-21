@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arseny <arseny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 00:47:13 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/18 18:32:49 by arseny           ###   ########.fr       */
+/*   Updated: 2019/02/21 00:42:21 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,4 +103,19 @@ int		ft_is_cmd(char *line)
 		return (0);
 	}
 	return (0);
+}
+
+int		ft_is_link(char *line)
+{
+	char	**tab;
+
+	if(!(tab = ft_strsplit(line, '-')))
+		exit(0);
+	if (ft_str_arr_len(tab) != 2)
+	{
+		ft_clean_str_arr(tab);
+		return (0);
+	}
+	ft_clean_str_arr(tab);
+	return (1);
 }
