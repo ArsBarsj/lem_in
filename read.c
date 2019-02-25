@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/25 08:34:49 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 08:58:48 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,12 @@ int         ft_read_map(int fd, t_config **config)
 		return (0);
 	}
 	root = tree_create(config);
-	links = ft_read_links(&line, fd, config, root);
-	if (!links)
+	if (!(links = ft_read_links(&line, fd, config, root)))
+	{
+		//tree_del(root);
+		//config_del(config);
 		return (0);
+	}
 	return (1);
 }
 
@@ -123,15 +126,10 @@ int		ft_set_link(char *line, t_config **config, t_tree *root)
 	int		from;
 	int		to;
 
-	if (line && (ft_is_comm(line) || ft_is_cmd(line)))
-	{
+	if (line && (ft_is_comm(line) || (ft_is_cmd(line) && !ft_is_start(line))))
 		return (1);
-	}
 	if (!ft_is_link(line) || !(splited = ft_strsplit(line, '-')))
-	{
-		free(line);
-		return (1);
-	}
+		return (0);
 	from = tree_get(root, splited[0])->room->id;
 	to  = tree_get(root, splited[1])->room->id;
 	if (from < 0 || to < 0)
@@ -213,7 +211,11 @@ int		ft_read_links(char **line, int fd, t_config **config, t_tree *root)
 	while (tab[i])
 	{
 		if (!(ret = ft_set_link(tab[i], config, root)))
+		{
+			ft_clean_str_arr(tab);
+			free(*line);
 			return (0);
+		}
 		i++;
 	}
 	free(*line);

@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 02:19:46 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/21 19:54:57 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 09:00:35 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 void	error(void)
 {
-	ft_printf("Error\n");
+	ft_printf("ERROR\n");
 	exit(0);
 }
 
