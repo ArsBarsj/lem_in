@@ -93,7 +93,7 @@ int		ft_is_comm(char *line)
 
 int		ft_is_cmd(char *line)
 {
-	int len;
+	size_t len;
 
 	len = ft_strlen(line);
 	if (len >= 2)

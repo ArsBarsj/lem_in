@@ -20,6 +20,7 @@ int         ft_read_map(int fd, t_config **config);
 int			ft_read_ants(char **line, t_config **config, int fd);
 int			ft_read_rooms(char **line, t_config **config, int fd, int flag[2]);
 int			ft_read_links(char **line, int fd, t_config **config, t_tree *root);
+char	    *read_links_file(int fd, char *buf, int buf_siz);
 int		    ft_manage_cmd(t_config **config, int flag, int id, int flags[2]);
 
 void		links_cleanup(char *line, char **tab);

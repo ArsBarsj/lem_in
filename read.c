@@ -35,11 +35,19 @@ int         ft_read_map(int fd, t_config **config)
 	flag[1] = -1;
 	line = NULL;
 	if (!ft_read_ants(&line, config, fd))
+	{
+		line = read_links_file(fd, line, 1024);
+		ft_putstr(line);
+		free(line);
 		return (0);
+	}
 	else if (!ft_read_rooms(&line, config, fd, flag))
 	{
 		if ((*config)->head)
 			node_list_del(&(*config)->head);
+		free(line);
+		line = read_links_file(fd, line, 1024);
+		ft_printf("%s\n", line);
 		free(line);
 		return (0);
 	}
@@ -58,6 +66,7 @@ int			ft_read_ants(char **line, t_config **config, int fd)
 {
 	while (get_next_line(fd, line) > 0 && (ft_is_comm(*line) || ft_is_cmd(*line)))
 	{
+		ft_printf("%s\n", *line);
 		if (ft_is_start(*line))
 		{
 			free(*line);
@@ -65,6 +74,7 @@ int			ft_read_ants(char **line, t_config **config, int fd)
 		}
 		free(*line);
 	}
+	ft_printf("%s\n", *line);
 	if (*line && ft_check_ant(*line))
 	{
 		(*config)->ants = ft_atoi(*line);
@@ -86,6 +96,7 @@ int			ft_read_rooms(char **line, t_config **config, int fd, int flag[2])
 			(ft_is_comm(*line) || ft_is_cmd(*line) || ft_is_room(*line)
 			|| ft_strlen(*line) == 0))
 	{
+		ft_printf("%s\n", *line);
 		if ((ft_is_start(*line) && !ft_manage_cmd(config, ft_is_start(*line), id, flag)) ||
 				(ft_is_room(*line) && !ft_check_room(*line)) || ft_strlen(*line) == 0)
 			return (0);
