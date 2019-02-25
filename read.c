@@ -6,12 +6,13 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/25 04:04:58 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 05:19:05 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //#include "datatypes.h"
 #include <stdio.h>
+#include <unistd.h>
 #include "lemin.h"
 
 int		ft_read_links(char **line, int fd, t_config **config, t_tree *root);
@@ -177,11 +178,17 @@ int		ft_set_link(char *line, t_config **config, t_tree *root)
 
 	// printf("%s\n", line);
 	if (line && (ft_is_comm(line) || ft_is_cmd(line)))
+	{
+		printf("%s\n", line);
+		printf("here\n");
 		return (1);
+	}
 	if (!ft_is_link(line) || !(splited = ft_strsplit(line, '-')))
 	{
+		printf("%s\n", line);
+		printf("here\n");
 		free(line);
-		return (0);
+		return (1);
 	}
 	// from = ft_get_id_by_name(splited[0], (*config)->head);
 	// to  = ft_get_id_by_name(splited[1], (*config)->head);
@@ -214,12 +221,49 @@ int		ft_read_links(char **line, int fd, t_config **config, t_tree *root)
 		return (0);
 	free(*line);
 	// printf("While gnl\n");
-	while (get_next_line(fd, line) > 0)
+	int		buf_siz = 1024;
+	*line = (char *)malloc(sizeof(char) * buf_siz + 1);
+	char	*links = (char *)malloc(sizeof(char) * buf_siz + 1);
+	char	*tmp;
+	int		space = buf_siz + 1;
+	int		used = 0;
+	while ((ret = read(fd, *line, buf_siz)) > 0)
 	{
-		if (!(ret = ft_set_link(*line, config, root)))
-			return (0);
-		free(*line);
+		(*line)[ret] = '\0';
+		if (space - used > ret)
+		{
+			ft_strcpy(links + used, *line);
+			used += ret;
+		}
+		else
+		{
+			tmp = (char *)malloc(sizeof(char) * space * 2);
+			ft_strcpy(tmp, links);
+			free(links);
+			links = tmp;
+			ft_strcpy(links + used, *line);
+			space *= 2;
+			used += ret;
+		}
+		// printf("%d\n", used);
 	}
+	char **tab = ft_strsplit(links, '\n');
+	printf("tab == NULL %d\n", tab == NULL);
+	printf("tab == NULL %s\n", tab[0]);
+	int		i = 0;
+	while (tab[i])
+	{
+		if (!(ret = ft_set_link(tab[i], config, root)))
+			return (0);
+		i++;
+	}
+	ft_clean_str_arr(tab);
+	// while (get_next_line(fd, line) > 0)
+	// {
+	// 	if (!(ret = ft_set_link(*line, config, root)))
+	// 		return (0);
+	// 	free(*line);
+	// }
 	return (1);
 }
 
@@ -258,7 +302,7 @@ int 		main(int argc, char **argv)
 	else
 		error();
 	g = graph_create(config);
-	// printf("%d - start_id        -> %d\n", config->start_id, config->end_id);
+	printf("%d - start_id        -> %d\n", config->start_id, config->end_id);
 	solve(g, config->start_id, config->end_id);
 	// node_list_del(&config->head);
 	graph_del(&g);
