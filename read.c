@@ -24,11 +24,21 @@ void		config_del(t_config *config)
 	free(config);
 }
 
+void        print_file(char **line, int fd)
+{
+	if (line && *line)
+		free(*line);
+	if ((*line = read_links_file(fd, *line, 1024)))
+	{
+		ft_printf("%s\n", *line);
+		free(*line);
+	}
+}
+
 int         ft_read_map(int fd, t_config **config)
 {
 	char	*line;
 	int     flag[2];
-	int		links;
 	t_tree	*root;
 
 	flag[0] = -1;
@@ -36,15 +46,11 @@ int         ft_read_map(int fd, t_config **config)
 	line = NULL;
 	if (!ft_read_ants(&line, config, fd))
 	{
-		line = read_links_file(fd, line, 1024);
-		ft_putstr(line);
-		free(line);
+		print_file(&line, fd);
 		return (0);
 	}
-	else if (!ft_read_rooms(&line, config, fd, flag))
+	else if (!ft_read_rooms(&line, config, fd, flag) || !(*config)->head)
 	{
-		if ((*config)->head)
-			node_list_del(&(*config)->head);
 		free(line);
 		line = read_links_file(fd, line, 1024);
 		ft_printf("%s\n", line);
@@ -52,7 +58,7 @@ int         ft_read_map(int fd, t_config **config)
 		return (0);
 	}
 	root = tree_create(config);
-	if (!(links = ft_read_links(&line, fd, config, root)))
+	if (ft_read_links(&line, fd, config, root))
 	{
 		tree_del(root);
 		config_del(*config);
