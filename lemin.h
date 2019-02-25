@@ -22,10 +22,11 @@ int			ft_read_rooms(char **line, t_config **config, int fd, int flag[2]);
 int			ft_read_links(char **line, int fd, t_config **config, t_tree *root);
 int		    ft_manage_cmd(t_config **config, int flag, int id, int flags[2]);
 
+void		links_cleanup(char *line, char **tab);
 void		ft_clean_str_arr(char **arr);
 int			ft_all_digit(char *str);
 
 
-void	print_matrix(int **m, int size);
-int		ft_str_arr_len(char **arr);
+void		print_matrix(int **m, int size);
+int			ft_str_arr_len(char **arr);
 #endif

@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 11:35:51 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/25 13:09:08 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 13:14:38 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,13 +131,11 @@ int		ft_read_links(char **line, int fd, t_config **config, t_tree *root)
 	{
 		if (!(ret = ft_set_link(tab[i], config, root)))
 		{
-			ft_clean_str_arr(tab);
-			free(*line);
+			links_cleanup(*line, tab);
 			return (0);
 		}
 		i++;
 	}
-	free(*line);
-	ft_clean_str_arr(tab);
+	links_cleanup(*line, tab);
 	return (1);
 }
