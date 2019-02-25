@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 01:33:36 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/25 14:54:27 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 22:36:48 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ t_graph		*graph_create(t_config *cfg)
 	{
 		j = -1;
 		while (++j <  g->verts_n)
-			graph_link_add(g, i, j, 2);
+			if (cfg->links[i][j])
+				graph_link_add(g, i, j, 2);
 	}
 	i = -1;
 	head = g->nodes[cfg->start_id];
