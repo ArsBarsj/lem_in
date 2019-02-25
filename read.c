@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/22 00:20:30 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 04:04:58 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include "lemin.h"
 
-int		ft_read_links(char **line, t_config **config, int fd);
+int		ft_read_links(char **line, int fd, t_config **config, t_tree *root);
 
 int         ft_read_map(int fd, t_config **config)
 {
@@ -34,8 +34,21 @@ int         ft_read_map(int fd, t_config **config)
 		free(line);
 		return (0);
 	}
-	links = ft_read_links(&line, config, fd);
-	// printf("%d\n", links);
+	int		n = 0;
+	t_tree *root = tree_new(NULL, 0);
+	// printf("%p\n", root);
+	t_node *start = (*config)->head;
+	while ((*config)->head)
+	{
+		n++;
+		tree_add(&root, (*config)->head, (*config)->head->name);
+		(*config)->head = (*config)->head->next;
+	}
+	(*config)->rooms_n = n;
+	(*config)->head = start;
+	// printf("%p\n", root);
+	links = ft_read_links(&line, fd, config, root);
+	printf("%d\n", links);
 	if (!links)
 		return (0);
 	// free(line);
@@ -112,23 +125,20 @@ int		**ft_create_links(t_config **config)
 {
 	int		i;
 	int		j;
-	int		rooms_len;
 	int		**links;
 
-	rooms_len = ft_list_len((*config)->head);
-	(*config)->rooms_n = rooms_len;
-	if (!(links = (int **)malloc(sizeof(int *) * rooms_len)))
+	if (!(links = (int **)malloc(sizeof(int *) * (*config)->rooms_n)))
 		return (NULL); // Free everything
 	i = 0;
-	while (i < rooms_len)
+	while (i < (*config)->rooms_n)
 	{
-		links[i] = (int *)malloc(sizeof(int) * rooms_len);
+		links[i] = (int *)malloc(sizeof(int) * (*config)->rooms_n);
 		if (!links[i])
 		{
 			return (NULL);// Free everything
 		}
 		j = 0;
-		while (j < rooms_len)
+		while (j < (*config)->rooms_n)
 			links[i][j++] = 0; // Use here init_arr from master branch.
 		i++;
 	}
@@ -159,7 +169,7 @@ int		ft_str_arr_len(char **arr)
 	return (i);
 }
 
-int		ft_set_link(char *line, t_config **config)
+int		ft_set_link(char *line, t_config **config, t_tree *root)
 {
 	char	**splited;
 	int		from;
@@ -173,8 +183,15 @@ int		ft_set_link(char *line, t_config **config)
 		free(line);
 		return (0);
 	}
-	from = ft_get_id_by_name(splited[0], (*config)->head);
-	to  = ft_get_id_by_name(splited[1], (*config)->head);
+	// from = ft_get_id_by_name(splited[0], (*config)->head);
+	// to  = ft_get_id_by_name(splited[1], (*config)->head);
+	// printf("Name:%s\n", tree_get(root, splited[0])->room->name);
+	// printf("name from:%s\n", splited[0]);
+	from = tree_get(root, splited[0])->room->id;
+	// printf("from id:%d\n", from);
+	// printf("name to:%s\n", splited[1]);
+	to  = tree_get(root, splited[1])->room->id;
+	// printf("to id:%d\n", to);
 	if (from < 0 || to < 0)
 	{
 		free(line);
@@ -187,18 +204,19 @@ int		ft_set_link(char *line, t_config **config)
 	return (1);
 }
 
-int		ft_read_links(char **line, t_config **config, int fd)
+int		ft_read_links(char **line, int fd, t_config **config, t_tree *root)
 {
 	int		ret;
 
 	if (!((*config)->links = ft_create_links(config)))
 		return (0);
-	if (!(ret = ft_set_link(*line, config)))
+	if (!(ret = ft_set_link(*line, config, root)))
 		return (0);
 	free(*line);
+	// printf("While gnl\n");
 	while (get_next_line(fd, line) > 0)
 	{
-		if (!(ret = ft_set_link(*line, config)))
+		if (!(ret = ft_set_link(*line, config, root)))
 			return (0);
 		free(*line);
 	}
@@ -225,8 +243,8 @@ int 		main(int argc, char **argv)
 	if (config && x)
 	{
 		printf("Ants number: %d\nStart id = %d\nEnd id = %d\n", config->ants, config->start_id, config->end_id);
-		printf("Links matrix:\n");
-		// print_matrix(config->links, ft_list_len(config->head));
+		// printf("Links matrix:\n");
+		// print_matrix(config->links, config->rooms_n);
 		// printf("Nodes(%d):\n", config->rooms_n);
 		// head = config->head;
 		// tmp = head;
@@ -240,7 +258,7 @@ int 		main(int argc, char **argv)
 	else
 		error();
 	g = graph_create(config);
-	printf("%d - start_id        -> %d\n", config->start_id, config->end_id);
+	// printf("%d - start_id        -> %d\n", config->start_id, config->end_id);
 	solve(g, config->start_id, config->end_id);
 	// node_list_del(&config->head);
 	graph_del(&g);
