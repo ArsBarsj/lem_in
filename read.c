@@ -51,10 +51,7 @@ int         ft_read_map(int fd, t_config **config)
 	}
 	else if (!ft_read_rooms(&line, config, fd, flag) || !(*config)->head)
 	{
-		free(line);
-		line = read_links_file(fd, line, 1024);
-		ft_printf("%s\n", line);
-		free(line);
+		print_file(&line, fd);
 		return (0);
 	}
 	root = tree_create(config);
