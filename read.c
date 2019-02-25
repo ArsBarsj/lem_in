@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/25 11:41:36 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 14:34:18 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,6 @@ int 		main(int argc, char **argv)
 {
 	(void)argc;
 	t_config *config;
-	// t_node	*head;
-	// t_node	*tmp;
 	t_graph	*g;
 
 	config = (t_config *)malloc(sizeof(t_config));
@@ -119,29 +117,11 @@ int 		main(int argc, char **argv)
 	int	fd = open(argv[1], O_RDONLY);
 	int x = ft_read_map(fd, &config);
 
-	if (!x || config->start_id < 0 || config->end_id < 0 || config->start_id == config->end_id)
-		error();
-	if (config && x)
-	{
-		printf("Ants number: %d\nStart id = %d\nEnd id = %d\n", config->ants, config->start_id, config->end_id);
-		// printf("Links matrix:\n");
-		// print_matrix(config->links, config->rooms_n);
-		// printf("Nodes(%d):\n", config->rooms_n);
-		// head = config->head;
-		// tmp = head;
-		// while (head)
-		// {
-			// printf("%5s [%d]\n",head->name, head->id);
-			// head = head->next;
-		// }
-		// head = tmp;
-	}
-	else
+	if (!x || config->start_id < 0 || config->end_id < 0 || \
+		config->start_id == config->end_id)
 		error();
 	g = graph_create(config);
-	printf("%d - start_id        -> %d\n", config->start_id, config->end_id);
 	solve(g, config->start_id, config->end_id);
-	// node_list_del(&config->head);
 	graph_del(&g);
 	config_del(config);
 	return (0);

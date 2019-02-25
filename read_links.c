@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 11:35:51 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/25 13:14:38 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 14:29:19 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,23 +42,24 @@ int		**ft_create_links(t_config **config)
 int		ft_set_link(char *line, t_config **config, t_tree *root)
 {
 	char	**splited;
-	int		from;
-	int		to;
+	t_tree	*from;
+	t_tree	*to;
 
 	if (line && (ft_is_comm(line) || (ft_is_cmd(line) && !ft_is_start(line))))
 		return (1);
 	if (!ft_is_link(line) || !(splited = ft_strsplit(line, '-')))
 		return (0);
-	from = tree_get(root, splited[0])->room->id;
-	to  = tree_get(root, splited[1])->room->id;
-	if (from < 0 || to < 0)
+	from = tree_get(root, splited[0]);
+	to  = tree_get(root, splited[1]);
+	if (!from|| !to)
 	{
-		free(line);
-		ft_clean_str_arr(splited);
+		links_cleanup(line, splited);
+		// free(line);
+		// ft_clean_str_arr(splited);
 		return (0);
 	}
-	(*config)->links[from][to] = 1;
-	(*config)->links[to][from] = 1;
+	(*config)->links[from->room->id][to->room->id] = 1;
+	(*config)->links[to->room->id][from->room->id] = 1;
 	ft_clean_str_arr(splited);
 	return (1);
 }

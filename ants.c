@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 20:57:43 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/19 16:56:05 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 14:48:48 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,48 @@ int	ant_move(t_ant **a, t_graph *g, t_path *path, int end)
 		return (1);
 	}
 	return (0);
+}
+
+void		ants_del(t_ant ***ants)
+{
+	int	i;
+
+	i  = 0;
+	if (ants && *ants)
+	{
+		while (ants && (*ants)[i])
+		{
+			free((*ants)[i]);
+			i++;
+		}
+		free(*ants);
+		*ants = NULL;
+	}
+}
+
+t_ant		**ant_new_list(int n)
+{
+	t_ant	**ants;
+	int		i;
+
+	ants = (t_ant **)malloc(sizeof(t_ant *) * (n + 1));
+	if (!ants)
+		return (NULL);
+	i = 0;
+	while (i < n)
+	{
+		ants[i] = (t_ant *)malloc(sizeof(t_ant));
+		if (!ants[i])
+		{
+			ants_del(&ants);
+			return (NULL);
+		}
+		ants[i]->id = i;
+		ants[i]->step = 0;
+		ants[i]->path_id = 0;
+		ants[i]->node = NULL;
+		i++;
+	}
+	ants[i] = NULL;
+	return (ants);
 }

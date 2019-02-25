@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/25 11:12:10 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 14:53:07 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,18 +81,20 @@ void				tree_del(t_tree *root);
 
 void				error(void);
 void				init_arr(int *arr, int size, int value);
+void				del_tab(int **tab, int size);
 void				ants_del(t_ant ***ants);
+t_ant				**ant_new_list(int n);
 
 t_graph				*graph_new(int verts_n, int ants_n);
 void				graph_del(t_graph **g);
-t_node				*ft_add_node(char *line, int id, t_node *prev);
-void				node_del(t_node **n);
-int					bfs(int start_id, int end_id, t_graph *graph);
 void				graph_link_add(t_graph *g, int from, int to, int copy);
 void				graph_link_del(t_graph *g, int from, int to, int copy);
 void				graph_close_node(t_graph *g , int node);
 void				graph_close_path(t_graph *g, t_path *path, int start, int end);
 void				graph_restore_copy(t_graph *g);
+int					**adjmatrix_new(int verts);
+void				adj_matrix_init(int **m, int size);
+t_node				*ft_add_node(char *line, int id, t_node *prev);
 
 t_dqueue			*dqueue_new(int id);
 void				dqueue_push(t_dqueue **head, t_dqueue *elem);
@@ -111,7 +113,6 @@ t_node				**bfs_path(int start, int end, t_graph *g);
 t_path				*path_new(t_node **path);
 t_graph				*graph_create(t_config *cfg);
 void				path_del(t_path **p);
-void				del_tab(int **tab, int size);
 
 int					find_paths_number(t_graph *g, int start, int end);
 t_path				**get_paths(t_graph *g, int start, int end);
