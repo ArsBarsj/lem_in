@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 15:34:34 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/25 08:07:29 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 08:33:23 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,4 +105,24 @@ t_tree	*tree_get(t_tree *root, char *name)
 	if (!name[i] && root)
 		return (root);
 	return (NULL);
+}
+
+t_tree	*tree_create(t_config **config)
+{
+	t_tree	*root;
+	t_node	*start;
+	int		n;
+
+	start = (*config)->head;
+	n = 0;
+	root = tree_new(NULL, '\0');
+	while ((*config)->head)
+	{
+		n++;
+		tree_add(root, (*config)->head, (*config)->head->name);
+		(*config)->head = (*config)->head->next;
+	}
+	(*config)->rooms_n = n;
+	(*config)->head = start;
+	return (root);
 }

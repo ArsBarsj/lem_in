@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/25 07:53:52 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 08:34:49 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int         ft_read_map(int fd, t_config **config)
 	char	*line;
 	int     flag[2];
 	int		links;
+	t_tree	*root;
 
 	flag[0] = -1;
 	flag[1] = -1;
@@ -35,17 +36,7 @@ int         ft_read_map(int fd, t_config **config)
 		free(line);
 		return (0);
 	}
-	int		n = 0;
-	t_tree *root = tree_new(NULL, 0);
-	t_node *start = (*config)->head;
-	while ((*config)->head)
-	{
-		n++;
-		tree_add(root, (*config)->head, (*config)->head->name);
-		(*config)->head = (*config)->head->next;
-	}
-	(*config)->rooms_n = n;
-	(*config)->head = start;
+	root = tree_create(config);
 	links = ft_read_links(&line, fd, config, root);
 	if (!links)
 		return (0);
@@ -100,22 +91,6 @@ int			ft_read_rooms(char **line, t_config **config, int fd, int flag[2])
 		}
 	}
 	return (1);
-}
-
-int		ft_list_len(t_node *head)
-{
-	int		len;
-
-	len = 0;
-	if (head)
-	{
-		while (head)
-		{
-			len++;
-			head = head->next;
-		}
-	}
-	return (len);
 }
 
 int		**ft_create_links(t_config **config)

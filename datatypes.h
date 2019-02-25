@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/25 07:53:38 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 08:33:35 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ typedef struct		s_tree
 	char			key;
 }					t_tree;
 
-t_tree	*tree_get(t_tree *root, char *name);
-void	tree_add(t_tree *root, t_node *room, char *name);
-t_tree	*tree_new(t_node *room, char key);
-
+t_tree		*tree_get(t_tree *root, char *name);
+void		tree_add(t_tree *root, t_node *room, char *name);
+t_tree		*tree_new(t_node *room, char key);
+t_tree		*tree_create(t_config **config);
 void	error(void);
 void				init_arr(int *arr, int size, int value);
 void		ants_del(t_ant ***ants);
