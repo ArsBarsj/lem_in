@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/25 08:58:48 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 11:31:08 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,15 @@
 #include "lemin.h"
 
 int		ft_read_links(char **line, int fd, t_config **config, t_tree *root);
+
+void		config_del(t_config *config)
+{
+	if (config->head)
+		node_list_del(&config->head);
+	if (config->links)
+		del_tab(config->links, config->rooms_n);
+	free(config);
+}
 
 int         ft_read_map(int fd, t_config **config)
 {
@@ -39,10 +48,11 @@ int         ft_read_map(int fd, t_config **config)
 	root = tree_create(config);
 	if (!(links = ft_read_links(&line, fd, config, root)))
 	{
-		//tree_del(root);
-		//config_del(config);
+		tree_del(root);
+		config_del(*config);
 		return (0);
 	}
+	tree_del(root);
 	return (1);
 }
 
@@ -238,7 +248,7 @@ int 		main(int argc, char **argv)
 	int	fd = open(argv[1], O_RDONLY);
 	int x = ft_read_map(fd, &config);
 
-	if (config->start_id < 0 || config->end_id < 0 || config->start_id == config->end_id)
+	if (!x || config->start_id < 0 || config->end_id < 0 || config->start_id == config->end_id)
 		error();
 	if (config && x)
 	{
@@ -262,7 +272,6 @@ int 		main(int argc, char **argv)
 	solve(g, config->start_id, config->end_id);
 	// node_list_del(&config->head);
 	graph_del(&g);
-	del_tab(config->links, config->rooms_n);
-	free(config);
+	config_del(config);
 	return (0);
 }

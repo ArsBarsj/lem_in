@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 01:33:36 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/22 00:49:27 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 11:33:17 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,6 @@ int		**adjmatrix_new(int verts)
 
 void		graph_del(t_graph **g)
 {
-	int		i;
-
 	if (g && *g)
 	{
 		if ((*g)->matrix)
@@ -97,12 +95,6 @@ void		graph_del(t_graph **g)
 			del_tab((*g)->matrix_copy, (*g)->verts_n);
 		if ((*g)->ants)
 			ants_del(&(*g)->ants);
-		i = 0;
-		while ((*g)->nodes && (*g)->nodes[i])
-		{
-			node_del(&((*g)->nodes[i]));
-			i++;
-		}
 		free((*g)->nodes);
 		free((*g));
 		*g = NULL;

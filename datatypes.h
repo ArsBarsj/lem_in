@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/25 08:33:35 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 11:12:10 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,19 +73,21 @@ typedef struct		s_tree
 	char			key;
 }					t_tree;
 
-t_tree		*tree_get(t_tree *root, char *name);
-void		tree_add(t_tree *root, t_node *room, char *name);
-t_tree		*tree_new(t_node *room, char key);
-t_tree		*tree_create(t_config **config);
-void	error(void);
+t_tree				*tree_get(t_tree *root, char *name);
+void				tree_add(t_tree *root, t_node *room, char *name);
+t_tree				*tree_new(t_node *room, char key);
+t_tree				*tree_create(t_config **config);
+void				tree_del(t_tree *root);
+
+void				error(void);
 void				init_arr(int *arr, int size, int value);
-void		ants_del(t_ant ***ants);
+void				ants_del(t_ant ***ants);
 
 t_graph				*graph_new(int verts_n, int ants_n);
 void				graph_del(t_graph **g);
 t_node				*ft_add_node(char *line, int id, t_node *prev);
 void				node_del(t_node **n);
-int		bfs(int start_id, int end_id, t_graph *graph);
+int					bfs(int start_id, int end_id, t_graph *graph);
 void				graph_link_add(t_graph *g, int from, int to, int copy);
 void				graph_link_del(t_graph *g, int from, int to, int copy);
 void				graph_close_node(t_graph *g , int node);
@@ -111,9 +113,9 @@ t_graph				*graph_create(t_config *cfg);
 void				path_del(t_path **p);
 void				del_tab(int **tab, int size);
 
-int	find_paths_number(t_graph *g, int start, int end);
-t_path	**get_paths(t_graph *g, int start, int end);
-int		solve(t_graph *g, int start, int end);
+int					find_paths_number(t_graph *g, int start, int end);
+t_path				**get_paths(t_graph *g, int start, int end);
+int					solve(t_graph *g, int start, int end);
 
-int	ant_move(t_ant **a, t_graph *g, t_path *p, int end);
+int					ant_move(t_ant **a, t_graph *g, t_path *p, int end);
 #endif

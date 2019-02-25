@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 15:34:34 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/25 08:33:23 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 11:23:41 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,4 +125,13 @@ t_tree	*tree_create(t_config **config)
 	(*config)->rooms_n = n;
 	(*config)->head = start;
 	return (root);
+}
+
+void	tree_del(t_tree *root)
+{
+	if (root->children)
+		tree_del(root->children);
+	if (root->peer)
+		tree_del(root->peer);
+	free(root);
 }
