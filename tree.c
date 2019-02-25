@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 15:34:34 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/25 03:54:20 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 08:07:29 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,73 +28,58 @@ t_tree	*tree_new(t_node *room, char key)
 	return (tree);
 }
 
-void	tree_add(t_tree **r, t_node *room, char *name)
+void	tree_create_child(t_tree **root, char key, int *i)
+{
+	(*i)++;
+	(*root)->children = tree_new(NULL, key);
+	(*root) = (*root)->children;
+}
+
+void	tree_create_peer(t_tree **root, char key, t_tree **prev, int *set_peer)
+{
+	(*prev)->peer = tree_new(NULL, key);
+	(*root) = (*prev)->peer;
+	*set_peer = 1;
+}
+
+void	tree_go_deeper(t_tree **root, int *i)
+{
+	(*root) = (*root)->children;
+	(*i)++;
+}
+
+void	tree_set_room(t_tree **root, t_node *room, int *i)
+{
+	(*root)->room = room;
+	(*i)++;
+}
+
+void	tree_add(t_tree *root, t_node *room, char *name)
 {
 	t_tree	*prev;
-	t_tree	*root;
 	int		i;
 	int		name_len;
 	int		set_peer;
 
 	i = 0;
-	root = (*r);
 	name_len = ft_strlen(name);
-	// ft_printf("%s %d \n", name, room->id);
 	set_peer = 1;
 	while (i < name_len)
 	{
-		// ft_printf("%c",name[i]);
-		while (root && root->key != name[i]) // find char in current level
+		while (root && root->key != name[i])
 		{
 			prev = root;
 			root = root->peer;
 		}
-
-		// if (root && !name[i + 1])
-		// {
-		// 	ft_printf("SET %d to tree\n", room->id);
-		// 	root->room = room;
-		// }
 		if (!root && set_peer)
-		{
-			// ft_printf("PEER %c[%d] to tree\n",name[i], room->id);
-			prev->peer = tree_new(NULL, name[i]);
-			root = prev->peer;
-			set_peer = 1;
-		}
-		else if (root && root->children && name[i + 1]) // go deeper in tree
-		{
-			// ft_printf("GO DEEPER [%d]\n", room->id);
-			root = root->children;
-			i++;
-		}
-		else if (root && !root->children && name[i + 1]) // create new level
-		{
-			// ft_printf("CREATE CHILDREN %c->%c[%d]\n",root->key, name[i+1], room->id);
-			i++;
-			root->children = tree_new(NULL, name[i]);
-			root = root->children;
-		}
+			tree_create_peer(&root, name[i], &prev, &set_peer);
+		else if (root && root->children && name[i + 1])
+			tree_go_deeper(&root, &i);
+		else if (root && !root->children && name[i + 1])
+			tree_create_child(&root, name[i], &i);
 		else if (root && !name[i + 1])
-		{
-			// ft_printf("SET [%d]\n", room->id);
-			root->room = room;
-			i++;
-		}
-		// else if (!root)
-		// {
-		// 	ft_printf("CHILDREN %c[%d] to tree\n",name[i], room->id);
-		// 	prev->children = tree_new(room, name[i]);
-		// 	root = prev->children;
-		// 	prev = root;
-		// }
+			tree_set_room(&root, room, &i);
 	}
-	// if (!name[i] && root)
-	// {
-		// root->room = room;
-		// ft_printf("LEAF[%c] node %d to tree\n",root->key, root->room->id);
-	// }
-	// ft_printf("\n");
 }
 
 t_tree	*tree_get(t_tree *root, char *name)
@@ -106,36 +91,18 @@ t_tree	*tree_get(t_tree *root, char *name)
 	name_len = ft_strlen(name);
 	while (++i < name_len)
 	{
-		// ft_printf("%c",name[i]);
-		while (root && root->key != name[i]) // find char in current level
-		{
+		while (root && root->key != name[i])
 			root = root->peer;
-		}
-		if (!root) // no needed char in current level - search failed
+		if (!root)
 			return (NULL);
-		// else if (root && !name[i + 1]) // found needed name - return it
-		// {
-			// ft_printf("tree_get: %d\n", root->room == NULL);
-			// return (root);
-		// }
 		else if (root && i + 1 == name_len)
-		{
-			// ft_printf("tree_get: %d\n", root->room == NULL);
 			return (root);
-		}
-		else if (root && root->children) // go deeper in tree
-		{
-			// ft_printf("Go deeper [i]=%c\n", name[i]);
+		else if (root && root->children)
 			root = root->children;
-		}
 		else if (root && !name[i + 1])
-		{
-			// ft_printf("tree_get: %d\n", root->room == NULL);
 			return (root);
-		}
 	}
 	if (!name[i] && root)
 		return (root);
-	ft_printf("NOT FOUND\n");
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/25 07:46:50 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 07:53:52 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int         ft_read_map(int fd, t_config **config)
 	while ((*config)->head)
 	{
 		n++;
-		tree_add(&root, (*config)->head, (*config)->head->name);
+		tree_add(root, (*config)->head, (*config)->head->name);
 		(*config)->head = (*config)->head->next;
 	}
 	(*config)->rooms_n = n;
