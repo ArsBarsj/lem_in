@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 11:35:51 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/25 14:29:19 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 23:27:35 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ int		ft_set_link(char *line, t_config **config, t_tree *root)
 	to  = tree_get(root, splited[1]);
 	if (!from|| !to)
 	{
-		links_cleanup(line, splited);
+		// links_cleanup(line, splited);
 		// free(line);
-		// ft_clean_str_arr(splited);
+		ft_clean_str_arr(splited);
 		return (0);
 	}
 	(*config)->links[from->room->id][to->room->id] = 1;
@@ -85,8 +85,8 @@ char	*read_links_file(int fd, char *buf, int buf_siz)
 	int		space;
 	int		used;
 
-	links = (char *)malloc(sizeof(char) * buf_siz + 1);
-	buf = (char *)malloc(sizeof(char) * buf_siz + 1);
+	links = ft_strnew(buf_siz);
+	buf = ft_strnew(buf_siz);
 	if (!links || !buf)
 		return (NULL);
 	space = buf_siz + 1;
@@ -110,12 +110,30 @@ char	*read_links_file(int fd, char *buf, int buf_siz)
 	return (links);
 }
 
+int		ft_links_proccess(char **tab, t_config **cfg, t_tree *root, char **line)
+{
+	int		i;
+	int		ret;
+
+	i = 0;
+	while (tab[i])
+	{
+		if (!(ret = ft_set_link(tab[i], cfg, root)))
+		{
+			links_cleanup(*line, tab);
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
 int		ft_read_links(char **line, int fd, t_config **config, t_tree *root)
 {
 	int		ret;
 	int		buf_siz;
 	char	**tab;
-	int		i;
+	// int		i;
 
 	buf_siz = 1024;
 	if (!((*config)->links = ft_create_links(config)))
@@ -123,20 +141,21 @@ int		ft_read_links(char **line, int fd, t_config **config, t_tree *root)
 	if (!(ret = ft_set_link(*line, config, root)))
 		return (0);
 	free(*line);
-	*line = read_links_file(fd, *line, buf_siz);
-	if (!(*line))
+	if (!(*line = read_links_file(fd, *line, buf_siz)))
 		return (0);
 	tab = ft_strsplit(*line, '\n');
-	i = 0;
-	while (tab[i])
-	{
-		if (!(ret = ft_set_link(tab[i], config, root)))
-		{
-			links_cleanup(*line, tab);
-			return (0);
-		}
-		i++;
-	}
+	// i = 0;
+	if (!ft_links_proccess(tab, config, root, line))
+		return (0);
+	// while (tab[i])
+	// {
+		// if (!(ret = ft_set_link(tab[i], config, root)))
+		// {
+			// links_cleanup(*line, tab);
+			// return (0);
+		// }
+		// i++;
+	// }
 	links_cleanup(*line, tab);
 	return (1);
 }

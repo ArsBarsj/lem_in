@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/25 14:34:18 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 23:39:54 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,9 @@ int         ft_read_map(int fd, t_config **config)
 		return (0);
 	}
 	root = tree_create(config);
-	if (ft_read_links(&line, fd, config, root))
+	if (!ft_read_links(&line, fd, config, root))
 	{
 		tree_del(root);
-		config_del(*config);
 		return (0);
 	}
 	tree_del(root);
@@ -121,6 +120,7 @@ int			ft_read_rooms(char **line, t_config **config, int fd, int flag[2])
 int 		main(int argc, char **argv)
 {
 	(void)argc;
+	(void)argv;
 	t_config *config;
 	t_graph	*g;
 
@@ -128,14 +128,22 @@ int 		main(int argc, char **argv)
 	config->head = NULL;
 	config->end_id = -1;
 	config->start_id = -1;
-	int	fd = open(argv[1], O_RDONLY);
-	int x = ft_read_map(fd, &config);
-
-	if (!x || config->start_id < 0 || config->end_id < 0 || \
-		config->start_id == config->end_id)
+	config->links = NULL;
+	// int	fd = open(argv[1], O_RDONLY);
+	int x = ft_read_map(0, &config);
+	if (x && (config->start_id < 0 || config->end_id < 0))
+	{
+		config_del(config);
 		error();
+	}
+	else if (!x || config->start_id == config->end_id)
+	{
+		config_del(config);
+		error();
+	}
 	g = graph_create(config);
-	solve(g, config->start_id, config->end_id);
+	if (!solve(g, config->start_id, config->end_id))
+		ft_printf("ERROR\n");
 	graph_del(&g);
 	config_del(config);
 	return (0);

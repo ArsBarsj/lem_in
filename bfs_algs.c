@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/25 14:35:55 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 23:06:02 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,10 @@ int		solve(t_graph *g, int start, int end)
 	if (!(paths = get_paths(g, start, end)))
 		return(0);
 	if (!(paths_n = count_paths(paths)))
-		error();
+	{
+		paths_del(&paths);
+		return(0);
+	}
 	total_ants = g->ants_n;
 	while (g->ants_n)
 	{
@@ -140,5 +143,5 @@ int		solve(t_graph *g, int start, int end)
 		ft_printf("\n");
 	}
 	paths_del(&paths);
-	return (0);
+	return (1);
 }
