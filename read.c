@@ -35,9 +35,8 @@ int         ft_read_map(int fd, t_config **config)
 	line = NULL;
 	if (!ft_read_ants(&line, config, fd))
 		return (0);
-	else if (!ft_read_rooms(&line, config, fd, flag))
+	else if (!ft_read_rooms(&line, config, fd, flag) || !(*config)->head)
 	{
-		config_del(*config);
 		free(line);
 		return (0);
 	}
@@ -45,7 +44,6 @@ int         ft_read_map(int fd, t_config **config)
 	if (!ft_read_links(&line, fd, config, root))
 	{
 		tree_del(root);
-		config_del(*config);
 		return (0);
 	}
 	tree_del(root);
@@ -121,9 +119,9 @@ int 		main(int argc, char **argv)
 		config_del(config);
 		error();
 	}
-	if (!x || config->start_id == config->end_id)
+	else if (!x || config->start_id == config->end_id)
 	{
-		// free(config);
+		config_del(config);
 		error();
 	}
 	g = graph_create(config);
