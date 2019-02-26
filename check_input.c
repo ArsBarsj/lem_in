@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 00:47:13 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/25 07:46:59 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/26 23:26:01 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,8 @@ int		ft_is_link(char *line)
 {
 	char	**tab;
 
+	if (!ft_strlen(line))
+		return (0);
 	if(!(tab = ft_strsplit(line, '-')))
 		return (0);
 	if (ft_str_arr_len(tab) != 2)

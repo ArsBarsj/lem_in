@@ -24,6 +24,8 @@ char	    *read_links_file(int fd, char *buf, int buf_siz);
 int		    ft_manage_cmd(t_config **config, int flag, int id, int flags[2]);
 
 void		links_cleanup(char *line, char **tab);
+int			count_lines(char *str);
+int			str_remalloc(char **str, char *new_s, int size, int used);
 void		ft_clean_str_arr(char **arr);
 int			ft_all_digit(char *str);
 
