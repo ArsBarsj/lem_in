@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/25 23:39:54 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/27 04:37:03 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ int 		main(int argc, char **argv)
 	g = graph_create(config);
 	if (!solve(g, config->start_id, config->end_id))
 		ft_printf("ERROR\n");
+	print_map(g, g->matrix, g->verts_n);
 	graph_del(&g);
 	config_del(config);
 	return (0);
