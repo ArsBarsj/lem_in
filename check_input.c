@@ -49,7 +49,6 @@ int		ft_check_room(char *room)
 	{
 		if (!ft_all_digit(set[j++]))
 		{
-			free(room);
 			ft_clean_str_arr(set);
 			return (0);
 		}
