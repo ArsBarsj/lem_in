@@ -85,6 +85,25 @@ int			ft_read_ants(char **line, t_config **config, int fd)
 	return (0);
 }
 
+int         ft_check(char **line)
+{
+	if ((ft_is_comm(*line) || ft_is_cmd(*line) || ft_is_room(*line)
+	     || ft_strlen(*line) == 0))
+		return (1);
+	return (0);
+}
+
+int is_error(char **line, t_config **config, int id, int flag[2])
+{
+	if ((ft_is_start(*line) && !ft_manage_cmd(config, ft_is_start(*line), id, flag)) ||
+	    (ft_is_room(*line) && !ft_check_room(*line)) || ft_strlen(*line) == 0)
+	{
+		free(*line);
+		return (1);
+	}
+	return (0);
+}
+
 int			ft_read_rooms(char **line, t_config **config, int fd, int flag[2])
 {
 	int		id;
@@ -92,13 +111,10 @@ int			ft_read_rooms(char **line, t_config **config, int fd, int flag[2])
 
 	id = 0;
 	prev = NULL;
-	while (get_next_line(fd, line) > 0 &&
-			(ft_is_comm(*line) || ft_is_cmd(*line) || ft_is_room(*line)
-			|| ft_strlen(*line) == 0))
+	while (get_next_line(fd, line) > 0 && ft_check(line))
 	{
 		ft_printf("%s\n", *line);
-		if ((ft_is_start(*line) && !ft_manage_cmd(config, ft_is_start(*line), id, flag)) ||
-				(ft_is_room(*line) && !ft_check_room(*line)) || ft_strlen(*line) == 0)
+		if (is_error(line, config, id, flag))
 			return (0);
 		else if (ft_is_room(*line) && ft_check_room(*line))
 		{
@@ -118,7 +134,7 @@ int			ft_read_rooms(char **line, t_config **config, int fd, int flag[2])
 int 		main(int argc, char **argv)
 {
 	(void)argc;
-	(void)argv;
+//	(void)argv;
 	t_config *config;
 	t_graph	*g;
 
@@ -127,8 +143,8 @@ int 		main(int argc, char **argv)
 	config->end_id = -1;
 	config->start_id = -1;
 	config->links = NULL;
-	// int	fd = open(argv[1], O_RDONLY);
-	int x = ft_read_map(0, &config);
+	 int	fd = open(argv[1], O_RDONLY);
+	int x = ft_read_map(fd, &config);
 	if (x && (config->start_id < 0 || config->end_id < 0 || config->start_id >= config->rooms_n))
 	{
 		config_del(config);
