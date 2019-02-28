@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 01:33:36 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/25 22:36:48 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/28 20:40:09 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ t_graph		*graph_new(int verts_n, int ants_n)
 {
 	t_graph		*g;
 
+	if (verts_n == 0)
+		return (NULL);
 	g = (t_graph *)malloc(sizeof(t_graph));
 	if (g == NULL)
 		return (NULL);
@@ -31,8 +33,8 @@ t_graph		*graph_new(int verts_n, int ants_n)
 	g->nodes[verts_n] = NULL;
 	g->ants_n = ants_n;
 	g->ants = ant_new_list(ants_n);
-	if (g->matrix == NULL)
-		return (NULL);
+	// if (g->matrix == NULL)
+		// return (NULL);
 	return (g);
 }
 
@@ -52,7 +54,7 @@ t_graph		*graph_create(t_config *cfg)
 		head = head->next;
 	}
 	i = -1;
-	while (++i < g->verts_n)
+	while (++i < g->verts_n && cfg->links)
 	{
 		j = -1;
 		while (++j <  g->verts_n)

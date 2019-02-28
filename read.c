@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/28 19:45:28 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/28 20:49:33 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,11 @@ int         ft_read_map(int fd, t_config **config)
 	else if (!ft_read_rooms(&line, config, fd, flag) || !(*config)->head)
 		return (0);
 	root = tree_create(config);
-	ft_read_links(&line, fd, config, root);
+	if (!ft_read_links(&line, fd, config, root))
+	{
+		tree_del(root);
+		return (0);
+	}
 	tree_del(root);
 	return (1);
 }
@@ -85,10 +89,14 @@ int         ft_check(char **line)
 
 int is_error(char **line, t_config **config, int id, int flag[2])
 {
-	if ((ft_is_start(*line) && !ft_manage_cmd(config, ft_is_start(*line), id, flag)) ||
-	    (ft_is_room(*line) && !ft_check_room(*line)) || ft_strlen(*line) == 0)
+	if ((ft_is_start(*line) && !ft_manage_cmd(config, ft_is_start(*line), id, flag))
+	 || ft_strlen(*line) == 0)
 	{
 		free(*line);
+		return (1);
+	}
+	if (ft_is_room(*line) && !ft_check_room(*line))
+	{
 		return (1);
 	}
 	return (0);
@@ -133,20 +141,27 @@ int 		main(int argc, char **argv)
 	config->end_id = -1;
 	config->start_id = -1;
 	config->links = NULL;
+	config->rooms_n = 0;
 	// int	fd = open(argv[1], O_RDONLY);
 	int x = ft_read_map(0, &config);
-	if (x && (config->start_id < 0 || config->end_id < 0 || config->start_id >= config->rooms_n))
+	if (x && (config->start_id < 0 || config->end_id < 0))
 	{
 		config_del(config);
 		error();
 	}
-	else if (!x || config->start_id == config->end_id)
+	else if (config->start_id == config->end_id || 
+		config->start_id >= config->rooms_n || config->end_id >= config->rooms_n)
 	{
 		config_del(config);
 		error();
 	}
 	g = graph_create(config);
-	if (!solve(g, config->start_id, config->end_id))
+	if (!g)
+	{
+		config_del(config);
+		error();
+	}
+	if (g->matrix == NULL || !solve(g, config->start_id, config->end_id))
 		ft_printf("ERROR\n");
 	// print_map(g, g->matrix, g->verts_n);
 	graph_del(&g);

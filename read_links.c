@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 11:35:51 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/28 19:45:53 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/28 20:07:57 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,14 @@ int		ft_set_link(char *line, t_config **config, t_tree *root)
 
 	if (line && (ft_is_comm(line) || (ft_is_cmd(line) && !ft_is_start(line))))
 		return (1);
-	if (!ft_is_link(line) || !(splited = ft_strsplit(line, '-')))
+	if (ft_is_start(line))
 		return (0);
+	if (!ft_is_link(line) || !(splited = ft_strsplit(line, '-')))
+		return (1);
 	from = tree_get(root, splited[0]);
 	to  = tree_get(root, splited[1]);
-	if (!from|| !to)
+	if (!from || !to)
 	{
-		// links_cleanup(line, splited);
-		// free(line);
 		ft_clean_str_arr(splited);
 		return (0);
 	}
@@ -101,13 +101,13 @@ int		ft_links_proccess(char **tab, t_config **cfg, t_tree *root, char **line)
 	i = 0;
 	while (tab[i])
 	{
+		write(1, tab[i], ft_strlen(tab[i]));
+		write(1, "\n", 1);
 		if (!(ret = ft_set_link(tab[i], cfg, root)))
 		{
 			links_cleanup(*line, tab);
 			return (0);
 		}
-		write(1, tab[i], ft_strlen(tab[i]));
-		write(1, "\n", 1);
 		i++;
 	}
 	return (1);
@@ -124,13 +124,15 @@ int		ft_read_links(char **line, int fd, t_config **config, t_tree *root)
 		return (0);
 	ret = ft_set_link(*line, config, root);
 	free(*line);
+	if ((*config)->start_id >= (*config)->rooms_n || (*config)->end_id >= (*config)->rooms_n)
+		return (0);
 	if (!ret || !(*line = read_links_file(fd, *line, 1024)))
 		return (0);
 	tab = ft_strsplit(*line, '\n');
 	if (!check_empty_lines(tab, *line))
 	{
 		links_cleanup(*line, tab);
-		return (0);
+		return (1);
 	}
 	if (!ft_links_proccess(tab, config, root, line))
 		return (0);
