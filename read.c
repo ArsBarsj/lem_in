@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/28 20:49:33 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/28 20:57:34 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,16 +89,16 @@ int         ft_check(char **line)
 
 int is_error(char **line, t_config **config, int id, int flag[2])
 {
-	if ((ft_is_start(*line) && !ft_manage_cmd(config, ft_is_start(*line), id, flag))
-	 || ft_strlen(*line) == 0)
+	if ((ft_is_start(*line) && !ft_manage_cmd(config, ft_is_start(*line), id, flag)) ||
+	 (ft_is_room(*line) && !ft_check_room(*line)) || ft_strlen(*line) == 0)
 	{
 		free(*line);
 		return (1);
 	}
-	if (ft_is_room(*line) && !ft_check_room(*line))
-	{
-		return (1);
-	}
+	// if (ft_is_room(*line) && !ft_check_room(*line))
+	// {
+	// 	return (1);
+	// }
 	return (0);
 }
 
