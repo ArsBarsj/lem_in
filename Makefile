@@ -8,11 +8,11 @@ NAME = lem-in
 all: $(LIB) $(NAME)
 
 $(LIB):
-	make -C libft/ all
+	@make -C libft/ all
 $(NAME): $(OBJI)
-	$(GCC) $(FLAGS) $(OBJI) -L libft -lft -o $(NAME)
+	@$(GCC) $(FLAGS) $(OBJI) -L libft -lft -o $(NAME)
 %.o: %.c
-	$(GCC) $(FLAGS) -c -g $< -o $@ -I.
+	@$(GCC) $(FLAGS) -c -g $< -o $@ -I.
 clean:
 	rm -f *.o
 	make -C libft/ clean
