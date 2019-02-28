@@ -35,6 +35,8 @@ int	find_paths_number(t_graph *g, int start, int end)
 				graph_link_del(g, start, end, 1);
 			i++;
 		}
+		if (i == 1)
+			return (counter);
 		free(path);
 	}
 	graph_restore_copy(g);

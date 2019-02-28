@@ -126,9 +126,10 @@ int		ft_read_links(char **line, int fd, t_config **config, t_tree *root)
 	free(*line);
 	if (!ret || !(*line = read_links_file(fd, *line, buf_siz)))
 		return (0);
-	ft_printf("%s\n", *line);
+	write(1, *line, ft_strlen(*line));
+	ft_putchar('\n');
 	tab = ft_strsplit(*line, '\n');
-	if (ft_str_arr_len(tab) <= count_lines(*line))
+	if (ft_str_arr_len(tab) < count_lines(*line))
 	{
 		links_cleanup(*line, tab);
 		return (0);
