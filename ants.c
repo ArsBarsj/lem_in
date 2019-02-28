@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 20:57:43 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/25 14:48:48 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/28 17:49:04 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@ int	ant_move(t_ant **a, t_graph *g, t_path *path, int end)
 {
 	int	to;
 
-	if ((*a) && g && g->nodes[path->path[(*a)->step + 1]->id]->is_free)
+	if ((*a) && g && g->nodes[path->path[(*a)->step + 1]->id]->is_free &&
+		g->matrix_copy[(*a)->node->id][path->path[(*a)->step + 1]->id])
 	{
 		to = g->nodes[path->path[(*a)->step + 1]->id]->id;
+		graph_link_del(g, (*a)->node->id, to, 1);
 		(*a)->node->is_free = 1;
 		(*a)->node = g->nodes[to];
 		(*a)->step++;

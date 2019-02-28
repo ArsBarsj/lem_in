@@ -6,11 +6,12 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/25 23:06:02 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/28 17:46:43 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <unistd.h>
 #include "libft/libft.h"
 #include "datatypes.h"
 
@@ -100,7 +101,7 @@ void	select_path(t_graph *g, int end, t_path **paths, int paths_n, int ant_i)
 	int	i;
 
 	i = 0;
-	if (paths_n == 1 || paths[0]->len == 1)
+	if (paths[0]->len == 1 && g->ants_n - ant_i <= 1)
 	{
 		ant_move(&g->ants[ant_i], g, paths[0], end);
 		if (g->ants[ant_i])
@@ -134,7 +135,7 @@ int		solve(t_graph *g, int start, int end)
 	while (g->ants_n)
 	{
 		ant_i = 0;
-		while (ant_i < total_ants)
+		while (ant_i < total_ants && paths_n)
 		{
 			if (g->ants[ant_i] && g->ants[ant_i]->node->id == start)
 				select_path(g, end, paths, paths_n, ant_i);
@@ -142,7 +143,8 @@ int		solve(t_graph *g, int start, int end)
 				ant_move(&g->ants[ant_i], g, paths[g->ants[ant_i]->path_id], end);
 			ant_i++;
 		}
-		ft_printf("\n");
+		graph_restore_copy(g);
+		write(1, "\n", 1);
 	}
 	paths_del(&paths);
 	return (1);

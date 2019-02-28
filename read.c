@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/27 04:37:03 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/28 15:55:49 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int 		main(int argc, char **argv)
 	config->links = NULL;
 	// int	fd = open(argv[1], O_RDONLY);
 	int x = ft_read_map(0, &config);
-	if (x && (config->start_id < 0 || config->end_id < 0))
+	if (x && (config->start_id < 0 || config->end_id < 0 || config->start_id >= config->rooms_n))
 	{
 		config_del(config);
 		error();
@@ -142,7 +142,7 @@ int 		main(int argc, char **argv)
 	g = graph_create(config);
 	if (!solve(g, config->start_id, config->end_id))
 		ft_printf("ERROR\n");
-	print_map(g, g->matrix, g->verts_n);
+	// print_map(g, g->matrix, g->verts_n);
 	graph_del(&g);
 	config_del(config);
 	return (0);
