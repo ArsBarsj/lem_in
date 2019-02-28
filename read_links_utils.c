@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 13:12:27 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/26 23:45:30 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/28 19:12:49 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,21 @@ int		str_remalloc(char **str, char *new_s, int size, int used)
 	free(*str);
 	*str = tmp;
 	ft_strcpy((*str) + used, new_s);
+	return (1);
+}
+
+int		check_empty_lines(char **tab, char *line)
+{
+	int	len;
+	int	tab_len;
+	int	lines;
+
+	len = ft_strlen(line);
+	lines = count_lines(line);
+	tab_len = ft_str_arr_len(tab);
+	if (tab_len < lines && line[len - 1] == '\n')
+		return (0);
+	if (tab_len < lines && line[len - 1] == '\n')
+		return (0);
 	return (1);
 }

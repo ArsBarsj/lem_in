@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/28 17:46:43 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/28 18:25:20 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,13 +101,6 @@ void	select_path(t_graph *g, int end, t_path **paths, int paths_n, int ant_i)
 	int	i;
 
 	i = 0;
-	if (paths[0]->len == 1 && g->ants_n - ant_i <= 1)
-	{
-		ant_move(&g->ants[ant_i], g, paths[0], end);
-		if (g->ants[ant_i])
-			g->ants[ant_i]->path_id = 0;
-		return ;
-	}
 	while (i < paths_n && g->ants_n - (paths[i]->len - paths[0]->len) >= 2)
 		i++;
 	i = (i == 0 ? 0 : i - 1);

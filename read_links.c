@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 11:35:51 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/26 23:45:24 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/28 19:13:11 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,22 +114,20 @@ int		ft_links_proccess(char **tab, t_config **cfg, t_tree *root, char **line)
 int		ft_read_links(char **line, int fd, t_config **config, t_tree *root)
 {
 	int		ret;
-	int		buf_siz;
 	char	**tab;
 
-	buf_siz = 1024;
 	if (*line)
 		ft_printf("%s\n", *line);
 	if (!*line || !((*config)->links = ft_create_links(config)))
 		return (0);
 	ret = ft_set_link(*line, config, root);
 	free(*line);
-	if (!ret || !(*line = read_links_file(fd, *line, buf_siz)))
+	if (!ret || !(*line = read_links_file(fd, *line, 1024)))
 		return (0);
 	write(1, *line, ft_strlen(*line));
 	ft_putchar('\n');
 	tab = ft_strsplit(*line, '\n');
-	if (ft_str_arr_len(tab) < count_lines(*line))
+	if (!check_empty_lines(tab, *line))
 	{
 		links_cleanup(*line, tab);
 		return (0);
