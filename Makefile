@@ -3,7 +3,7 @@ OBJI = $(SRCI:.c=.o)
 LIB = libft/libft.a
 FLAGS = -Werror -Wall -Wextra
 GCC = gcc
-NAME = lem_in
+NAME = lem-in
 
 all: $(LIB) $(NAME)
 

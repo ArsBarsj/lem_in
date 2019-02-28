@@ -26,8 +26,6 @@ void		config_del(t_config *config)
 
 void        print_file(char **line, int fd)
 {
-	if (line && *line)
-		free(*line);
 	if ((*line = read_links_file(fd, *line, 1024)))
 	{
 		ft_printf("%s\n", *line);
