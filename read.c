@@ -15,24 +15,6 @@
 #include <unistd.h>
 #include "lemin.h"
 
-void		config_del(t_config *config)
-{
-	if (config->head)
-		node_list_del(&config->head);
-	if (config->links)
-		del_tab(config->links, config->rooms_n);
-	free(config);
-}
-
-void        print_file(char **line, int fd)
-{
-	if ((*line = read_links_file(fd, *line, 1024)))
-	{
-		ft_printf("%s\n", *line);
-		free(*line);
-	}
-}
-
 int         ft_read_map(int fd, t_config **config)
 {
 	char	*line;
@@ -76,29 +58,6 @@ int			ft_read_ants(char **line, t_config **config, int fd)
 		return (1);
 	}
 	free(*line);
-	return (0);
-}
-
-int         ft_check(char **line)
-{
-	if ((ft_is_comm(*line) || ft_is_cmd(*line) || ft_is_room(*line)
-	     || ft_strlen(*line) == 0))
-		return (1);
-	return (0);
-}
-
-int is_error(char **line, t_config **config, int id, int flag[2])
-{
-	if ((ft_is_start(*line) && !ft_manage_cmd(config, ft_is_start(*line), id, flag)) ||
-	 (ft_is_room(*line) && !ft_check_room(*line)) || ft_strlen(*line) == 0)
-	{
-		free(*line);
-		return (1);
-	}
-	// if (ft_is_room(*line) && !ft_check_room(*line))
-	// {
-	// 	return (1);
-	// }
 	return (0);
 }
 

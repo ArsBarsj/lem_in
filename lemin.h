@@ -8,6 +8,8 @@
 # include <stdlib.h>
 # include "datatypes.h"
 
+int         ft_check(char **line);
+int         is_error(char **line, t_config **config, int id, int flag[2]);
 int			ft_check_ant(char *count);
 int			ft_check_room(char *room);
 int			ft_is_room(char *line);
@@ -34,4 +36,5 @@ int			ft_all_digit(char *str);
 void		print_matrix(int **m, int size);
 void		print_map(t_graph *g, int **links, int rooms_n);
 int			ft_str_arr_len(char **arr);
+void		config_del(t_config *config);
 #endif
