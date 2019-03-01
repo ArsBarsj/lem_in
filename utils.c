@@ -6,11 +6,10 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 02:19:46 by arseny            #+#    #+#             */
-/*   Updated: 2019/03/01 13:18:26 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/02/25 09:00:35 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "lemin.h"
 #include "datatypes.h"
 
@@ -45,4 +44,13 @@ int		ft_all_digit(char *str)
 		i++;
 	}
 	return (1);
+}
+
+void		config_del(t_config *config)
+{
+	if (config->head)
+		node_list_del(&config->head);
+	if (config->links)
+		del_tab(config->links, config->rooms_n);
+	free(config);
 }

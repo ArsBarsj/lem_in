@@ -8,6 +8,8 @@
 # include <stdlib.h>
 # include "datatypes.h"
 
+int         ft_check(char **line);
+int         is_error(char **line, t_config **config, int id, int flag[2]);
 int			ft_check_ant(char *count);
 int			ft_check_room(char *room);
 int			ft_is_room(char *line);
@@ -31,4 +33,5 @@ void		ft_clean_str_arr(char **arr);
 int			ft_all_digit(char *str);
 
 int			ft_str_arr_len(char **arr);
+void		config_del(t_config *config);
 #endif
