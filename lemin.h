@@ -30,8 +30,5 @@ int			str_remalloc(char **str, char *new_s, int size, int used);
 void		ft_clean_str_arr(char **arr);
 int			ft_all_digit(char *str);
 
-
-void		print_matrix(int **m, int size);
-void		print_map(t_graph *g, int **links, int rooms_n);
 int			ft_str_arr_len(char **arr);
 #endif

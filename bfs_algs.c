@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/28 18:25:20 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/01 13:12:55 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,36 +66,6 @@ t_path	**get_paths(t_graph *g, int start, int end)
 	return (paths);
 }
 
-void	paths_del(t_path ***p)
-{
-	int	i;
-
-	i = 0;
-	while (p && (*p)[i])
-	{
-		free((*p)[i]->path);
-		free((*p)[i]);
-		(*p)[i] = NULL;
-		i++;
-	}
-	free(*p);
-	*p = NULL;
-}
-
-int		count_paths(t_path **p)
-{
-	int	i;
-
-	i = 0;
-	if (p)
-	{
-		while (p[i])
-			i++;
-		return (i);
-	}
-	return (0);
-}	
-
 void	select_path(t_graph *g, int end, t_path **paths, int paths_n, int ant_i)
 {
 	int	i;
@@ -110,12 +80,32 @@ void	select_path(t_graph *g, int end, t_path **paths, int paths_n, int ant_i)
 		g->ants[ant_i]->path_id = i;
 }
 
+void	solve_inner(t_graph *g, int start, int end, t_path **paths, int pn)
+{
+	int		total_ants;
+	int		ant_i;
+
+	total_ants = g->ants_n;
+	while (g->ants_n)
+	{
+		ant_i = 0;
+		while (ant_i < total_ants && pn)
+		{
+			if (g->ants[ant_i] && g->ants[ant_i]->node->id == start)
+				select_path(g, end, paths, pn, ant_i);
+			else if (g->ants[ant_i])
+				ant_move(&g->ants[ant_i], g, paths[g->ants[ant_i]->path_id], end);
+			ant_i++;
+		}
+		graph_restore_copy(g);
+		write(1, "\n", 1);
+	}
+}
+
 int		solve(t_graph *g, int start, int end)
 {
 	t_path	**paths;
 	int		paths_n;
-	int		ant_i;
-	int		total_ants;
 
 	if (!(paths = get_paths(g, start, end)))
 		return(0);
@@ -124,21 +114,7 @@ int		solve(t_graph *g, int start, int end)
 		paths_del(&paths);
 		return(0);
 	}
-	total_ants = g->ants_n;
-	while (g->ants_n)
-	{
-		ant_i = 0;
-		while (ant_i < total_ants && paths_n)
-		{
-			if (g->ants[ant_i] && g->ants[ant_i]->node->id == start)
-				select_path(g, end, paths, paths_n, ant_i);
-			else if (g->ants[ant_i])
-				ant_move(&g->ants[ant_i], g, paths[g->ants[ant_i]->path_id], end);
-			ant_i++;
-		}
-		graph_restore_copy(g);
-		write(1, "\n", 1);
-	}
+	solve_inner(g, start, end, paths, paths_n);
 	paths_del(&paths);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/25 14:53:07 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/01 13:19:04 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,14 @@ typedef struct		s_tree
 	char			key;
 }					t_tree;
 
-t_tree				*tree_get(t_tree *root, char *name);
-void				tree_add(t_tree *root, t_node *room, char *name);
 t_tree				*tree_new(t_node *room, char key);
 t_tree				*tree_create(t_config **config);
+void				tree_create_child(t_tree **root, char key, int *i);
+void				tree_create_peer(t_tree **r, char k, t_tree **p, int *sp);
+void				tree_go_deeper(t_tree **root, int *i);
+void				tree_set_room(t_tree **root, t_node *room, int *i);
+t_tree				*tree_get(t_tree *root, char *name);
+void				tree_add(t_tree *root, t_node *room, char *name);
 void				tree_del(t_tree *root);
 
 void				error(void);
@@ -85,6 +89,7 @@ void				del_tab(int **tab, int size);
 void				ants_del(t_ant ***ants);
 t_ant				**ant_new_list(int n);
 
+t_graph				*graph_create(t_config *cfg);
 t_graph				*graph_new(int verts_n, int ants_n);
 void				graph_del(t_graph **g);
 void				graph_link_add(t_graph *g, int from, int to, int copy);
@@ -111,8 +116,9 @@ int					bfs(int start_id, int end_id, t_graph *graph);
 t_node				**bfs_path(int start, int end, t_graph *g);
 
 t_path				*path_new(t_node **path);
-t_graph				*graph_create(t_config *cfg);
 void				path_del(t_path **p);
+void				paths_del(t_path ***p);
+int					count_paths(t_path **p);
 
 int					find_paths_number(t_graph *g, int start, int end);
 t_path				**get_paths(t_graph *g, int start, int end);

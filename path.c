@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 18:01:44 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/18 21:23:13 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/01 13:12:37 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,34 @@ void	path_del(t_path **p)
 		free((*p));
 		*p = NULL;
 	}
+}
+
+void	paths_del(t_path ***p)
+{
+	int	i;
+
+	i = 0;
+	while (p && (*p)[i])
+	{
+		free((*p)[i]->path);
+		free((*p)[i]);
+		(*p)[i] = NULL;
+		i++;
+	}
+	free(*p);
+	*p = NULL;
+}
+
+int		count_paths(t_path **p)
+{
+	int	i;
+
+	i = 0;
+	if (p)
+	{
+		while (p[i])
+			i++;
+		return (i);
+	}
+	return (0);
 }
