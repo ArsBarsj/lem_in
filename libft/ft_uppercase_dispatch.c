@@ -27,4 +27,3 @@ char	*ft_upper_dispatch_int(t_specifier *spec, va_list *ap)
 	str = ft_int_to_str(va_arg(*ap, long), spec->precition);
 	return (str);
 }
-

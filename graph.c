@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   graph.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 01:33:36 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/28 20:40:09 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/02 23:20:55 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ t_graph		*graph_new(int verts_n, int ants_n)
 	g->nodes[verts_n] = NULL;
 	g->ants_n = ants_n;
 	g->ants = ant_new_list(ants_n);
-	// if (g->matrix == NULL)
-		// return (NULL);
 	return (g);
 }
 
@@ -57,14 +55,13 @@ t_graph		*graph_create(t_config *cfg)
 	while (++i < g->verts_n && cfg->links)
 	{
 		j = -1;
-		while (++j <  g->verts_n)
+		while (++j < g->verts_n)
 			if (cfg->links[i][j])
 				graph_link_add(g, i, j, 2);
 	}
 	i = -1;
-	head = g->nodes[cfg->start_id];
 	while (++i < g->ants_n)
-		g->ants[i]->node = head;
+		g->ants[i]->node = g->nodes[cfg->start_id];
 	return (g);
 }
 

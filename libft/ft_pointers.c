@@ -13,10 +13,10 @@
 #include <stdlib.h>
 #include "ft_printf.h"
 
-char    *ft_make_pointer(t_specifier *spec, va_list *ap)
+char	*ft_make_pointer(t_specifier *spec, va_list *ap)
 {
 	char				*address;
-	char    			*tmp;
+	char				*tmp;
 	unsigned long int	p;
 	int					len;
 

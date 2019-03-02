@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   queue.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:15:52 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/22 00:34:59 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/02 23:16:00 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "datatypes.h"
 
-t_dqueue		*dqueue_new(int id)
+t_dqueue	*dqueue_new(int id)
 {
 	t_dqueue	*q;
 
@@ -25,7 +25,7 @@ t_dqueue		*dqueue_new(int id)
 	return (q);
 }
 
-void	dqueue_push_front(t_dqueue **head, t_dqueue *elem)
+void		dqueue_push_front(t_dqueue **head, t_dqueue *elem)
 {
 	if (head && (*head) && elem)
 	{
@@ -34,7 +34,7 @@ void	dqueue_push_front(t_dqueue **head, t_dqueue *elem)
 	}
 }
 
-void	dqueue_push(t_dqueue **head, t_dqueue *elem)
+void		dqueue_push(t_dqueue **head, t_dqueue *elem)
 {
 	t_dqueue	*tmp;
 
@@ -46,19 +46,10 @@ void	dqueue_push(t_dqueue **head, t_dqueue *elem)
 		tmp->next = elem;
 	}
 	else
-		(*head) = elem;	
+		(*head) = elem;
 }
 
-int		dqueue_peak(t_dqueue *head)
-{
-	if (head)
-	{
-		return (head->node_id);
-	}
-	return (-1);
-}
-
-int		dqueue_pop(t_dqueue **head)
+int			dqueue_pop(t_dqueue **head)
 {
 	int			ret;
 	t_dqueue	*tmp;
@@ -74,7 +65,7 @@ int		dqueue_pop(t_dqueue **head)
 	return (-1);
 }
 
-void	dqueue_del(t_dqueue **head)
+void		dqueue_del(t_dqueue **head)
 {
 	t_dqueue	*tmp;
 

@@ -28,7 +28,7 @@ void	handle_error(int code, t_specifier **sp)
 	{
 		ft_putstr("");
 		if (sp)
-		spec_del(sp);
+			spec_del(sp);
 		exit(0);
 	}
 	else if (code == 1)

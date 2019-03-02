@@ -17,7 +17,7 @@ char	*ft_int_to_str(long long i, int precition)
 {
 	char	*str;
 	int		len;
-	
+
 	if (i == 0 && precition == 0)
 		return (ft_strnew(1));
 	str = ft_llitoa(i);
@@ -33,7 +33,7 @@ char	*ft_uint_to_str(unsigned long long i, t_specifier *spec)
 {
 	char	*str;
 	int		len;
-	
+
 	if (i == 0 && spec->precition == 0)
 		return (ft_strnew(1));
 	if (spec->specifier == 'o' || spec->specifier == 'O')
@@ -49,9 +49,11 @@ char	*ft_uint_to_str(unsigned long long i, t_specifier *spec)
 	len = ft_strlen(str);
 	if (spec->precition > len)
 		str = ft_manage_pw(str, spec->precition, len);
-	else if (spec->precition < 0 && spec->width > len && spec->flags->zero && !spec->flags->cage)
+	else if (spec->precition < 0 && spec->width > len && spec->flags->zero &&
+			!spec->flags->cage)
 		str = ft_manage_pw(str, spec->width, len);
-	else if (spec->precition < 0 && spec->width > len && spec->flags->zero && spec->flags->cage)
+	else if (spec->precition < 0 && spec->width > len && spec->flags->zero &&
+			spec->flags->cage)
 		str = ft_manage_pw(str, spec->width - 2, len);
 	return (str);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ants.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 20:57:43 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/28 17:49:04 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/03 00:08:14 by ttreutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft/libft.h"
 #include "datatypes.h"
 
-int	ant_move(t_ant **a, t_graph *g, t_path *path, int end)
+int			ant_move(t_ant **a, t_graph *g, t_path *path, int end)
 {
 	int	to;
 
@@ -44,7 +44,7 @@ void		ants_del(t_ant ***ants)
 {
 	int	i;
 
-	i  = 0;
+	i = 0;
 	if (ants && *ants)
 	{
 		while (ants && (*ants)[i])

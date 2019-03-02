@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 00:47:13 by arseny            #+#    #+#             */
-/*   Updated: 2019/02/26 23:26:01 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/02 23:31:25 by ttreutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		ft_check_ant(char *count)
 			return (0);
 	num = ft_atoi(count);
 	if (num <= 0)
-		return(0);
+		return (0);
 	return (1);
 }
 
@@ -76,7 +76,7 @@ int		ft_is_link(char *line)
 
 	if (!ft_strlen(line))
 		return (0);
-	if(!(tab = ft_strsplit(line, '-')))
+	if (!(tab = ft_strsplit(line, '-')))
 		return (0);
 	if (ft_str_arr_len(tab) != 2)
 	{

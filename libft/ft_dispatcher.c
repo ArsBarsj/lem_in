@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_dispatcher.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/23 17:13:52 by fkuhn             #+#    #+#             */
-/*   Updated: 2019/01/08 23:04:52 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/01/09 20:16:27 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ char	*ft_dispatch_float(t_specifier *spec, va_list *ap)
 	int		precition;
 
 	precition = spec->precition >= 0 ? spec->precition : 6;
-	if (ft_strcmp(spec->length, "") == 0)
+	if (spec->length == 0)
 		str = ft_ftoa(va_arg(*ap, double), precition);
-	else if (ft_strcmp(spec->length, "l") == 0)
+	else if (spec->length == 3)
 		str = ft_ftoa(va_arg(*ap, double), precition);
 	else
 		str = ft_ftoa(va_arg(*ap, long double), precition);
@@ -32,20 +32,20 @@ char	*ft_dispatch_int(t_specifier *spec, va_list *ap)
 {
 	char	*str;
 
-	if (ft_strcmp(spec->length, "") == 0)
+	if (spec->length == 0)
 		str = ft_int_to_str((int)va_arg(*ap, long), spec->precition);
-	else if (ft_strcmp(spec->length, "h") == 0)
+	else if (spec->length == 2)
 		str = ft_int_to_str((short)va_arg(*ap, long), spec->precition);
-	else if (ft_strcmp(spec->length, "hh") == 0)
+	else if (spec->length == 1)
 		str = ft_int_to_str((signed char)va_arg(*ap, long), spec->precition);
-	else if (ft_strcmp(spec->length, "l") == 0)
+	else if (spec->length == 3)
 		str = ft_int_to_str(va_arg(*ap, long), spec->precition);
-	else if (ft_strcmp(spec->length, "ll") == 0)
+	else if (spec->length == 4)
 		str = ft_int_to_str(va_arg(*ap, long long), spec->precition);
-	// else if (ft_strcmp(spec->length, "z") == 0)
-		// str = ft_int_to_str(va_arg(*ap, ssize_t), spec->precition);
-	// else if (ft_strcmp(spec->length, "j") == 0)
-		// str = ft_int_to_str(va_arg(*ap, intmax_t), spec->precition);
+	else if (spec->length == 5)
+		str = ft_int_to_str(va_arg(*ap, ssize_t), spec->precition);
+	else if (spec->length == 6)
+		str = ft_int_to_str(va_arg(*ap, intmax_t), spec->precition);
 	else
 		str = ft_itoa(0);
 	return (str);
@@ -55,20 +55,20 @@ char	*ft_dispatch_uint(t_specifier *spec, va_list *ap)
 {
 	char	*str;
 
-	if (ft_strcmp(spec->length, "") == 0)
+	if (spec->length == 0)
 		str = ft_uint_to_str(va_arg(*ap, unsigned int), spec);
-	else if (ft_strcmp(spec->length, "h") == 0)
+	else if (spec->length == 2)
 		str = ft_uint_to_str((unsigned short)va_arg(*ap, unsigned int), spec);
-	else if (ft_strcmp(spec->length, "hh") == 0)
+	else if (spec->length == 1)
 		str = ft_uint_to_str((unsigned char)va_arg(*ap, unsigned int), spec);
-	else if (ft_strcmp(spec->length, "l") == 0)
+	else if (spec->length == 3)
 		str = ft_uint_to_str(va_arg(*ap, unsigned long), spec);
-	else if (ft_strcmp(spec->length, "ll") == 0)
+	else if (spec->length == 4)
 		str = ft_uint_to_str(va_arg(*ap, unsigned long long), spec);
-	else if (ft_strcmp(spec->length, "z") == 0)
+	else if (spec->length == 5)
 		str = ft_uint_to_str(va_arg(*ap, size_t), spec);
-	// else if (ft_strcmp(spec->length, "j") == 0)
-		// str = ft_uint_to_str(va_arg(*ap, uintmax_t), spec);
+	else if (spec->length == 6)
+		str = ft_uint_to_str(va_arg(*ap, uintmax_t), spec);
 	else
 		str = ft_itoa(0);
 	return (str);
@@ -78,7 +78,7 @@ void	ft_dispatch_spec(t_specifier *spec, va_list *ap, int *counter)
 {
 	char	*str;
 	int		i;
-	t_fn      arr[65];
+	t_fn	arr[65];
 
 	ft_init_fn(arr);
 	i = 0;
@@ -86,7 +86,7 @@ void	ft_dispatch_spec(t_specifier *spec, va_list *ap, int *counter)
 		handle_error(0, &spec);
 	if (!(str = ft_manage_flags(str, spec)))
 		handle_error(0, &spec);
-	if (spec->specifier == 'c')
+	if (spec->specifier == 'c' || spec->specifier == 'C')
 	{
 		while (i < (spec->width ? spec->width : 1))
 			ft_putchar(str[i++]);

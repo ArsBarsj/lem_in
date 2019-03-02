@@ -3,29 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   datatypes.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/01 13:19:04 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/03 00:11:30 by ttreutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DATATYPES_H
 # define DATATYPES_H
 
-typedef struct		        s_node
+typedef struct		s_node
 {
-	char			        *name;
-	int				        id;
-	int				        distance;
-	int				        x;
-	int				        y;
-	struct s_node			*next;
-	int						is_free;
-}					        t_node;
+	char			*name;
+	int				id;
+	int				distance;
+	int				x;
+	int				y;
+	struct s_node	*next;
+	int				is_free;
+}					t_node;
 
-
-typedef struct 		s_config
+typedef struct		s_config
 {
 	int				ants;
 	int				start_id;
@@ -94,8 +93,9 @@ t_graph				*graph_new(int verts_n, int ants_n);
 void				graph_del(t_graph **g);
 void				graph_link_add(t_graph *g, int from, int to, int copy);
 void				graph_link_del(t_graph *g, int from, int to, int copy);
-void				graph_close_node(t_graph *g , int node);
-void				graph_close_path(t_graph *g, t_path *path, int start, int end);
+void				graph_close_node(t_graph *g, int node);
+void				graph_close_path(t_graph *g,\
+										t_path *path, int start, int end);
 void				graph_restore_copy(t_graph *g);
 int					**adjmatrix_new(int verts);
 void				adj_matrix_init(int **m, int size);
@@ -114,15 +114,18 @@ void				node_del(t_node **n);
 
 int					bfs(int start_id, int end_id, t_graph *graph);
 t_node				**bfs_path(int start, int end, t_graph *g);
+void				bfs_setup(t_dqueue **q, int start, int *v, t_graph *g);
+void				bfs_update_state(t_dqueue **q, int i, int *v, t_graph *g);
+void				bfs_mod_update(int i, int curr, int *v, int *p);
 
 t_path				*path_new(t_node **path);
 void				path_del(t_path **p);
 void				paths_del(t_path ***p);
 int					count_paths(t_path **p);
+int					path_len_innr(int *pred, int n);
 
 int					find_paths_number(t_graph *g, int start, int end);
 t_path				**get_paths(t_graph *g, int start, int end);
-int					solve(t_graph *g, int start, int end);
-
+int					solve(t_graph *g, t_config *cfg);
 int					ant_move(t_ant **a, t_graph *g, t_path *p, int end);
 #endif

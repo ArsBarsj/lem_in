@@ -18,7 +18,7 @@ char	*ft_cage_x(size_t slen, char *str)
 	char	*new;
 
 	if (!(new = ft_strnew(slen + 2)))
-			return (NULL);
+		return (NULL);
 	new[0] = '0';
 	new[1] = 'x';
 	ft_strlcat(new + 2, str, slen + 1);
@@ -26,12 +26,12 @@ char	*ft_cage_x(size_t slen, char *str)
 	return (new);
 }
 
-char	*ft_cage_X(size_t slen, char *str)
+char	*ft_cage_upx(size_t slen, char *str)
 {
 	char	*new;
 
 	if (!(new = ft_strnew(slen + 2)))
-			return (NULL);
+		return (NULL);
 	new[0] = '0';
 	new[1] = 'X';
 	ft_strlcat(new + 2, str, slen + 1);
@@ -44,7 +44,7 @@ char	*ft_cage_o(size_t slen, char *str)
 	char	*new;
 
 	if (!(new = ft_strnew(slen + 1)))
-			return (NULL);
+		return (NULL);
 	new[0] = '0';
 	ft_strlcat(new + 1, str, slen + 1);
 	free(str);

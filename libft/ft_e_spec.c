@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_e_spec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/04 14:47:16 by artemiy           #+#    #+#             */
-/*   Updated: 2019/01/05 18:28:15 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/01/09 20:19:49 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ char	*ft_add_exponent(char *num, int exponent, char e_char)
 	char	*exp_itoa;
 	char	*str;
 
-	if (!(exp_str = ft_fillstr(4, '0')) || !(exp_itoa = ft_itoa(exponent)))
+	if (!(exp_str = ft_fillstr(4, '0')) ||
+		!(exp_itoa = ft_itoa(exponent)))
 		return (NULL);
 	exp_str[0] = e_char;
 	if (exponent >= 0)
@@ -84,18 +85,21 @@ char	*ft_double_to_exp(long double num, int precition, char specifier)
 		num *= ft_pow(10, -exponent);
 	fstr = ft_ftoa(num, precition);
 	str = ft_add_exponent(fstr, exponent, specifier);
-	return(str);
+	return (str);
 }
 
 char	*ft_dispatch_e(t_specifier *spec, va_list *ap)
 {
 	char	*str;
 
-	if (ft_strcmp(spec->length, "") == 0)
-		str = ft_double_to_exp(va_arg(*ap, double), spec->precition, spec->specifier);
-	else if (ft_strcmp(spec->length, "l") == 0)
-		str = ft_double_to_exp(va_arg(*ap, double), spec->precition, spec->specifier);
+	if (spec->length == 0)
+		str = ft_double_to_exp(va_arg(*ap, double),
+				spec->precition, spec->specifier);
+	else if (spec->length == 3)
+		str = ft_double_to_exp(va_arg(*ap, double),
+				spec->precition, spec->specifier);
 	else
-		str = ft_double_to_exp(va_arg(*ap, long double), spec->precition, spec->specifier);
+		str = ft_double_to_exp(va_arg(*ap, long double),
+				spec->precition, spec->specifier);
 	return (str);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bfs_algs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/01 13:12:55 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/02 23:34:14 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "libft/libft.h"
 #include "datatypes.h"
 
-int	find_paths_number(t_graph *g, int start, int end)
+int		find_paths_number(t_graph *g, int start, int end)
 {
 	t_node		**path;
 	int			counter;
@@ -23,7 +23,7 @@ int	find_paths_number(t_graph *g, int start, int end)
 	int			i;
 
 	counter = 0;
-	while ((path  = bfs_path(start, end, g)))
+	while ((path = bfs_path(start, end, g)))
 	{
 		counter++;
 		i = 0;
@@ -66,11 +66,13 @@ t_path	**get_paths(t_graph *g, int start, int end)
 	return (paths);
 }
 
-void	select_path(t_graph *g, int end, t_path **paths, int paths_n, int ant_i)
+void	select_path(t_graph *g, int end, t_path **paths, int ant_i)
 {
 	int	i;
+	int	paths_n;
 
 	i = 0;
+	paths_n = count_paths(paths);
 	while (i < paths_n && g->ants_n - (paths[i]->len - paths[0]->len) >= 2)
 		i++;
 	i = (i == 0 ? 0 : i - 1);
@@ -80,41 +82,41 @@ void	select_path(t_graph *g, int end, t_path **paths, int paths_n, int ant_i)
 		g->ants[ant_i]->path_id = i;
 }
 
-void	solve_inner(t_graph *g, int start, int end, t_path **paths, int pn)
+void	solve_inner(t_graph *g, t_config *c, t_path **paths, int pn)
 {
 	int		total_ants;
-	int		ant_i;
+	int		i;
 
 	total_ants = g->ants_n;
 	while (g->ants_n)
 	{
-		ant_i = 0;
-		while (ant_i < total_ants && pn)
+		i = 0;
+		while (i < total_ants && pn)
 		{
-			if (g->ants[ant_i] && g->ants[ant_i]->node->id == start)
-				select_path(g, end, paths, pn, ant_i);
-			else if (g->ants[ant_i])
-				ant_move(&g->ants[ant_i], g, paths[g->ants[ant_i]->path_id], end);
-			ant_i++;
+			if (g->ants[i] && g->ants[i]->node->id == c->start_id)
+				select_path(g, c->end_id, paths, i);
+			else if (g->ants[i])
+				ant_move(&g->ants[i], g, paths[g->ants[i]->path_id], c->end_id);
+			i++;
 		}
 		graph_restore_copy(g);
 		write(1, "\n", 1);
 	}
 }
 
-int		solve(t_graph *g, int start, int end)
+int		solve(t_graph *g, t_config *cfg)
 {
 	t_path	**paths;
 	int		paths_n;
 
-	if (!(paths = get_paths(g, start, end)))
-		return(0);
+	if (!(paths = get_paths(g, cfg->start_id, cfg->end_id)))
+		return (0);
 	if (!(paths_n = count_paths(paths)))
 	{
 		paths_del(&paths);
-		return(0);
+		return (0);
 	}
-	solve_inner(g, start, end, paths, paths_n);
+	solve_inner(g, cfg, paths, paths_n);
 	paths_del(&paths);
 	return (1);
 }

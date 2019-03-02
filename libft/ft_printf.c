@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 20:58:33 by artemiy           #+#    #+#             */
-/*   Updated: 2019/01/10 22:46:52 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/03 00:09:43 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "ft_printf.h"
+#include "libft.h"
 
-void    ft_init_fn(t_fn arr[65])
+void	ft_init_fn(t_fn arr[65])
 {
 	arr['c' - 'A'] = &ft_get_char;
 	arr['C' - 'A'] = &ft_get_char;
@@ -37,7 +38,7 @@ void    ft_init_fn(t_fn arr[65])
 	arr['g' - 'A'] = &ft_dispatch_g;
 }
 
-void	dispatch_specifier(char	**fmt, int *counter, va_list *ap)
+void	dispatch_specifier(char **fmt, int *counter, va_list *ap)
 {
 	t_specifier	*sp;
 
@@ -51,7 +52,7 @@ void	dispatch_specifier(char	**fmt, int *counter, va_list *ap)
 	}
 	if (!**fmt)
 		return ;
-	sp = create_specifier(fmt);
+	sp = create_specifier2(fmt);
 	if (!is_valid_spec(&sp, counter))
 	{
 		spec_del(&sp);
@@ -60,7 +61,7 @@ void	dispatch_specifier(char	**fmt, int *counter, va_list *ap)
 	ft_dispatch_spec(sp, ap, counter);
 }
 
-void    ft_init_colors(t_color arr[13])
+void	ft_init_colors(t_color arr[12])
 {
 	arr[0].color = "{red}";
 	arr[0].replace = "\e[31m";
@@ -86,21 +87,19 @@ void    ft_init_colors(t_color arr[13])
 	arr[10].replace = "\e[91m";
 	arr[11].color = "{lgreen}";
 	arr[11].replace = "\e[92m";
-	arr[12].color = "{lyellow}";
-	arr[12].replace = "\e[93m";
 }
 
-char    *ft_color_fmt(char *fmt)
+char	*ft_color_fmt(char *fmt)
 {
-	int     i;
-	char    *tmp;
-	t_color arr[13];
+	int		i;
+	char	*tmp;
+	t_color arr[12];
 
 	i = 0;
 	ft_init_colors(arr);
 	tmp = ft_strnew(ft_strlen(fmt));
 	tmp = ft_strcpy(tmp, fmt);
-	while (i < 13)
+	while (i < 12)
 	{
 		while (ft_strstr(tmp, arr[i].color))
 		{
@@ -111,11 +110,11 @@ char    *ft_color_fmt(char *fmt)
 	return (tmp);
 }
 
-int	ft_printf(char *fmt, ...)
+int		ft_printf(char *fmt, ...)
 {
 	va_list ap;
 	int		counter;
-	char    *cfmt;
+	char	*cfmt;
 	char	*start;
 
 	if (!fmt)

@@ -25,7 +25,7 @@ int		ft_num_len(unsigned long long n, int base)
 	return (len);
 }
 
-char 	*ft_ullitoa_base(unsigned long long num, const char *sym, int base)
+char	*ft_ullitoa_base(unsigned long long num, const char *sym, int base)
 {
 	char	*str;
 	int		len;

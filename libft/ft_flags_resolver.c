@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_flags_resolver.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 00:50:48 by artemiy           #+#    #+#             */
-/*   Updated: 2019/01/08 23:13:39 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/01/09 21:51:10 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char		*ft_resolve_plus(char *str)
 {
 	char	*new;
 	size_t	slen;
-	
+
 	slen = ft_strlen(str);
 	if (ft_isdigit(*str))
 	{
@@ -38,8 +38,9 @@ char		*ft_resolve_cage(char *str, t_specifier *spec)
 	slen = ft_strlen(str);
 	if (spec->specifier == 'x' && ft_strcmp("0", str) && ft_strcmp("", str))
 		return (ft_cage_x(slen, str));
-	else if (spec->specifier == 'X' && ft_strcmp("0", str) && ft_strcmp("", str))
-		return (ft_cage_X(slen, str));
+	else if (spec->specifier == 'X' && ft_strcmp("0", str) &&
+			ft_strcmp("", str))
+		return (ft_cage_upx(slen, str));
 	else if ((spec->specifier == 'o' || spec->specifier == 'O') && *str != '0')
 		return (ft_cage_o(slen, str));
 	return (str);
@@ -49,7 +50,7 @@ char		*ft_resolve_space(char *str)
 {
 	char	*new;
 	size_t	slen;
-	
+
 	slen = ft_strlen(str);
 	if (ft_isdigit(*str))
 	{
@@ -88,9 +89,8 @@ char		*ft_manage_flags(char *str, t_specifier *spec)
 		new_str = ft_resolve_plus(str);
 	else if (spec->flags->cage && ft_strchr("xXoO", spec->specifier))
 		new_str = ft_resolve_cage(str, spec);
-	else if (spec->flags->space && (spec->specifier == 'd' || spec->specifier == 'i'))
+	else if (spec->flags->space && ft_strchr("di", spec->specifier))
 		new_str = ft_resolve_space(str);
-	// ft_putstr(new_str);
 	if ((int)ft_strlen(new_str) < spec->width && spec->specifier != 'c')
 		new_str = ft_resolve_width(new_str, spec, spec->width);
 	return (new_str);

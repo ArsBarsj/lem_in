@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   graph_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 14:38:20 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/28 20:24:56 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/02 23:22:31 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int		**adjmatrix_new(int verts)
 		return (NULL);
 	adj = (int **)malloc(verts * sizeof(int *));
 	if (adj == NULL)
-		return(NULL);
+		return (NULL);
 	i = 0;
 	while (i < verts)
 	{
@@ -85,7 +85,7 @@ int		**adjmatrix_new(int verts)
 	return (adj);
 }
 
-void		graph_del(t_graph **g)
+void	graph_del(t_graph **g)
 {
 	if (g && *g)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_g_spec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/04 21:06:55 by artemiy           #+#    #+#             */
-/*   Updated: 2019/01/05 19:21:07 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/01/09 20:20:40 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,7 @@ static int	ft_numlen_float(long long int n)
 	return (len);
 }
 
-/*
-static int	ft_strndigit(char *str, int n)
-{
-	int length;
-
-	length = 0;
-	while (*str && length <= n)
-	{
-		if (ft_isdigit(*str))
-			length++;
-		str++;
-	}
-	return (length);
-}*/
-
-char	*ft_strrstrip_zeros(char *str)
+char		*ft_strrstrip_zeros(char *str)
 {
 	int		i;
 	char	*res;
@@ -67,7 +52,7 @@ char	*ft_strrstrip_zeros(char *str)
 	return (res);
 }
 
-char	*ft_double_to_g(long double num, t_specifier *spec)
+char		*ft_double_to_g(long double num, t_specifier *spec)
 {
 	char	*fstr;
 	char	*str;
@@ -84,21 +69,20 @@ char	*ft_double_to_g(long double num, t_specifier *spec)
 	else
 		fstr = ft_ftoa(num, precition - ft_numlen_float((long long)num));
 	str = ft_strrstrip_zeros(fstr);
-	return(str);
+	return (str);
 }
 
-char	*ft_dispatch_g(t_specifier *spec, va_list *ap)
+char		*ft_dispatch_g(t_specifier *spec, va_list *ap)
 {
 	char	*str;
 
 	if (spec->precition == 0)
 		spec->precition = 1;
-	if (ft_strcmp(spec->length, "") == 0)
+	if (spec->length == 0)
 		str = ft_double_to_g(va_arg(*ap, double), spec);
-	else if (ft_strcmp(spec->length, "l") == 0)
+	else if (spec->length == 3)
 		str = ft_double_to_g(va_arg(*ap, double), spec);
 	else
 		str = ft_double_to_g(va_arg(*ap, long double), spec);
 	return (str);
 }
-

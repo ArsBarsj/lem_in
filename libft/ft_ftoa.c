@@ -44,7 +44,7 @@ long long	ft_pow(long long base, long long power)
 	return (ret);
 }
 
-char	*ft_add_fract(char *int_str, long long fract, int precition)
+char		*ft_add_fract(char *int_str, long long fract, int precition)
 {
 	char	*str;
 	char	*tmp;
@@ -72,7 +72,7 @@ char	*ft_add_fract(char *int_str, long long fract, int precition)
 
 char		*ft_ftoa(long double num, int precition)
 {
-	long long	integer ;
+	long long	integer;
 	char		*str;
 	char		*tmp;
 

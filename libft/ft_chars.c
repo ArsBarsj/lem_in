@@ -13,9 +13,9 @@
 #include "ft_printf.h"
 #include <stdlib.h>
 
-char    *ft_get_char(t_specifier *spec, va_list *ap)
+char	*ft_get_char(t_specifier *spec, va_list *ap)
 {
-	char *c;
+	char	*c;
 
 	(void)spec;
 	c = ft_make_str(spec);
@@ -28,10 +28,10 @@ char    *ft_get_char(t_specifier *spec, va_list *ap)
 	return (c);
 }
 
-char    *ft_get_str(t_specifier *spec, va_list *ap)
+char	*ft_get_str(t_specifier *spec, va_list *ap)
 {
-	char    *str;
-	char    *dst;
+	char	*str;
+	char	*dst;
 
 	str = va_arg(*ap, char *);
 	if (str == NULL)
@@ -46,7 +46,7 @@ char    *ft_get_str(t_specifier *spec, va_list *ap)
 		return (NULL);
 	if (spec->precition < (int)ft_strlen(str) && spec->precition >= 0)
 	{
-		dst = ft_strncpy(dst, str, spec->precition);
+		dst = ft_strncpy(dst, str, (size_t)spec->precition);
 		return (dst);
 	}
 	else
@@ -54,27 +54,27 @@ char    *ft_get_str(t_specifier *spec, va_list *ap)
 	return (dst);
 }
 
-char    *ft_strreplace(char *source, char *replace, char *str)
+char	*ft_strreplace(char *source, char *rpl, char *str)
 {
-	char                *ssub;
-	char                *left;
-	unsigned long       len;
+	char				*ssub;
+	char				*left;
+	unsigned long		len;
 
-	ssub = ft_strstr(source, replace);
+	ssub = ft_strstr(source, rpl);
 	len = ssub - source;
-	left = ft_strnew(len + ft_strlen(str) + ft_strlen(ssub + ft_strlen(replace)));
+	left = ft_strnew(len + ft_strlen(str) + ft_strlen(ssub + ft_strlen(rpl)));
 	left = ft_strncpy(left, source, len);
 	left = ft_strcat(left, str);
-	left = ft_strcat(left, ssub + ft_strlen(replace));
+	left = ft_strcat(left, ssub + ft_strlen(rpl));
 	return (left);
 }
 
-char    *ft_get_nonstr(char **str, char c)
+char	*ft_get_nonstr(char **str, char c)
 {
-	char    *nstr;
-	char    *ch;
-	char    *newch;
-	char    *code;
+	char	*nstr;
+	char	*ch;
+	char	*newch;
+	char	*code;
 
 	if (!(ch = ft_strnew(1)))
 		return (NULL);
@@ -90,11 +90,11 @@ char    *ft_get_nonstr(char **str, char c)
 	return (*str);
 }
 
-char    *ft_get_nstr(t_specifier *spec, va_list *ap)
+char	*ft_get_nstr(t_specifier *spec, va_list *ap)
 {
-	char    *str;
-	char    *start;
-	char    *tmp;
+	char	*str;
+	char	*start;
+	char	*tmp;
 
 	str = ft_get_str(spec, ap);
 	if (!(tmp = ft_strnew(ft_strlen(str))))

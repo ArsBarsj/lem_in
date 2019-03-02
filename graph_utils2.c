@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   graph_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 14:50:06 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/25 14:53:56 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/02 23:23:06 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "datatypes.h"
-
 
 void		graph_link_add(t_graph *g, int from, int to, int copy)
 {
@@ -41,7 +40,7 @@ void		graph_link_del(t_graph *g, int from, int to, int copy)
 	}
 }
 
-void		graph_close_node(t_graph *g , int node)
+void		graph_close_node(t_graph *g, int node)
 {
 	int	i;
 
@@ -54,4 +53,13 @@ void		graph_close_node(t_graph *g , int node)
 			i++;
 		}
 	}
+}
+
+int			dqueue_peak(t_dqueue *head)
+{
+	if (head)
+	{
+		return (head->node_id);
+	}
+	return (-1);
 }

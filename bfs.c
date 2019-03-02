@@ -3,47 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   bfs.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:08:24 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/22 00:31:56 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/02 23:48:46 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "datatypes.h"
-
-void	bfs_setup(t_dqueue **q, int start, int *v, t_graph *g)
-{
-	if (q && g)
-	{
-		*q = dqueue_new(start);
-		init_arr(v, g->verts_n, 0);
-		v[start] = 1;
-		g->nodes[start]->distance = 0;
-	}
-}
-
-void	bfs_update_state(t_dqueue **q, int i, int *v, t_graph *g, int curr)
-{
-	if (q && g)
-	{
-		dqueue_push(q, dqueue_new(i));
-		v[i] = 1;
-		g->nodes[i]->distance = g->nodes[curr]->distance + 1;
-	}
-}
-
-void	bfs_mod_update(t_dqueue **q, int i, int curr, int *v, int *p)
-{
-	if (q && v && p)
-	{
-		v[i] = 1;
-		p[i] = curr;
-		dqueue_push(q, dqueue_new(i));
-	}
-}
 
 int		bfs(int start_id, int end_id, t_graph *graph)
 {
@@ -56,12 +25,14 @@ int		bfs(int start_id, int end_id, t_graph *graph)
 	while (q)
 	{
 		current = dqueue_pop(&q);
-		i = 0;
-		while (i < graph->verts_n)
+		i = -1;
+		while (++i < graph->verts_n)
 		{
 			if (graph->matrix_copy[current][i] && !visited[i])
-				bfs_update_state(&q, i, visited, graph, current);
-			i++;
+			{
+				bfs_update_state(&q, i, visited, graph);
+				graph->nodes[i]->distance = graph->nodes[current]->distance + 1;
+			}
 		}
 		if (current == end_id)
 		{
@@ -75,21 +46,22 @@ int		bfs(int start_id, int end_id, t_graph *graph)
 int		bfs_modified(int start_id, int end_id, t_graph *g, int *pred)
 {
 	int			i;
-	int			verts_n;
 	int			visited[g->verts_n];
 	int			current;
 	t_dqueue	*q;
 
 	bfs_setup(&q, start_id, visited, g);
-	verts_n = g->verts_n;
 	while (q)
 	{
 		current = dqueue_pop(&q);
 		i = -1;
-		while (++i < verts_n)
+		while (++i < g->verts_n)
 		{
 			if (g->matrix_copy[current][i] && !visited[i])
-				bfs_mod_update(&q, i, current, visited, pred);
+			{
+				bfs_mod_update(i, current, visited, pred);
+				dqueue_push(&q, dqueue_new(i));
+			}
 		}
 		if (current == end_id)
 		{
@@ -98,21 +70,6 @@ int		bfs_modified(int start_id, int end_id, t_graph *g, int *pred)
 		}
 	}
 	return (0);
-}
-
-int		path_len_innr(int *pred, int n)
-{
-	int	i;
-	int	count;
-
-	i = n;
-	count = 1;
-	while (pred[i] != -1)
-	{
-		i = pred[i];
-		count++;
-	}
-	return (count);
 }
 
 t_node	**bfs_path(int start, int end, t_graph *g)

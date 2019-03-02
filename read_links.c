@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_links.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 11:35:51 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/28 20:07:57 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/02 23:18:04 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,16 @@ int		**ft_create_links(t_config **config)
 	int		**links;
 
 	if (!(links = (int **)malloc(sizeof(int *) * (*config)->rooms_n)))
-		return (NULL); // Free everything
+		return (NULL);
 	i = 0;
 	while (i < (*config)->rooms_n)
 	{
 		links[i] = (int *)malloc(sizeof(int) * (*config)->rooms_n);
 		if (!links[i])
-		{
-			return (NULL);// Free everything
-		}
+			return (NULL);
 		j = 0;
 		while (j < (*config)->rooms_n)
-			links[i][j++] = 0; // Use here init_arr from master branch.
+			links[i][j++] = 0;
 		i++;
 	}
 	return (links);
@@ -52,7 +50,7 @@ int		ft_set_link(char *line, t_config **config, t_tree *root)
 	if (!ft_is_link(line) || !(splited = ft_strsplit(line, '-')))
 		return (1);
 	from = tree_get(root, splited[0]);
-	to  = tree_get(root, splited[1]);
+	to = tree_get(root, splited[1]);
 	if (!from || !to)
 	{
 		ft_clean_str_arr(splited);
@@ -113,18 +111,19 @@ int		ft_links_proccess(char **tab, t_config **cfg, t_tree *root, char **line)
 	return (1);
 }
 
-int		ft_read_links(char **line, int fd, t_config **config, t_tree *root)
+int		ft_read_links(char **line, int fd, t_config **cfg, t_tree *root)
 {
 	int		ret;
 	char	**tab;
 
 	if (*line)
 		ft_printf("%s\n", *line);
-	if (!*line || !((*config)->links = ft_create_links(config)))
+	if (!*line || !((*cfg)->links = ft_create_links(cfg)))
 		return (0);
-	ret = ft_set_link(*line, config, root);
+	ret = ft_set_link(*line, cfg, root);
 	free(*line);
-	if ((*config)->start_id >= (*config)->rooms_n || (*config)->end_id >= (*config)->rooms_n)
+	if ((*cfg)->start_id >= (*cfg)->rooms_n ||
+		(*cfg)->end_id >= (*cfg)->rooms_n)
 		return (0);
 	if (!ret || !(*line = read_links_file(fd, *line, 1024)))
 		return (0);
@@ -134,7 +133,7 @@ int		ft_read_links(char **line, int fd, t_config **config, t_tree *root)
 		links_cleanup(*line, tab);
 		return (1);
 	}
-	if (!ft_links_proccess(tab, config, root, line))
+	if (!ft_links_proccess(tab, cfg, root, line))
 		return (0);
 	links_cleanup(*line, tab);
 	return (1);
