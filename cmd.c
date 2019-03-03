@@ -32,12 +32,16 @@ int		ft_manage_cmd(t_config **config, int flag, int id, int flags[2])
 	{
 		(*config)->start_id = id;
 		flags[0] = 1;
+		if ((*config)->end_id == (*config)->start_id)
+			return (0);
 		return (1);
 	}
 	else if (flag == 2)
 	{
 		(*config)->end_id = id;
 		flags[1] = 1;
+		if ((*config)->end_id == (*config)->start_id)
+			return (0);
 		return (1);
 	}
 	return (0);

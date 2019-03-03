@@ -49,7 +49,8 @@ int			ft_read_ants(char **line, t_config **config, int fd)
 		}
 		free(*line);
 	}
-	ft_printf("%s\n", *line);
+	ft_putstr(*line);
+	ft_putchar('\n');
 	if (*line && ft_check_ant(*line))
 	{
 		(*config)->ants = ft_atoi(*line);
