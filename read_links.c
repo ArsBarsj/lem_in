@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_links.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 11:35:51 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/02 23:18:04 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/03 15:39:00 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,7 @@ int		ft_read_links(char **line, int fd, t_config **cfg, t_tree *root)
 		return (0);
 	ret = ft_set_link(*line, cfg, root);
 	free(*line);
-	if ((*cfg)->start_id >= (*cfg)->rooms_n ||
-		(*cfg)->end_id >= (*cfg)->rooms_n)
+	if (start_end_error((*cfg)))
 		return (0);
 	if (!ret || !(*line = read_links_file(fd, *line, 1024)))
 		return (0);

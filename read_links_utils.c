@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 13:12:27 by artemiy           #+#    #+#             */
-/*   Updated: 2019/02/28 19:12:49 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/03 15:40:17 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,18 @@ int		check_empty_lines(char **tab, char *line)
 	if (tab_len < lines && line[len - 1] == '\n')
 		return (0);
 	return (1);
+}
+
+int		start_end_error(t_config *cfg)
+{
+	if (cfg)
+	{
+		if (cfg->start_id >= cfg->rooms_n || cfg->end_id >= cfg->rooms_n)
+			return (1);
+		if (cfg->start_id == cfg->end_id)
+			return (1);
+		if (cfg->start_id < 0 || cfg->end_id < 0)
+			return (1);
+	}
+	return (0);
 }

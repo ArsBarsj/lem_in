@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lemin.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 23:29:56 by ttreutel          #+#    #+#             */
-/*   Updated: 2019/03/03 00:31:49 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/03 15:38:23 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int			ft_is_comm(char *line);
 int			ft_is_cmd(char *line);
 int			ft_is_start(char *line);
 int			ft_is_link(char *line);
+int			start_end_error(t_config *cfg);
 
 int			ft_read_map(int fd, t_config **config);
 int			ft_read_ants(char **line, t_config **config, int fd);
