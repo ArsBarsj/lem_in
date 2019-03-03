@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ants.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 20:57:43 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/03 00:08:14 by ttreutel         ###   ########.fr       */
+/*   Updated: 2019/03/03 18:12:07 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int			ant_move(t_ant **a, t_graph *g, t_path *path, int end)
 {
 	int	to;
 
-	if ((*a) && g && g->nodes[path->path[(*a)->step + 1]->id]->is_free &&
+	if (g && g->nodes[path->path[(*a)->step + 1]->id]->is_free &&
 		g->matrix_copy[(*a)->node->id][path->path[(*a)->step + 1]->id])
 	{
 		to = g->nodes[path->path[(*a)->step + 1]->id]->id;
@@ -26,7 +26,7 @@ int			ant_move(t_ant **a, t_graph *g, t_path *path, int end)
 		(*a)->node->is_free = 1;
 		(*a)->node = g->nodes[to];
 		(*a)->step++;
-		ft_printf("L%d-%s ", (*a)->id, (*a)->node->name);
+		ft_printf("L%d-%s ", (*a)->id + 1, (*a)->node->name);
 		if (to != end)
 			(*a)->node->is_free = 0;
 		else
@@ -76,7 +76,7 @@ t_ant		**ant_new_list(int n)
 		}
 		ants[i]->id = i;
 		ants[i]->step = 0;
-		ants[i]->path_id = 0;
+		ants[i]->path_id = -1;
 		ants[i]->node = NULL;
 		i++;
 	}

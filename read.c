@@ -6,7 +6,7 @@
 /*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/03/03 00:23:44 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/03 16:50:42 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int			ft_read_ants(char **line, t_config **config, int fd)
 		}
 		free(*line);
 	}
-	ft_putstr(*line);
+	if (line && *line)
+		ft_putstr(*line);
 	ft_putchar('\n');
 	if (*line && ft_check_ant(*line))
 	{
@@ -96,13 +97,13 @@ int			main(void)
 	cfg = (t_config *)malloc(sizeof(t_config));
 	ft_init_config(&cfg);
 	x = ft_read_map(0, &cfg);
+	ft_printf("\n");
 	if (x && (cfg->start_id < 0 || cfg->end_id < 0))
 	{
 		config_del(cfg);
 		error();
 	}
-	else if (cfg->start_id == cfg->end_id ||
-		cfg->start_id >= cfg->rooms_n || cfg->end_id >= cfg->rooms_n)
+	else if (start_end_error(cfg))
 	{
 		config_del(cfg);
 		error();
