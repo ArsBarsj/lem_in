@@ -96,6 +96,7 @@ void				graph_link_del(t_graph *g, int from, int to, int copy);
 void				graph_close_node(t_graph *g, int node);
 void				graph_close_path(t_graph *g,\
 										t_path *path, int start, int end);
+void                paths_resote_links(t_path **paths, t_graph *g);
 void				graph_restore_copy(t_graph *g);
 int					**adjmatrix_new(int verts);
 void				adj_matrix_init(int **m, int size);

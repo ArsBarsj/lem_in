@@ -55,11 +55,25 @@ void		graph_close_node(t_graph *g, int node)
 	}
 }
 
-int			dqueue_peak(t_dqueue *head)
+void        paths_resote_links(t_path **paths, t_graph *g)
 {
-	if (head)
+	int     i;
+	int     j;
+	t_node  *current;
+	t_node  *next;
+
+	i = 0;
+	while (paths[i])
 	{
-		return (head->node_id);
+		j = 0;
+		current = paths[i]->path[j];
+		while (current && paths[i]->path[j + 1])
+		{
+			current = paths[i]->path[j];
+			next = paths[i]->path[j + 1];
+			graph_link_add(g, current->id, next->id, 1);
+			j++;
+		}
+		i++;
 	}
-	return (-1);
 }

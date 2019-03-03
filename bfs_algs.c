@@ -90,8 +90,6 @@ void	solve_inner(t_graph *g, t_config *c, t_path **paths, int pn)
 	int			p_counter;
 	static int	paths_n = 0;
 
-	int			sel = 0;
-	int			move = 0;
 	total_ants = g->ants_n;
 	if (!paths_n)
 		paths_n = count_paths(paths);
@@ -104,23 +102,16 @@ void	solve_inner(t_graph *g, t_config *c, t_path **paths, int pn)
 			if (g->ants[i] && g->ants[i]->node->id == c->start_id)
 			{
 				if (p_counter <= paths_n)
-				{
-					sel++;
 					select_path(g, c->end_id, paths, i);
-				}
 				p_counter++;
 			}
 			else if (g->ants[i])
-			{
-				move++;
 				ant_move(&g->ants[i], g, paths[g->ants[i]->path_id], c->end_id);
-			}
 			i++;
 		}
-		graph_restore_copy(g);
+		paths_resote_links(paths, g);
 		write(1, "\n", 1);
 	}
-	ft_printf("%d %d\n", sel, move);
 }
 
 int		solve(t_graph *g, t_config *cfg)

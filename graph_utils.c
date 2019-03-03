@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "libft/libft.h"
 #include "datatypes.h"
 
 void	init_arr(int *arr, int size, int value)
@@ -74,8 +75,7 @@ int		**adjmatrix_new(int verts)
 	while (i < verts)
 	{
 		adj[i] = (int *)malloc(verts * sizeof(int));
-		if (adj == NULL)
-		{
+		if (adj[i] == NULL) {
 			del_tab(adj, i);
 			return (NULL);
 		}
