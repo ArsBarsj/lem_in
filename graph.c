@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   graph.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 01:33:36 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/02 23:20:55 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/04 20:55:11 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void		graph_close_path(t_graph *g, t_path *path, int start, int end)
 			if (path->path[i]->id != start && path->path[i]->id != end)
 				graph_close_node(g, path->path[i]->id);
 			else if (path->path[i]->id == start)
-				graph_link_del(g, start, path->path[i + 1]->id, 1);
+				graph_link_del(&g, start, path->path[i + 1]->id, 1);
 			i++;
 		}
 	}

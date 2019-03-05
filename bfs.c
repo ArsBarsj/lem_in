@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bfs.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:08:24 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/02 23:48:46 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/04 21:52:45 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int		bfs_modified(int start_id, int end_id, t_graph *g, int *pred)
 	t_dqueue	*q;
 
 	bfs_setup(&q, start_id, visited, g);
+	// print_matrix(g->matrix_copy, g->verts_n);
 	while (q)
 	{
 		current = dqueue_pop(&q);

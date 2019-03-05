@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   datatypes.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/03 00:11:30 by ttreutel         ###   ########.fr       */
+/*   Updated: 2019/03/04 21:45:16 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct		s_path
 {
 	t_node			**path;
 	int				len;
+	int				ants_n;
 }					t_path;
 
 typedef struct		s_tree
@@ -92,7 +93,7 @@ t_graph				*graph_create(t_config *cfg);
 t_graph				*graph_new(int verts_n, int ants_n);
 void				graph_del(t_graph **g);
 void				graph_link_add(t_graph *g, int from, int to, int copy);
-void				graph_link_del(t_graph *g, int from, int to, int copy);
+void				graph_link_del(t_graph **g, int from, int to, int copy);
 void				graph_close_node(t_graph *g, int node);
 void				graph_close_path(t_graph *g,\
 										t_path *path, int start, int end);
@@ -129,4 +130,6 @@ int					find_paths_number(t_graph *g, int start, int end);
 t_path				**get_paths(t_graph *g, int start, int end);
 int					solve(t_graph *g, t_config *cfg);
 int					ant_move(t_ant **a, t_graph *g, t_path *p, int end);
+
+void				print_matrix(int **m, int size);
 #endif
