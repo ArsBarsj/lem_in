@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 14:50:06 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/04 20:51:37 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/05 19:47:11 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,22 @@ void		graph_link_del(t_graph **g, int from, int to, int copy)
 	{
 		(*g)->matrix_copy[from][to] = 0;
 		(*g)->matrix_copy[to][from] = 0;
+	}
+}
+
+void		graph_open_node(t_graph *g, int node)
+{
+	int	i;
+
+	if (g)
+	{
+		i = 0;
+		while (i < g->verts_n)
+		{
+			if (g->matrix[i][node])
+				graph_link_add(g, node, i, 1);
+			i++;
+		}
 	}
 }
 

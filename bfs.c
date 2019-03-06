@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:08:24 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/04 21:52:45 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/06 19:30:13 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int		bfs(int start_id, int end_id, t_graph *graph)
 			return (graph->nodes[end_id]->distance);
 		}
 	}
-	return (2147483647);
+	return (0);
 }
 
 int		bfs_modified(int start_id, int end_id, t_graph *g, int *pred)

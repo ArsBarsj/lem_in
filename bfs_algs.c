@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/05 03:13:51 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/07 00:10:55 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,109 +263,151 @@ int		get_lines_n(t_path **paths, int ants)
 	return (total_lines - 1);
 }
 
-void	solve_inner2(t_graph *g, t_config *cfg)
+int		count_children(t_graph *g, int room, t_config *cfg)
 {
-	t_path	**shortest;
-	t_path	**best;
-	t_path	**tmp;
-	t_dqueue	*closed_links = dqueue_new(-1);
-	t_path	**tmp2;
-	t_node	**new_path;
-	int		min_lines;
-	int		n;
-	int		m;
-	int		i;
-	int		from;
-	int		to;
-	// int		original_n;
+	int	i;
+	int	children;
 
-	shortest = get_paths(g, cfg->start_id, cfg->end_id);
-	best = shortest;
-	min_lines = get_lines_n(shortest, g->ants_n);
-	n = count_paths(best) - 1; // index of last path
-	m = best[n]->len - 1; // index of last element in last path
-	ft_printf("count_paths = %d\n", n);
-	// print_matrix(g->matrix_copy, g->verts_n);
-	// while (g->matrix_copy[cfg->start_id][shortest[0]->path[1]->id] && n >= 0)
-	while (n >= 0 && m >= 0)
+	i = 0;
+	children = 0;
+	while (i < g->verts_n)
 	{
-		ft_printf("min_lines = %d\n", min_lines);
-		ft_printf("n = %d\n", n);
-		ft_printf("m = %d\n", m);
-		paths_print(best);
-
-		path_restore_links(best[n], g);
-		// print_matrix(g->matrix_copy, g->verts_n);
-		ft_printf("%s|%d -> ",best[n]->path[m - 1]->name, best[n]->path[m - 1]->id);
-		ft_printf("%s|%d\n",best[n]->path[m]->name, best[n]->path[m]->id);
-		graph_link_del(&g, best[n]->path[m - 1]->id, best[n]->path[m]->id, 2);
-		dqueue_push_front(&closed_links, dqueue_new(best[n]->path[m]->id));
-		dqueue_push_front(&closed_links, dqueue_new(best[n]->path[m - 1]->id));
-		// tmp = best[n];
-		tmp2 = best;
-		tmp = get_paths2(g, cfg->start_id, cfg->end_id);
-		ft_printf("tmp\n", m);
-		paths_print(tmp);
-		if (min_lines > get_lines_n(tmp, g->ants_n))
-		{
-			// ft_printf("TMP ADD TO PATH\n", m);
-			best == shortest ? 0 : free(best);
-			best = tmp;
-			if (closed_links)
-				graph_link_add(g, dqueue_pop(&closed_links), dqueue_pop(&closed_links), 2);
-			// new_path = bfs_path(cfg->start_id, cfg->end_id, g);
-			while ((new_path = bfs_path(cfg->start_id, cfg->end_id, g)))
-			{
-				if (n == count_paths(best) - 1)
-				{
-					// resize
-					tmp2 = best;
-					best = (t_path **)malloc(sizeof(t_path *) * (count_paths(best) + 2));
-					i = 0;
-					while (i < count_paths(tmp2))
-					{
-						best[i] = tmp2[i];
-						i++;
-					}
-					best[i] = path_new(new_path);
-					best[i + 1] = NULL;
-				}
-				n = i;
-				m = best[i]->len - 1;
-				ft_printf("%d\n", i);
-			}
-			n = count_paths(best) - 1;
-			m = best[n]->len - 1;
-			min_lines = get_lines_n(best, g->ants_n);
-		}
-		else if (m > 1)
-		{
-			if (closed_links)
-				graph_link_add(g, dqueue_pop(&closed_links), dqueue_pop(&closed_links), 2);
-			m--;
-		}
-		else if (n > 0)
-		{
-			ft_printf("lols");
-			while (closed_links)
-			{
-				from = dqueue_pop(&closed_links);
-				to = dqueue_pop(&closed_links);
-				if (from >= 0 && to >= 0)
-					graph_link_add(g, from, to, 2);
-			}
-			n--;
-			m = best[n]->len - 1;
-		}
-		else
-		{
-			break;
-		}
+		if (g->matrix_copy[room][i] &&
+		g->nodes[i]->distance == g->nodes[room]->distance + 1)
+			children++;
+		else if (g->matrix_copy[room][i] && cfg->end_id == i)
+			children++;
+		i++;
 	}
-	ft_printf("\n___________\n");
-	ft_printf("%d\n", get_lines_n(best, g->ants_n));
-	paths_print(best);
-	paths_del(&shortest);
+	return (children);
+}
+
+int		find_child_with_min_children(t_graph *g ,int from, t_config *cfg)
+{
+	int	i;
+	int best_i;
+	int	min;
+
+	i = 0;
+	min = 100000000;
+	best_i = -1;
+	while (i < g->verts_n)
+	{
+		if (g->matrix_copy[from][i] && from != i &&
+			g->nodes[i]->distance == g->nodes[from]->distance + 1)
+		{
+			// ft_printf("%d(%s)\n", i, g->nodes[i]->name);
+			// ft_printf("%d(%s)\n", i, g->nodes[i]->name);
+			if (count_children(g, i, cfg) <= min && count_children(g, i, cfg) > 0)
+			{
+				min = count_children(g, i, cfg);
+				best_i = g->nodes[i]->id;
+			}
+		}
+		else if (i == cfg->end_id && g->matrix_copy[from][i])
+			return (cfg->end_id);
+		i++;
+	}
+	return (best_i);
+}
+
+int		dfs(int start, t_config *cfg, t_graph *g, int min_c)
+{
+	int	delta;
+	int	i;
+
+	if (start == cfg->end_id || !min_c)
+		return (min_c);
+	i = -1;
+	// ft_printf("EEEEEEEE start = %s (%d)\n",g->nodes[start]->name, start);
+	// ft_printf("Best child = %d\n", find_child_with_min_children(g, start, cfg));
+	//ft_printf("%d\n", g->nodes[3]->distance);
+	while (++i < g->verts_n)
+	{
+		if (i != start && g->matrix_copy[start][i] &&
+			g->nodes[i]->is_free &&
+			g->nodes[i]->distance == g->nodes[start]->distance + 1 &&
+			i == find_child_with_min_children(g, start, cfg))
+		{
+			delta = dfs(i, cfg, g, min_c > g->nodes[i]->is_free ? g->nodes[i]->is_free : min_c);
+			if (delta)
+			{
+				g->nodes[start]->is_free = 0;
+				// graph_link_del(&g, start, i, 1);
+				if (start != cfg->start_id)
+					graph_close_node(g, start);
+				ft_printf("->(%d | %s)", start, g->nodes[start]->name);
+				return (delta);
+			}
+		}
+		else if (g->matrix_copy[start][i] && i == cfg->end_id)
+		{
+			delta = dfs(i, cfg, g, min_c > g->nodes[i]->is_free ? g->nodes[i]->is_free : min_c);
+			if (delta)
+			{
+				g->nodes[start]->is_free = 0;
+				// graph_link_del(&g, start, i, 1);
+				if (start != cfg->start_id)
+					graph_close_node(g, start);
+				ft_printf("->(%d | %s)", start, g->nodes[start]->name);
+				return (delta);
+			}
+		}
+		// ft_printf("%d\n", i);
+		// i++;
+	}
+	return (0);
+}
+
+int	find_max_flow(t_graph *g, t_config *cfg)
+{
+	int		max_flow;
+	int		flow;
+
+	max_flow = 0;
+	flow  = 0;
+	bfs(cfg->start_id, cfg->end_id, g);
+	ft_printf("Best child %d\n", find_child_with_min_children(g, 9, cfg));
+	// return (0);
+	while (bfs(cfg->start_id, cfg->end_id, g))
+	{
+		flow = dfs(cfg->start_id, cfg, g, 1); // dfs
+		while (flow != 0)
+		{
+			max_flow += flow;
+			flow = dfs(cfg->start_id, cfg, g, 1); //dfs
+		}
+		ft_printf("TOTAL FLOW %d\n", max_flow);
+	}
+	// flow = dfs(cfg->start_id, cfg, g, 1000000);
+	// max_flow  += flow;
+	// ft_printf("\n");
+	// flow = dfs(cfg->start_id, cfg, g, 1000000);
+	// max_flow  += flow;
+	// ft_printf("\n");
+	// flow = dfs(cfg->start_id, cfg, g, 1000000);
+	// max_flow  += flow;
+	// ft_printf("\n");
+	// flow = dfs(cfg->start_id, cfg, g, 1000000);
+	// max_flow  += flow;
+	// ft_printf("\n");
+	// flow = dfs(cfg->start_id, cfg, g, 1000000);
+	// max_flow  += flow;
+	// ft_printf("\n");
+	// flow = dfs(cfg->start_id, cfg, g, 1000000);
+	// max_flow  += flow;
+	// ft_printf("\n");
+	// flow = dfs(cfg->start_id, cfg, g, 1000000);
+	// max_flow  += flow;
+	// ft_printf("\n");
+	// flow = dfs(cfg->start_id, cfg, g, 1000000);
+	// max_flow  += flow;
+	// ft_printf("\n");
+	// flow = dfs(cfg->start_id, cfg, g, 1000000);
+	// max_flow  += flow;
+	// ft_printf("\n");
+	ft_printf("TOTAL FLOW %d\n", max_flow);
+	return (0);
 }
 
 int		solve(t_graph *g, t_config *cfg)
@@ -380,8 +422,9 @@ int		solve(t_graph *g, t_config *cfg)
 		paths_del(&paths);
 		return (0);
 	}
-	solve_inner2(g, cfg);
+	// solve_inner2(g, cfg);
 	// solve_inner(g, cfg, paths, paths_n);
+	ft_printf("Max_flow = %d\n", find_max_flow(g, cfg));
 	paths_del(&paths);
 	return (1);
 }
