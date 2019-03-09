@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/05 03:13:51 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/09 20:47:28 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,15 +268,15 @@ void	solve_inner2(t_graph *g, t_config *cfg)
 	t_path	**shortest;
 	t_path	**best;
 	t_path	**tmp;
-	t_dqueue	*closed_links = dqueue_new(-1);
+	// t_dqueue	*closed_links = dqueue_new(-1);
 	t_path	**tmp2;
 	t_node	**new_path;
 	int		min_lines;
 	int		n;
 	int		m;
 	int		i;
-	int		from;
-	int		to;
+	// int		from;
+	// int		to;
 	// int		original_n;
 
 	shortest = get_paths(g, cfg->start_id, cfg->end_id);
@@ -284,35 +284,35 @@ void	solve_inner2(t_graph *g, t_config *cfg)
 	min_lines = get_lines_n(shortest, g->ants_n);
 	n = count_paths(best) - 1; // index of last path
 	m = best[n]->len - 1; // index of last element in last path
-	ft_printf("count_paths = %d\n", n);
+	// ft_printf("count_paths = %d\n", n);
 	// print_matrix(g->matrix_copy, g->verts_n);
 	// while (g->matrix_copy[cfg->start_id][shortest[0]->path[1]->id] && n >= 0)
 	while (n >= 0 && m >= 0)
 	{
-		ft_printf("min_lines = %d\n", min_lines);
-		ft_printf("n = %d\n", n);
-		ft_printf("m = %d\n", m);
-		paths_print(best);
+		// ft_printf("min_lines = %d\n", min_lines);
+		// ft_printf("n = %d\n", n);
+		// ft_printf("m = %d\n", m);
+		// paths_print(best);
 
-		path_restore_links(best[n], g);
+		// path_restore_links(best[n], g);
 		// print_matrix(g->matrix_copy, g->verts_n);
-		ft_printf("%s|%d -> ",best[n]->path[m - 1]->name, best[n]->path[m - 1]->id);
-		ft_printf("%s|%d\n",best[n]->path[m]->name, best[n]->path[m]->id);
+		// ft_printf("%s|%d -> ",best[n]->path[m - 1]->name, best[n]->path[m - 1]->id);
+		// ft_printf("%s|%d\n",best[n]->path[m]->name, best[n]->path[m]->id);
 		graph_link_del(&g, best[n]->path[m - 1]->id, best[n]->path[m]->id, 2);
-		dqueue_push_front(&closed_links, dqueue_new(best[n]->path[m]->id));
-		dqueue_push_front(&closed_links, dqueue_new(best[n]->path[m - 1]->id));
+		// dqueue_push_front(&closed_links, dqueue_new(best[n]->path[m]->id));
+		// dqueue_push_front(&closed_links, dqueue_new(best[n]->path[m - 1]->id));
 		// tmp = best[n];
 		tmp2 = best;
 		tmp = get_paths2(g, cfg->start_id, cfg->end_id);
-		ft_printf("tmp\n", m);
-		paths_print(tmp);
+		// ft_printf("tmp\n", m);
+		// paths_print(tmp);
 		if (min_lines > get_lines_n(tmp, g->ants_n))
 		{
 			// ft_printf("TMP ADD TO PATH\n", m);
 			best == shortest ? 0 : free(best);
 			best = tmp;
-			if (closed_links)
-				graph_link_add(g, dqueue_pop(&closed_links), dqueue_pop(&closed_links), 2);
+			// if (closed_links)
+				// graph_link_add(g, dqueue_pop(&closed_links), dqueue_pop(&closed_links), 2);
 			// new_path = bfs_path(cfg->start_id, cfg->end_id, g);
 			while ((new_path = bfs_path(cfg->start_id, cfg->end_id, g)))
 			{
@@ -332,7 +332,7 @@ void	solve_inner2(t_graph *g, t_config *cfg)
 				}
 				n = i;
 				m = best[i]->len - 1;
-				ft_printf("%d\n", i);
+				// ft_printf("%d\n", i);
 			}
 			n = count_paths(best) - 1;
 			m = best[n]->len - 1;
@@ -340,20 +340,21 @@ void	solve_inner2(t_graph *g, t_config *cfg)
 		}
 		else if (m > 1)
 		{
-			if (closed_links)
-				graph_link_add(g, dqueue_pop(&closed_links), dqueue_pop(&closed_links), 2);
+			// if (closed_links)
+			graph_link_add(g, best[n]->path[m - 1]->id, best[n]->path[m]->id, 2);
 			m--;
 		}
 		else if (n > 0)
 		{
-			ft_printf("lols");
-			while (closed_links)
-			{
-				from = dqueue_pop(&closed_links);
-				to = dqueue_pop(&closed_links);
-				if (from >= 0 && to >= 0)
-					graph_link_add(g, from, to, 2);
-			}
+			// ft_printf("lols");
+			// while (closed_links)
+			// {
+				// from = dqueue_pop(&closed_links);
+				// to = dqueue_pop(&closed_links);
+				// if (from >= 0 && to >= 0)
+					// graph_link_add(g, from, to, 2);
+			// }
+			graph_link_add(g, best[n]->path[m - 1]->id, best[n]->path[m]->id, 2);
 			n--;
 			m = best[n]->len - 1;
 		}
@@ -364,7 +365,7 @@ void	solve_inner2(t_graph *g, t_config *cfg)
 	}
 	ft_printf("\n___________\n");
 	ft_printf("%d\n", get_lines_n(best, g->ants_n));
-	paths_print(best);
+	// paths_print(best);
 	paths_del(&shortest);
 }
 
