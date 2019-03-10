@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arseny <arseny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 16:38:49 by fkuhn             #+#    #+#             */
-/*   Updated: 2019/03/02 23:41:52 by ttreutel         ###   ########.fr       */
+/*   Updated: 2019/03/07 22:22:52 by arseny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 # include <string.h>
+# include <inttypes.h>
 
 void				*ft_memset(void *b, int c, size_t len);
 void				ft_bzero(void *s, size_t n);

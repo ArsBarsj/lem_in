@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <datatypes.h>
-#include <libft/libft.h>
+#include "datatypes.h"
+#include "libft/libft.h"
 
 t_tree	*tree_new(t_node *room, char key)
 {

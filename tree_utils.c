@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <datatypes.h>
-#include <libft/libft.h>
+#include "datatypes.h"
+#include "libft/libft.h"
 
 void	tree_create_child(t_tree **root, char key, int *i)
 {
