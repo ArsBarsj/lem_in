@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/10 22:32:55 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/10 23:47:37 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,16 +263,15 @@ void	get_lines_inner(t_path **p, int ants, int n)
 	prev_lines = p[n - 1]->len;
 	i = 0;
 	curr_lines = p[i]->len;
-	while (ants && curr_lines != prev_lines)
+	while (ants && curr_lines != prev_lines && i < n)
 	{
-		while (curr_lines != prev_lines && ants)
+		while (curr_lines != prev_lines && ants && i < n)
 		{
 			p[i]->ants_n++;
 			ants--;
 			curr_lines = p[i]->len +  p[i]->ants_n - 1;
 		}
-		prev_lines = curr_lines;
-		i = i + 1 < n ? i + 1 : 0;
+		i++;
 		curr_lines = p[i]->len +  p[i]->ants_n - 1;
 	}
 	get_lines_divide_ants(p, &ants, n);
@@ -301,23 +300,40 @@ int		get_lines_max(t_path **p, int used)
 	return (curr_lines - 1);
 }
 
+void	get_lines_reset_paths(t_path **p)
+{
+	int		i;
+
+	i = 0;
+	while (p[i])
+	{
+		p[i]->ants_n = 0;
+		i++;
+	}
+}
+
 int		get_lines_n(t_path **paths, int ants)
 {
 	int	curr_lines;
-	int	total_lines;
+	int	prev_lines;
 	int	used_paths;
 
 	if (!paths[0])
 		return (2147483647);
-	get_lines_init_counters(&total_lines, &curr_lines, &used_paths);
-	while (total_lines > curr_lines && paths[used_paths - 1])
+	get_lines_init_counters(&prev_lines, &curr_lines, &used_paths);
+	get_lines_reset_paths(paths);
+	while (paths[used_paths - 1] && prev_lines > curr_lines)
 	{
-		total_lines = curr_lines;
+		prev_lines = curr_lines;
 		get_lines_inner(paths, ants, used_paths);
 		curr_lines = get_lines_max(paths, used_paths);
+		if (curr_lines > prev_lines)
+			break;
 		used_paths++;
 	}
-	return (curr_lines);
+	get_lines_reset_paths(paths);
+	get_lines_inner(paths, ants, used_paths - 1);
+	return (get_lines_max(paths, used_paths - 1));
 }
 
 void	solve_inner2(t_graph *g, t_config *cfg)
