@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/10 15:04:09 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/10 21:20:51 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ t_node				**bfs_path(int start, int end, t_graph *g);
 void				bfs_setup(t_dqueue **q, int start, int *v, t_graph *g);
 void				bfs_update_state(t_dqueue **q, int i, int *v, t_graph *g);
 void				bfs_mod_update(int i, int curr, int *v, int *p);
+int					bfs_ways(int start, int end, t_graph *g);
 
 t_path				*path_new(t_node **path);
 void				path_del(t_path **p);

@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:08:24 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/04 21:52:45 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/10 21:22:18 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,4 +100,53 @@ t_node	**bfs_path(int start, int end, t_graph *g)
 		i--;
 	}
 	return (path);
+}
+
+void	deep_copy(int ***dst, int **src, int siz)
+{
+	int	i;
+	int	j;
+
+	*dst = (int **)malloc(sizeof(int *) * siz);
+	i = -1;
+	while (++i < siz)
+	{
+		(*dst)[i] = (int *)malloc(sizeof(int) * siz);
+		j = -1;
+		while (++j < siz)
+			(*dst)[i][j] = src[i][j];
+	}
+}
+
+void	weak_copy(int **dst, int **src, int siz)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < siz)
+	{
+		j = -1;
+		while (++j < siz)
+			dst[i][j] = src[i][j];
+	}
+}
+
+int		bfs_ways(int start, int end, t_graph *g)
+{
+	int		**m_copy;
+	int		count;
+	t_path	*p;
+
+	deep_copy(&m_copy, g->matrix_copy, g->verts_n);
+	count = 0;
+	while ((p = path_new(bfs_path(start, end, g))))
+	{
+		graph_close_path(g, p, start, end);
+		count++;
+		path_del(&p);
+	}
+	weak_copy(g->matrix_copy, m_copy, g->verts_n);
+	del_tab(m_copy, g->verts_n);
+	return (count);
 }
