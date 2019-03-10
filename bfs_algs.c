@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/10 22:34:48 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/10 22:52:57 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,7 +335,7 @@ void	solve_inner2(t_graph *g, t_config *cfg)
 {
 	t_path	**shortest;
 	t_path	**best;
-	// t_path	**tmp;
+	t_path	**tmp;
 	int		min_lines;
 	int		n;
 	int		m;
@@ -353,20 +353,28 @@ void	solve_inner2(t_graph *g, t_config *cfg)
 			// m--;
 		path_close_all(g, best, cfg->start_id, cfg->end_id);
 		path_restore_links(best[n], g);
+		while (m - 1 && graph_links_num(g, best[n]->path[m - 1]->id) < 3)
+			m--;
 		graph_link_del(&g, best[n]->path[m - 1]->id, best[n]->path[m]->id, 2);
 		// tmp = get_paths(g, cfg->start_id, cfg->end_id);
 		// if (min_lines > get_lines_n(tmp, g->ants_n))
 		if (bfs_ways(cfg->start_id, cfg->end_id, g) > 1)
 		{
 			graph_restore_copy(g);
-			best == shortest ? 0 : paths_del(&best);
-			best = get_paths(g, cfg->start_id, cfg->end_id);
+			tmp = get_paths(g, cfg->start_id, cfg->end_id);
+			if (min_lines > get_lines_n(tmp, g->ants_n))
+			{
+				best == shortest ? 0 : paths_del(&best);
+				best = get_paths(g, cfg->start_id, cfg->end_id);
+				n = count_paths(best) - 1;
+				m = best[n]->len - 1;
+				min_lines = get_lines_n(best, g->ants_n);
+			}
+			else
+				paths_del(&tmp);
 			// paths_print(best);
-			n = count_paths(best) - 1;
-			m = best[n]->len - 1;
-			min_lines = get_lines_n(best, g->ants_n);
 		}
-		else if (m > 1)
+		if (m > 1)
 		{
 			graph_link_add(g, best[n]->path[m - 1]->id, best[n]->path[m]->id, 2);
 			m--;
