@@ -8,7 +8,7 @@ void	ft_init_sdl_screen(t_visu *visu)
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 		exit(2);
 	if ((visu->window = SDL_CreateWindow("lem-in map", 
-	SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1000,
+	SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200,
 					1000,  SDL_WINDOW_SHOWN)) == NULL)
 		exit(2);
 	if ((visu->screen = SDL_CreateRenderer(visu->window, -1, 0)) == NULL)
@@ -27,6 +27,7 @@ int main(int ac, char **av)
 	ft_init_sdl_screen(&visu);
 	SDL_SetRenderDrawColor(visu.screen, 96, 128, 255, 255);
 	SDL_RenderClear(visu.screen);
+	draw_links(&visu);
 	while (visu.config->head)
 	{
 		draw_room(&visu, visu.config->head);

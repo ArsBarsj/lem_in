@@ -37,6 +37,14 @@ typedef struct 		s_visu
 
 }					t_visu;
 
+typedef struct      s_vlink
+{
+	int             startx;
+	int             starty;
+	int             endx;
+	int             endy;
+}                   t_vlink;
+
 void				init_visu(t_visu *visu);
 void				read_file(t_visu *visu, int fd);
 int					str_remalloc(char **str, char *new_s, int size, int used);
@@ -46,5 +54,6 @@ int					ft_read_rooms(char **line, t_config **config, int fd, int flag[2]);
 int					ft_config(int fd, t_config **config);
 SDL_Rect			init_coor(int x, int y, int w, int h);
 SDL_Color	        init_color(int r, int g, int b, int a);
+void                draw_links(t_visu *v);
 void				draw_room(t_visu *v, t_node *room);
 #endif

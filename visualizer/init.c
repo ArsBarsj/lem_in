@@ -10,8 +10,8 @@ void	init_visu(t_visu *visu)
 	visu->tabfile = NULL;
 	visu->config = (t_config *)malloc(sizeof(t_config));
 	ft_init_config(&visu->config);
-	visu->height_r = 50;
-	visu->width_r = 50;
+	visu->height_r = 20;
+	visu->width_r = 20;
 	visu->text_color = init_color(255, 255, 255, 255);
 	// visu->place = NULL;
 }
