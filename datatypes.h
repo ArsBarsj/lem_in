@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/04 21:45:16 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/10 15:04:09 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ t_graph				*graph_new(int verts_n, int ants_n);
 void				graph_del(t_graph **g);
 void				graph_link_add(t_graph *g, int from, int to, int copy);
 void				graph_link_del(t_graph **g, int from, int to, int copy);
+int					graph_links_num(t_graph *g, int node);
 void				graph_close_node(t_graph *g, int node);
 void				graph_close_path(t_graph *g,\
 										t_path *path, int start, int end);
