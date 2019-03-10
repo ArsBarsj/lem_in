@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/10 15:58:48 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/10 20:15:08 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void        paths_print(t_path **paths)
 	{
 		j = 0;
 		current = paths[i]->path[j];
-		ft_printf("%d: (%s|%d)", i, current->name, current->id);
+		ft_printf("\033[0;31m%d:\033[0m (%s|%d)", i, current->name, current->id);
 		while (current && paths[i]->path[j + 1])
 		{
 			current = paths[i]->path[j];
@@ -172,7 +172,7 @@ void        paths_print(t_path **paths)
 			ft_printf("->(%s|%d)", next->name, next->id);
 			j++;
 		}
-		ft_printf(" [%d] ants= %d", j, paths[i]->ants_n);
+		ft_printf(" \033[0;32m[%d] ants= %d\033[0m", j, paths[i]->ants_n);
 		ft_printf("\n");
 		i++;
 	}
@@ -203,24 +203,25 @@ t_path	**get_paths2(t_graph *g, int start, int end)
 void        path_restore_links(t_path *path, t_graph *g)
 {
 	int     i;
-	// int		j;
+	int		j;
 	t_node  *current;
-	t_node  *next;
+	// t_node  *next;
 
 	i = 0;
 	current = path->path[i];
-	while (current && path->path[i + 1])
-	// while (current)
+	// while (current && path->path[i + 1])
+	while (current)
 	{
-		next = path->path[i + 1];
-		// j = 0;
-		// while (j < g->verts_n)
-		// {
-			// if (g->matrix[current->id][j] && current->id != j)
-				// graph_link_add(g, current->id, j, 1);
-			// j++;
-		// }
-		graph_link_add(g, current->id, next->id, 2);
+		// next = path->path[i + 1];
+		j = 0;
+		while (j < g->verts_n)
+		{
+			if (g->matrix[current->id][j] && current->id != j)
+				graph_link_add(g, current->id, j, 1);
+			j++;
+		}
+		// if (g->matrix[current->id][next->id])
+			// graph_link_add(g, current->id, next->id, 1);
 		i++;
 		current = path->path[i];
 	}
@@ -296,7 +297,7 @@ int		get_lines_max(t_path **p, int used)
 			curr_lines = p[i]->len +  p[i]->ants_n - 1;
 		i++;
 	}
-	return (curr_lines);
+	return (curr_lines - 1);
 }
 
 int		get_lines_n(t_path **paths, int ants)
@@ -304,21 +305,18 @@ int		get_lines_n(t_path **paths, int ants)
 	int	curr_lines;
 	int	total_lines;
 	int	used_paths;
-	int tmp;
 
 	if (!paths[0])
 		return (2147483647);
 	get_lines_init_counters(&total_lines, &curr_lines, &used_paths);
-	tmp = ants;
 	while (total_lines > curr_lines && paths[used_paths - 1])
 	{
 		total_lines = curr_lines;
 		get_lines_inner(paths, ants, used_paths);
 		curr_lines = get_lines_max(paths, used_paths);
-		ants = tmp;
 		used_paths++;
 	}
-	return (total_lines - 1);
+	return (curr_lines);
 }
 
 void	solve_inner2(t_graph *g, t_config *cfg)
@@ -340,9 +338,9 @@ void	solve_inner2(t_graph *g, t_config *cfg)
 		ft_printf("%d, %d\n", n, m);
 		while (m - 1 && graph_links_num(g, best[n]->path[m - 1]->id) < 3)
 			m--;
-		graph_link_del(&g, best[n]->path[m - 1]->id, best[n]->path[m]->id, 2);
 		path_restore_links(best[n], g);
-		tmp = get_paths2(g, cfg->start_id, cfg->end_id);
+		graph_link_del(&g, best[n]->path[m - 1]->id, best[n]->path[m]->id, 2);
+		tmp = get_paths(g, cfg->start_id, cfg->end_id);
 		if (min_lines > get_lines_n(tmp, g->ants_n))
 		{
 			best == shortest ? 0 : free(best);
@@ -366,7 +364,7 @@ void	solve_inner2(t_graph *g, t_config *cfg)
 			break;
 	}
 	ft_printf("\n%d\n", min_lines);
-	// paths_print(best);
+	paths_print(best);
 	paths_del(&shortest);
 }
 
