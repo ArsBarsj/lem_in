@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/10 21:52:41 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/10 22:34:48 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,6 +271,7 @@ void	get_lines_inner(t_path **p, int ants, int n)
 			ants--;
 			curr_lines = p[i]->len +  p[i]->ants_n - 1;
 		}
+		prev_lines = curr_lines;
 		i = i + 1 < n ? i + 1 : 0;
 		curr_lines = p[i]->len +  p[i]->ants_n - 1;
 	}
@@ -291,7 +292,7 @@ int		get_lines_max(t_path **p, int used)
 
 	i = 0;
 	curr_lines = p[0]->len +  p[0]->ants_n - 1;
-	while (p[i] && i < used)
+	while (p[i] && i < used - 1)
 	{
 		if (p[i]->len +  p[i]->ants_n - 1 > curr_lines)
 			curr_lines = p[i]->len +  p[i]->ants_n - 1;
