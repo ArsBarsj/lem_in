@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/11 23:20:39 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/12 02:00:22 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -421,7 +421,7 @@ void	solve_inner2(t_graph *g, t_config *cfg)
 			graph_link_add(g, best[n]->path[m - 1]->id, best[n]->path[m]->id, 2);
 			m--;
 		}
-		else if (n < n_big || m == 0)
+		else if (n < n_big)
 		{
 			graph_link_add(g, best[n]->path[m - 1]->id, best[n]->path[m]->id, 2);
 			n++;
