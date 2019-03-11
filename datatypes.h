@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/10 21:20:51 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/11 23:07:58 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void				graph_link_add(t_graph *g, int from, int to, int copy);
 void				graph_link_del(t_graph **g, int from, int to, int copy);
 int					graph_links_num(t_graph *g, int node);
 void				graph_close_node(t_graph *g, int node);
+void				graph_close_node2(t_graph *g, int node);
 void				graph_close_path(t_graph *g,\
 										t_path *path, int start, int end);
 void                paths_resote_links(t_path **paths, t_graph *g);
@@ -121,12 +122,15 @@ void				bfs_setup(t_dqueue **q, int start, int *v, t_graph *g);
 void				bfs_update_state(t_dqueue **q, int i, int *v, t_graph *g);
 void				bfs_mod_update(int i, int curr, int *v, int *p);
 int					bfs_ways(int start, int end, t_graph *g);
+t_path				**bfs_ways2(int start, int end, t_graph *g);
 
 t_path				*path_new(t_node **path);
 void				path_del(t_path **p);
 void				paths_del(t_path ***p);
 int					count_paths(t_path **p);
 int					path_len_innr(int *pred, int n);
+t_path				**path_join(t_path **dst, t_path **src, int n);
+void        		paths_print(t_path **paths);
 
 int					find_paths_number(t_graph *g, int start, int end);
 t_path				**get_paths(t_graph *g, int start, int end);

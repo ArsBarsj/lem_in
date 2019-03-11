@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 18:01:44 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/04 16:20:01 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/11 22:35:47 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,55 @@ int		count_paths(t_path **p)
 		return (i);
 	}
 	return (0);
+}
+
+int		path_cmp(t_path *p1, t_path *p2)
+{
+	int	i;
+
+	i = 0;
+	while (p1->path[i] && p2->path[i])
+	{
+		if (p1->path[i]->id != p2->path[i]->id)
+			i++;
+		else
+			return (0);
+	}
+	return (1);
+}
+
+t_path	**path_join(t_path **dst, t_path **src, int n)
+{
+	t_path	**path;
+	int		dlen;
+	int		slen;
+	int		i;
+
+	dlen = count_paths(dst) - 1;
+	slen = count_paths(src);
+	if (!(path = (t_path **)malloc(sizeof(t_path *) * (dlen + slen + 1))))
+		return (NULL);
+	path[dlen + slen] = NULL;
+	i = 0;
+	while (i < n)
+	{
+		// if (path_cmp(path[i], dst[i]))
+			path[i] = dst[i];
+		i++;
+	}
+	i = 0;
+	while (i < dlen - n)
+	{
+		path[n + i] = dst[n + i + 1];
+		i++;
+	}
+	i = 0;
+	while (i < slen)
+	{
+		path[i + dlen] = src[i];
+		i++;
+	}
+	free(dst);
+	free(src);
+	return (path);
 }

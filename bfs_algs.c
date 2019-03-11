@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/11 01:13:48 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/11 23:20:39 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -351,6 +351,25 @@ void	path_close_all(t_graph *g, t_path **p, int start, int end)
 		graph_close_path(g, p[i], start, end);
 }
 
+void	graph_del_dead_ends(t_graph *g)
+{
+	int	i;
+	// int	counter;
+
+	i = 0;
+	// counter = 0;
+	while (i < g->verts_n)
+	{
+		if (graph_links_num(g, i) == 1)
+		{
+			graph_close_node2(g, i);
+			i = -1;
+		}
+		i++;
+	}
+	// return (counter);
+}
+
 void	solve_inner2(t_graph *g, t_config *cfg)
 {
 	t_path	**shortest;
@@ -358,21 +377,24 @@ void	solve_inner2(t_graph *g, t_config *cfg)
 	t_path	**tmp;
 	int		min_lines;
 	int		n;
+	int		n_big;
 	int		m;
-
+	
+	// graph_del_dead_ends(g);
 	shortest = get_paths(g, cfg->start_id, cfg->end_id);
 	best = shortest;
 	min_lines = get_lines_n(shortest, g->ants_n);
-	n = count_paths(best) - 1;
+	n_big = count_paths(best) - 1;
+	n = 0;
 	m = best[n]->len - 1;
 	path_close_all(g, best, cfg->start_id, cfg->end_id);
 	path_restore_links(best[n], g);
-	while (n >= 0 && m >= 0)
+	while (n <= n_big)// && m >= 0)
 	{
 		ft_printf("%d, %d\n", n, m);
 		// path_close_all(g, best, cfg->start_id, cfg->end_id);
 		// path_restore_links(best[n], g);
-		while (m - 1 && graph_links_num(g, best[n]->path[m - 1]->id) < 3)
+		while (graph_links_num(g, best[n]->path[m - 1]->id) < 3 && m - 1)
 			m--;
 		graph_link_del(&g, best[n]->path[m - 1]->id, best[n]->path[m]->id, 2);
 		if (bfs_ways(cfg->start_id, cfg->end_id, g) > 1)
@@ -382,12 +404,13 @@ void	solve_inner2(t_graph *g, t_config *cfg)
 			if (min_lines > get_lines_n(tmp, g->ants_n))
 			{
 				best == shortest ? 0 : paths_del(&best);
-				best = get_paths(g, cfg->start_id, cfg->end_id);
+				best = tmp;
 				// n = count_paths(best) - 1;
 				m = best[n]->len - 1;
 				min_lines = get_lines_n(best, g->ants_n);
 				path_close_all(g, best, cfg->start_id, cfg->end_id);
 				path_restore_links(best[n], g);
+				ft_printf("\t\t +\n");
 			}
 			else
 				paths_del(&tmp);
@@ -398,10 +421,10 @@ void	solve_inner2(t_graph *g, t_config *cfg)
 			graph_link_add(g, best[n]->path[m - 1]->id, best[n]->path[m]->id, 2);
 			m--;
 		}
-		else if (n > 0)
+		else if (n < n_big || m == 0)
 		{
 			graph_link_add(g, best[n]->path[m - 1]->id, best[n]->path[m]->id, 2);
-			n--;
+			n++;
 			path_close_all(g, best, cfg->start_id, cfg->end_id);
 			path_restore_links(best[n], g);
 			m = best[n]->len - 1;
@@ -410,7 +433,7 @@ void	solve_inner2(t_graph *g, t_config *cfg)
 			break;
 	}
 	ft_printf("\n%d\n", min_lines);
-	paths_print(best);
+	// paths_print(best);
 	paths_del(&shortest);
 	paths_del(&best);
 }
@@ -429,6 +452,7 @@ int		solve(t_graph *g, t_config *cfg)
 	}
 	// ft_printf("%d\n", get_lines_n(paths, g->ants_n));
 	// paths_print(paths);
+	ft_printf("here\n");
 	solve_inner2(g, cfg);
 	// solve_inner(g, cfg, paths, paths_n);
 	paths_del(&paths);

@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 14:50:06 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/10 15:03:46 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/11 23:07:42 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,21 @@ void		graph_close_node(t_graph *g, int node)
 		while (i < g->verts_n)
 		{
 			graph_link_del(&g, node, i, 1);
+			i++;
+		}
+	}
+}
+
+void		graph_close_node2(t_graph *g, int node)
+{
+	int	i;
+
+	if (g)
+	{
+		i = 0;
+		while (i < g->verts_n)
+		{
+			graph_link_del(&g, node, i, 2);
 			i++;
 		}
 	}
