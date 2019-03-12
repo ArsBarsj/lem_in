@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:08:24 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/11 22:38:16 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/13 00:09:43 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,11 +178,11 @@ void	weak_copy(int **dst, int **src, int siz)
 
 int		bfs_ways(int start, int end, t_graph *g)
 {
-	int		**m_copy;
+	// int		**m_copy;
 	int		count;
 	t_path	*p;
 
-	deep_copy(&m_copy, g->matrix_copy, g->verts_n);
+	// deep_copy(&m_copy, g->matrix_copy, g->verts_n);
 	count = 0;
 	while ((p = path_new(bfs_path(start, end, g))))
 	{
@@ -190,33 +190,48 @@ int		bfs_ways(int start, int end, t_graph *g)
 		count++;
 		path_del(&p);
 	}
-	weak_copy(g->matrix_copy, m_copy, g->verts_n);
-	del_tab(m_copy, g->verts_n);
+	// weak_copy(g->matrix_copy, m_copy, g->verts_n);
+	// del_tab(m_copy, g->verts_n);
 	return (count);
 }
 
 t_path		**bfs_ways2(int start, int end, t_graph *g)
 {
-	int		**m_copy;
+	// int		**m_copy;
 	int		count;
-	t_path	*p;
+	t_path	**tmp;
 	t_path	**tab;
+	int		capacity;
+	int		i;
 
-	deep_copy(&m_copy, g->matrix_copy, g->verts_n);
+	// deep_copy(&m_copy, g->matrix_copy, g->verts_n);
 	count = 0;
-	tab = (t_path **)malloc(sizeof(t_path *) * (find_paths_number(g, start, end) + 1));
-	weak_copy(g->matrix_copy, m_copy, g->verts_n);
-	while ((p = path_new(bfs_path(start, end, g))))
+	tab = (t_path **)malloc(sizeof(t_path *));
+	capacity = 1;
+	// weak_copy(g->matrix_copy, m_copy, g->verts_n);
+	while ((tab[count] = path_new(bfs_path(start, end, g))))
 	{
-		tab[count] = p;
-		graph_close_path(g, p, start, end);
+		graph_close_path(g, tab[count], start, end);
 		count++;
-		// path_del(&p);
+		if (capacity < count + 1)
+		{
+			i = 0;
+			tmp = (t_path **)malloc(sizeof(t_path *) * (capacity + 1));
+			while (i < count)
+			{
+				tmp[i] = tab[i];
+				i++;
+			}
+			free(tab);
+			tab = tmp;
+			capacity++;
+		}
+		tab[count] = NULL;
 	}
-	tab[count] = NULL;
+	// tab[count] = NULL;
 	// paths_print(tab);
-	weak_copy(g->matrix_copy, m_copy, g->verts_n);
-	del_tab(m_copy, g->verts_n);
+	// weak_copy(g->matrix_copy, m_copy, g->verts_n);
+	// del_tab(m_copy, g->verts_n);
 	return (tab);
 }
 

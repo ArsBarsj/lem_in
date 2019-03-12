@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 18:01:44 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/11 22:35:47 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/13 01:06:54 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,7 @@ t_path	**path_join(t_path **dst, t_path **src, int n)
 	i = 0;
 	while (i < n)
 	{
-		// if (path_cmp(path[i], dst[i]))
-			path[i] = dst[i];
+		path[i] = dst[i];
 		i++;
 	}
 	i = 0;
@@ -133,7 +132,33 @@ t_path	**path_join(t_path **dst, t_path **src, int n)
 		path[i + dlen] = src[i];
 		i++;
 	}
-	free(dst);
-	free(src);
+	// free(dst);
+	// free(src);
 	return (path);
+}
+
+void	paths_sort(t_path **p)
+{
+	int	i;
+	int	j;
+	int	siz;
+	t_path	*tmp;
+
+	siz = count_paths(p);
+	i = 0;
+	while (i < siz)
+	{
+		j = i;
+		while (j < siz)
+		{
+			if (p[i]->len > p[j]->len)
+			{
+				tmp = p[i];
+				p[i] = p[j];
+				p[j] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
 }

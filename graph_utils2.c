@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 14:50:06 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/11 23:07:42 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/12 21:49:11 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,22 +73,23 @@ void		graph_close_node2(t_graph *g, int node)
 void        paths_resote_links(t_path **paths, t_graph *g)
 {
 	int     i;
-	int     j;
-	t_node  *current;
-	t_node  *next;
+	// int     j;
+	// t_node  *current;
+	// t_node  *next;
 
 	i = 0;
 	while (paths[i])
 	{
-		j = 0;
-		current = paths[i]->path[j];
-		while (current && paths[i]->path[j + 1])
-		{
-			current = paths[i]->path[j];
-			next = paths[i]->path[j + 1];
-			graph_link_add(g, current->id, next->id, 1);
-			j++;
-		}
+		// j = 0;
+		// current = paths[i]->path[j];
+		// while (current && paths[i]->path[j + 1])
+		// {
+			// current = paths[i]->path[j];
+			// next = paths[i]->path[j + 1];
+			// graph_link_add(g, current->id, next->id, 1);
+			// j++;
+		// }
+		path_restore_links(paths[i], g);
 		i++;
 	}
 }
@@ -102,7 +103,7 @@ int			graph_links_num(t_graph *g, int node)
 	counter = 0;
 	while (j < g->verts_n)
 	{
-		if (g->matrix_copy[node][j] && node != j)
+		if (g->matrix[node][j] && node != j)
 			counter++;
 		j++;
 	}
