@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/12 02:00:22 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/12 14:35:27 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,11 +192,20 @@ t_path	**get_paths2(t_graph *g, int start, int end)
 	while (i < paths_num)
 	{
 		paths[i] = path_new(bfs_path(start, end, g));
+		paths[i + 1] = NULL;
 		graph_close_path(g, paths[i], start, end);
+		// paths_print(paths);
+		// ft_printf("\n============\n");
+		get_lines_n(paths, g->ants_n);
+		if (paths[i]->ants_n == 0)
+		{
+			i++;
+			break ;
+		}
 		i++;
 	}
 	paths[i] = NULL;
-	// graph_restore_copy(g);
+	graph_restore_copy(g);
 	return (paths);
 }
 
@@ -351,23 +360,25 @@ void	path_close_all(t_graph *g, t_path **p, int start, int end)
 		graph_close_path(g, p[i], start, end);
 }
 
-void	graph_del_dead_ends(t_graph *g)
+int	graph_del_dead_ends(t_graph *g)
 {
 	int	i;
-	// int	counter;
+	int	counter;
 
 	i = 0;
-	// counter = 0;
+	counter = 0;
 	while (i < g->verts_n)
 	{
 		if (graph_links_num(g, i) == 1)
 		{
 			graph_close_node2(g, i);
+			counter++;
+			// ft_printf("%d\n", i);
 			i = -1;
 		}
 		i++;
 	}
-	// return (counter);
+	return (counter);
 }
 
 void	solve_inner2(t_graph *g, t_config *cfg)
@@ -380,7 +391,6 @@ void	solve_inner2(t_graph *g, t_config *cfg)
 	int		n_big;
 	int		m;
 	
-	// graph_del_dead_ends(g);
 	shortest = get_paths(g, cfg->start_id, cfg->end_id);
 	best = shortest;
 	min_lines = get_lines_n(shortest, g->ants_n);
@@ -452,7 +462,7 @@ int		solve(t_graph *g, t_config *cfg)
 	}
 	// ft_printf("%d\n", get_lines_n(paths, g->ants_n));
 	// paths_print(paths);
-	ft_printf("here\n");
+	// ft_printf("here\n");
 	solve_inner2(g, cfg);
 	// solve_inner(g, cfg, paths, paths_n);
 	paths_del(&paths);

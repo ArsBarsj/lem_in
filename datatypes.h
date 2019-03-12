@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/11 23:07:58 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/12 02:20:20 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ int					count_paths(t_path **p);
 int					path_len_innr(int *pred, int n);
 t_path				**path_join(t_path **dst, t_path **src, int n);
 void        		paths_print(t_path **paths);
+int					get_lines_n(t_path **paths, int ants);
 
 int					find_paths_number(t_graph *g, int start, int end);
 t_path				**get_paths(t_graph *g, int start, int end);
