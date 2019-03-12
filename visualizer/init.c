@@ -6,6 +6,7 @@ void	init_visu(t_visu *visu)
 {
 	visu->window = NULL;
 	visu->screen = NULL;
+	visu->texture = NULL;
 	visu->fileline = NULL;
 	visu->tabfile = NULL;
 	visu->config = (t_config *)malloc(sizeof(t_config));
@@ -13,7 +14,6 @@ void	init_visu(t_visu *visu)
 	visu->height_r = 20;
 	visu->width_r = 20;
 	visu->text_color = init_color(255, 255, 255, 255);
-	// visu->place = NULL;
 }
 
 SDL_Rect	init_coor(int x, int y, int w, int h)

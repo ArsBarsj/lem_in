@@ -5,7 +5,7 @@
 
 void	ft_init_sdl_screen(t_visu *visu)
 {
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 		exit(2);
 	if ((visu->window = SDL_CreateWindow("lem-in map", 
 	SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200,
@@ -13,41 +13,53 @@ void	ft_init_sdl_screen(t_visu *visu)
 		exit(2);
 	if ((visu->screen = SDL_CreateRenderer(visu->window, -1, 0)) == NULL)
 		exit(2);
+	if(TTF_Init()==-1) {
+		printf("TTF_Init: %s\n", TTF_GetError());
+		exit(2);
+	}
+	visu->font = TTF_OpenFont("./font.ttf", 14);
+
+	printf("Oh My Goodness, an error : %s", TTF_GetError());
+	SDL_SetRenderDrawColor(visu->screen, 96, 128, 255, 255);
+	SDL_RenderClear(visu->screen);
 }
 
-int main(int ac, char **av)
+void    ft_loop_it(t_visu *v)
 {
-	t_visu		visu;
-	int			loop;
+	int     loop;
 
-	(void)ac;
-	int fd = open(av[1], O_RDONLY);
-	init_visu(&visu);
-	read_file(&visu, fd);
-	ft_init_sdl_screen(&visu);
-	SDL_SetRenderDrawColor(visu.screen, 96, 128, 255, 255);
-	SDL_RenderClear(visu.screen);
-	draw_links(&visu);
-	while (visu.config->head)
-	{
-		draw_room(&visu, visu.config->head);
-		visu.config->head = visu.config->head->next;
-	}
+	SDL_RenderPresent(v->screen);
 	loop = 1;
 	while (loop)
 	{
-		if (SDL_PollEvent(&(visu.event)))
+		if (SDL_PollEvent(&(v->event)))
 		{
-			if (visu.event.type == SDL_QUIT)
+			if (v->event.type == SDL_QUIT)
 				loop = 0;
 		}
 		if (loop == 0)
 			break ;
-		SDL_RenderPresent(visu.screen);
 		SDL_Delay(16);
 	}
-	SDL_DestroyRenderer(visu.screen);
-	SDL_DestroyWindow(visu.window);
-	SDL_Quit();
+}
+
+int main(int ac, char **av)
+{
+	t_visu		*visu;
+
+	(void)ac;
+	visu = (t_visu *)malloc(sizeof(t_visu));
+	int fd = open(av[1], O_RDONLY);
+	init_visu(visu);
+	read_file(visu, fd);
+	ft_init_sdl_screen(visu);
+	draw_links(visu);
+	while (visu->config->head)
+	{
+		draw_room(visu, visu->config->head);
+		visu->config->head = visu->config->head->next;
+	}
+	ft_loop_it(visu);
+	free_visu(visu);
 	return (0);
 }

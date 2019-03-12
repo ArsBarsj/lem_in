@@ -9,25 +9,19 @@
 # include <sys/stat.h>
 # include <stdlib.h>
 # include <SDL2/SDL.h>
+# include <SDL2/SDL_ttf.h>
 # include "../libft/libft.h"
 # include "../datatypes.h"
-
-typedef struct      s_room
-{
-	int             x;
-	int             y;
-	int             id;
-	char            *name;
-	struct s_room   *next;
-}                   t_room;
+#include "../lemin.h"
 
 typedef struct 		s_visu
 {
 	SDL_Window		*window;
 	SDL_Renderer	*screen;
 	SDL_Event	    event;
-	SDL_Texture     *texture;
 	SDL_Color       text_color;
+	SDL_Texture     *texture;
+	TTF_Font        *font;
 	char			*fileline;
 	char			*tabfile;
 	t_config		*config;
@@ -56,4 +50,6 @@ SDL_Rect			init_coor(int x, int y, int w, int h);
 SDL_Color	        init_color(int r, int g, int b, int a);
 void                draw_links(t_visu *v);
 void				draw_room(t_visu *v, t_node *room);
+void                free_visu(t_visu *v);
+void	            config_del(t_config *config);
 #endif

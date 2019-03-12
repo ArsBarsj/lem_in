@@ -1,6 +1,4 @@
 #include <unistd.h>
-#include "../datatypes.h"
-#include "../lemin.h"
 #include "visu.h"
 
 void	read_file(t_visu *visu, int fd)
