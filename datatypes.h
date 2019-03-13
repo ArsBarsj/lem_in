@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/13 01:07:11 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/13 15:42:30 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ t_path				**path_join(t_path **dst, t_path **src, int n);
 void        		paths_print(t_path **paths);
 void       			path_restore_links(t_path *path, t_graph *g);
 int					get_lines_n(t_path **paths, int ants);
-void				paths_sort(t_path **p);
+t_path				**paths_sort(t_path **p);
 
 int					find_paths_number(t_graph *g, int start, int end);
 t_path				**get_paths(t_graph *g, int start, int end);
