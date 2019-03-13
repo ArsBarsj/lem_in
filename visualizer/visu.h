@@ -14,6 +14,19 @@
 # include "../datatypes.h"
 #include "../lemin.h"
 
+typedef struct      s_step
+{
+	t_ant           *ant;
+	t_node          *room;
+	struct s_step   *next;
+}                   t_step;
+
+typedef struct      s_turn
+{
+	t_step          *step;
+	struct s_turn   *next;
+}                   t_turn;
+
 typedef struct 		s_visu
 {
 	SDL_Window		*window;
@@ -23,7 +36,7 @@ typedef struct 		s_visu
 	SDL_Texture     *texture;
 	TTF_Font        *font;
 	char			*fileline;
-	char			*tabfile;
+	char			**tabfile;
 	t_config		*config;
 	int				height_r;
 	int				width_r;
@@ -40,7 +53,7 @@ typedef struct      s_vlink
 }                   t_vlink;
 
 void				init_visu(t_visu *visu);
-void				read_file(t_visu *visu, int fd);
+int    				read_file(t_visu *visu, int fd);
 int					str_remalloc(char **str, char *new_s, int size, int used);
 char				*read_all_file(int fd, char *buf, int buf_siz);
 int					ft_read_ants(char **line, t_config **config, int fd);

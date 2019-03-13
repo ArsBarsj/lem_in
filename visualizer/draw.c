@@ -9,10 +9,10 @@ void    draw_line(t_visu *v, t_vlink *l, int mx, int my)
 	                        l->endx + mx + 1, l->endy + my);
 	SDL_RenderDrawLine(v->screen, l->startx + mx, l->starty + my + 1,
 	                        l->endx + mx, l->endy + my + 1);
-	SDL_RenderDrawLine(v->screen, l->startx + mx - 1, l->starty + my,
-	                        l->endx + mx - 1, l->endy + my);
-	SDL_RenderDrawLine(v->screen, l->startx + mx, l->starty + my - 1,
-	                        l->endx + mx, l->endy + my - 1);
+//	SDL_RenderDrawLine(v->screen, l->startx + mx - 1, l->starty + my,
+//	                        l->endx + mx - 1, l->endy + my);
+//	SDL_RenderDrawLine(v->screen, l->startx + mx, l->starty + my - 1,
+//	                        l->endx + mx, l->endy + my - 1);
 }
 
 void    set_link_coord(t_vlink *l, t_visu *v, int i, int j)
@@ -64,9 +64,7 @@ void    draw_id(t_visu *v, t_node *room)
 	SDL_Surface     *text;
 
 	text = NULL;
-	if (v->font == NULL)
-		printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
-	if (TTF_SizeText(v->font, ft_itoa(room->id), &v->place.w, &v->place.h) == -1)
+	if (TTF_SizeUTF8(v->font, room->name, &v->place.w, &v->place.h) == -1)
 		exit(2);
 	if ((v->place.x = room->x + ((v->width_r - v->place.w) / 2)) < 0)
 		v->place.x = 0;

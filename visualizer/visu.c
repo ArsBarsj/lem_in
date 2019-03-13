@@ -17,9 +17,9 @@ void	ft_init_sdl_screen(t_visu *visu)
 		printf("TTF_Init: %s\n", TTF_GetError());
 		exit(2);
 	}
-	visu->font = TTF_OpenFont("./font.ttf", 14);
-
-	printf("Oh My Goodness, an error : %s", TTF_GetError());
+	visu->font = TTF_OpenFont("/home/arseny/school21/Lem-in/visualizer/font.ttf", 14);
+	if (visu->font == NULL)
+		printf("AAAAAAAAbbbbbbbAAAAAAAAAAAAAAAA\n");
 	SDL_SetRenderDrawColor(visu->screen, 96, 128, 255, 255);
 	SDL_RenderClear(visu->screen);
 }
@@ -51,7 +51,8 @@ int main(int ac, char **av)
 	visu = (t_visu *)malloc(sizeof(t_visu));
 	int fd = open(av[1], O_RDONLY);
 	init_visu(visu);
-	read_file(visu, fd);
+	if (!read_file(visu, fd))
+		return (1);
 	ft_init_sdl_screen(visu);
 	draw_links(visu);
 	while (visu->config->head)
