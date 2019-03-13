@@ -4,11 +4,14 @@ LIB = libft/libft.a
 FLAGS = -Werror -Wall -Wextra
 GCC = gcc
 NAME = lem-in
+VISU = visu
 
-all: $(LIB) $(NAME)
+all: $(LIB) $(NAME) $(VISU)
 
 $(LIB):
 	@make -C libft/ all
+$(VISU):
+	make -C visualizer/ all
 $(NAME): $(OBJI)
 	@$(GCC) $(FLAGS) $(OBJI) -L libft -lft -o $(NAME)
 %.o: %.c
@@ -16,7 +19,9 @@ $(NAME): $(OBJI)
 clean:
 	rm -f *.o
 	make -C libft/ clean
+	make -C visualizer/ clean
 fclean: clean
 	rm -f $(NAME)
 	make -C libft/ fclean
+	make -C visualizer/ fclean
 re: fclean all

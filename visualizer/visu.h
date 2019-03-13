@@ -8,8 +8,8 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <stdlib.h>
-# include <SDL2/SDL.h>
-# include <SDL2/SDL_ttf.h>
+# include <SDL.h>
+# include <SDL_ttf.h>
 # include "../libft/libft.h"
 # include "../datatypes.h"
 #include "../lemin.h"

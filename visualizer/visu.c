@@ -17,7 +17,7 @@ void	ft_init_sdl_screen(t_visu *visu)
 		printf("TTF_Init: %s\n", TTF_GetError());
 		exit(2);
 	}
-	visu->font = TTF_OpenFont("/home/arseny/school21/Lem-in/visualizer/font.ttf", 14);
+	visu->font = TTF_OpenFont("font.ttf", 14);
 	if (visu->font == NULL)
 		printf("AAAAAAAAbbbbbbbAAAAAAAAAAAAAAAA\n");
 	SDL_SetRenderDrawColor(visu->screen, 96, 128, 255, 255);

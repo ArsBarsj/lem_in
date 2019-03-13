@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include "visu.h"
 
-int		**ft_create_links(t_config **config)
+int		**ft_create_links_v(t_config **config)
 {
 	int		i;
 	int		j;
@@ -23,7 +23,7 @@ int		**ft_create_links(t_config **config)
 	return (links);
 }
 
-int		ft_set_link(char *line, t_config **config, t_tree *root)
+int		ft_set_link_visu(char *line, t_config **config, t_tree *root)
 {
 	char	**splited;
 	t_tree	*from;
@@ -61,9 +61,9 @@ int     read_file(t_visu *visu, int fd)
 	visu->fileline = read_all_file(fd, visu->fileline, 1024);
 	visu->tabfile = ft_strsplit(visu->fileline, '\n');
 	root = tree_create(&visu->config);
-	visu->config->links = ft_create_links(&visu->config);
+	visu->config->links = ft_create_links_v(&visu->config);
 	while (visu->tabfile[i] && visu->tabfile[i][0] != 0
-			&& ft_set_link(visu->tabfile[i], &visu->config, root))
+			&& ft_set_link_visu(visu->tabfile[i], &visu->config, root))
 		i++;
 
 	return (1);
@@ -102,7 +102,6 @@ int	ft_config(int fd, t_config **config)
 {
 	char	*line;
 	int		flag[2];
-	t_tree  *root;
 
 	flag[0] = -1;
 	flag[1] = -1;
@@ -111,13 +110,6 @@ int	ft_config(int fd, t_config **config)
 		return (0);
 	else if (!ft_read_rooms(&line, config, fd, flag) || !(*config)->head)
 		return (0);
-//	root = tree_create(config);
-//	if (!ft_read_links(&line, fd, config, root))
-//	{
-//		tree_del(root);
-//	 	return (0);
-//	}
-//	tree_del(root);
 	return (1);
 }
 
