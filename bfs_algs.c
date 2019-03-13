@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bfs_algs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/13 19:34:05 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/13 23:45:35 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,7 +235,7 @@ int		get_lines_max(t_path **p, int used)
 			curr_lines = p[i]->len + p[i]->ants_n - 1;
 		i++;
 	}
-	return (curr_lines - 1);
+	return (curr_lines);
 }
 
 void	get_lines_reset_paths(t_path **p)
@@ -275,7 +275,7 @@ int		get_lines_n(t_path **paths, int ants)
 		get_lines_inner(paths, ants, used_paths - 1);
 		return (get_lines_max(paths, used_paths - 1));
 	}
-	return (curr_lines);
+	return (curr_lines - 1);
 }
 
 void	path_close_all(t_graph *g, t_path **p, int start, int end)
@@ -406,6 +406,52 @@ t_path	**solve_inner2(t_graph *g, t_config *cfg, t_path **best, int min_l)
 	return (best);
 }
 
+void	ants_select_ways(t_graph *g, t_path **p)
+{
+	int	ant_i;
+	int	path_i;
+	int	tmp;
+
+	ant_i = 0;
+	path_i = 0;
+	while (p[path_i])
+	{
+		tmp = 0;
+		while (tmp < p[path_i]->ants_n)
+		{
+			g->ants[ant_i]->path_id = path_i;
+			tmp++;
+			ant_i++;
+		}
+		path_i++;
+	}
+}
+
+void	solve_move(t_graph *g, t_config *c, t_path **paths)
+{
+	int			total_ants;
+	int			i;
+	// int			p_counter;
+	static int	paths_n = 0;
+
+	total_ants = g->ants_n;
+	if (!paths_n)
+		paths_n = count_paths(paths);
+	while (g->ants_n)
+	{
+		paths_resote_links(paths, g);
+		i = 0;
+		// p_counter = 0;
+		while (i < total_ants)
+		{
+			if (g->ants[i])
+				ant_move(&g->ants[i], g, paths[g->ants[i]->path_id], c->end_id);
+			i++;
+		}
+		write(1, "\n", 1);
+	}
+}
+
 int		solve(t_graph *g, t_config *cfg)
 {
 	t_path	**best;
@@ -415,7 +461,10 @@ int		solve(t_graph *g, t_config *cfg)
 	best = get_paths(g, cfg->start_id, cfg->end_id);
 	min_lines = get_lines_n(best, g->ants_n);
 	alt = solve_inner2(g, cfg, best, min_lines);
+	paths_print(alt);
 	ft_printf("%d\n", get_lines_n(alt, g->ants_n));
+	ants_select_ways(g, alt);
+	solve_move(g, cfg, alt);
 	paths_del(&alt);
 	return (1);
 }
