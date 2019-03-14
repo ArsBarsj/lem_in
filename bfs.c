@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:08:24 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/13 00:09:43 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/14 18:06:55 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,41 +197,30 @@ int		bfs_ways(int start, int end, t_graph *g)
 
 t_path		**bfs_ways2(int start, int end, t_graph *g)
 {
-	// int		**m_copy;
 	int		count;
 	t_path	**tmp;
 	t_path	**tab;
 	int		capacity;
 	int		i;
 
-	// deep_copy(&m_copy, g->matrix_copy, g->verts_n);
 	count = 0;
-	tab = (t_path **)malloc(sizeof(t_path *));
+	tab = (t_path **)malloc(sizeof(t_path *) * 2);
 	capacity = 1;
-	// weak_copy(g->matrix_copy, m_copy, g->verts_n);
 	while ((tab[count] = path_new(bfs_path(start, end, g))))
 	{
-		graph_close_path(g, tab[count], start, end);
-		count++;
+		graph_close_path(g, tab[count++], start, end);
 		if (capacity < count + 1)
 		{
-			i = 0;
-			tmp = (t_path **)malloc(sizeof(t_path *) * (capacity + 1));
-			while (i < count)
-			{
+			i = -1;
+			tmp = (t_path **)malloc(sizeof(t_path *) * (capacity * 2));
+			while (++i < count)
 				tmp[i] = tab[i];
-				i++;
-			}
 			free(tab);
 			tab = tmp;
-			capacity++;
+			capacity *= 2;
 		}
 		tab[count] = NULL;
 	}
-	// tab[count] = NULL;
-	// paths_print(tab);
-	// weak_copy(g->matrix_copy, m_copy, g->verts_n);
-	// del_tab(m_copy, g->verts_n);
 	return (tab);
 }
 
