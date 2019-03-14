@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bfs_algs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/13 23:45:35 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/14 13:44:26 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -414,6 +414,7 @@ void	ants_select_ways(t_graph *g, t_path **p)
 
 	ant_i = 0;
 	path_i = 0;
+	ft_printf("%d\n", g->ants_n);
 	while (p[path_i])
 	{
 		tmp = 0;
@@ -425,6 +426,7 @@ void	ants_select_ways(t_graph *g, t_path **p)
 		}
 		path_i++;
 	}
+	ft_printf("%d\n", ant_i);
 }
 
 void	solve_move(t_graph *g, t_config *c, t_path **paths)
@@ -461,8 +463,8 @@ int		solve(t_graph *g, t_config *cfg)
 	best = get_paths(g, cfg->start_id, cfg->end_id);
 	min_lines = get_lines_n(best, g->ants_n);
 	alt = solve_inner2(g, cfg, best, min_lines);
-	paths_print(alt);
-	ft_printf("%d\n", get_lines_n(alt, g->ants_n));
+	// paths_print(alt);
+	// ft_printf("%d\n", get_lines_n(alt, g->ants_n));
 	ants_select_ways(g, alt);
 	solve_move(g, cfg, alt);
 	paths_del(&alt);
