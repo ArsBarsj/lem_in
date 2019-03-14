@@ -1,4 +1,4 @@
-SRCI = read.c check_input.c utils.c node.c cmd.c graph.c bfs_algs.c ants.c bfs.c queue.c path.c tree.c read_links.c read_links_utils.c graph_utils.c graph_utils2.c checking.c tree_utils.c bfs_utils.c
+SRCI = read.c check_input.c utils.c node.c cmd.c graph.c bfs_algs.c bfs_alg_utils.c bfs_alg_utils2.c ants.c bfs.c queue.c path.c path_utils.c get_lines_utils.c tree.c read_links.c read_links_utils.c graph_utils.c graph_utils2.c checking.c tree_utils.c bfs_utils.c
 OBJI = $(SRCI:.c=.o)
 LIB = libft/libft.a
 FLAGS = -Werror -Wall -Wextra
