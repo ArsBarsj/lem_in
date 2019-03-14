@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/14 15:29:23 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/14 16:45:32 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,11 +282,21 @@ void	path_close_all(t_graph *g, t_path **p, int start, int end)
 {
 	int	n;
 	int	i;
+	int	j;
+	t_node	**path;
 
 	n = count_paths(p);
 	i = -1;
 	while (++i < n)
-		graph_close_path(g, p[i], start, end);
+	{
+		j = -1;
+		path = p[i]->path;
+		while (path[++j])
+		{
+			if (path[j]->id != start && path[j]->id != end)
+				graph_close_node(g, path[j]->id);
+		}
+	}
 }
 
 int	graph_del_dead_ends(t_graph *g)

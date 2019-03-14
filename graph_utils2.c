@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 14:50:06 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/12 21:49:11 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/14 16:47:41 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,11 @@ void		graph_close_node(t_graph *g, int node)
 		i = 0;
 		while (i < g->verts_n)
 		{
-			graph_link_del(&g, node, i, 1);
+			if (g->matrix_copy[node][i])
+			{
+				g->matrix_copy[node][i] = 0;
+				g->matrix_copy[i][node] = 0;
+			}
 			i++;
 		}
 	}
@@ -73,23 +77,21 @@ void		graph_close_node2(t_graph *g, int node)
 void        paths_resote_links(t_path **paths, t_graph *g)
 {
 	int     i;
-	// int     j;
-	// t_node  *current;
-	// t_node  *next;
+	int     j;
+	t_node  *current;
 
 	i = 0;
 	while (paths[i])
 	{
-		// j = 0;
-		// current = paths[i]->path[j];
-		// while (current && paths[i]->path[j + 1])
-		// {
-			// current = paths[i]->path[j];
-			// next = paths[i]->path[j + 1];
-			// graph_link_add(g, current->id, next->id, 1);
-			// j++;
-		// }
-		path_restore_links(paths[i], g);
+		j = 0;
+		current = paths[i]->path[j];
+		while (current && paths[i]->path[j + 1])
+		{
+			current = paths[i]->path[j];
+			g->matrix_copy[current->id][ paths[i]->path[j + 1]->id] = 1;
+			g->matrix_copy[ paths[i]->path[j + 1]->id][current->id] = 1;
+			j++;
+		}
 		i++;
 	}
 }
