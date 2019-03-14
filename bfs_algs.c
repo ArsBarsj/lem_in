@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bfs_algs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/14 13:44:26 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/14 15:29:23 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -338,14 +338,15 @@ void	free_tmp_restore(t_path **tmp, t_graph *g)
 	paths_del(&tmp);
 }
 
-int		reset_best(t_path ***best, int n, t_path ***tmp, t_path **alt)
+int		reset_best(t_path ***best, int *nm, t_path ***tmp, t_path **alt)
 {
 	free(*tmp);
 	*tmp = alt;
-	path_del(&(*best)[n]);
+	path_del(&(*best)[nm[0]]);
 	free(*best);
 	*best = alt;
-	return ((*best)[n]->len - 1);
+	nm[2] = count_paths(*best) - 1;
+	return ((*best)[nm[0]]->len - 1);
 }
 
 void	go_next(t_graph *g, t_path **b, t_config *cfg, int *nm)
@@ -392,7 +393,7 @@ t_path	**solve_inner2(t_graph *g, t_config *cfg, t_path **best, int min_l)
 			alt = paths_sort(path_join(best, tmp, nm[0]));
 			if (min_l > get_lines_n(alt, g->ants_n))
 			{
-				nm[1] = reset_best(&best, nm[0], &tmp, alt);
+				nm[1] = reset_best(&best, nm, &tmp, alt);
 				min_l = get_lines_n(best, g->ants_n);
 				update_state(g, best, cfg, nm[0]);
 			}
@@ -418,7 +419,7 @@ void	ants_select_ways(t_graph *g, t_path **p)
 	while (p[path_i])
 	{
 		tmp = 0;
-		while (tmp < p[path_i]->ants_n)
+		while (tmp < p[path_i]->ants_n && g->ants[ant_i])
 		{
 			g->ants[ant_i]->path_id = path_i;
 			tmp++;
