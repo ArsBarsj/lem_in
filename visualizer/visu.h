@@ -38,6 +38,8 @@ typedef struct 		s_visu
 	char			*fileline;
 	char			**tabfile;
 	t_config		*config;
+	t_ant           **arr;
+	t_turn          *turns;
 	int				height_r;
 	int				width_r;
 	SDL_Rect		place;

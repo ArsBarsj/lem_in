@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include "visu.h"
 
-int		**ft_create_links(t_config **config)
+int		**ft_create_link_v(t_config **config)
 {
 	int		i;
 	int		j;
@@ -23,7 +23,7 @@ int		**ft_create_links(t_config **config)
 	return (links);
 }
 
-int		ft_set_link(char *line, t_config **config, t_tree *root)
+int		ft_set_link_v(char *line, t_config **config, t_tree *root)
 {
 	char	**splited;
 	t_tree	*from;
@@ -48,24 +48,105 @@ int		ft_set_link(char *line, t_config **config, t_tree *root)
 	return (1);
 }
 
+t_step  *create_step(char *step, t_visu *v)
+{
+	char    **tab;
+	t_step  *newstep;
+	t_node  *tmp;
 
+	tab = ft_strsplit(step, '-');
+	newstep = (t_step *)malloc(sizeof(t_step));
+	newstep->ant = v->arr[ft_atoi(tab[0] + 1) - 1];
+	tmp = v->config->head;
+	while (tmp)
+	{
+		if (!ft_strcmp(tmp->name, tab[1]))
+		{
+			newstep->room = tmp;
+			break;
+		}
+		tmp = tmp->next;
+	}
+	newstep->next = NULL;
+}
+
+t_turn  *create_turn(void)
+{
+	t_turn  *turn;
+
+	if (!(turn = (t_turn *)malloc(sizeof(t_turn))))
+		return (NULL);
+	turn->step = NULL;
+	turn->next = NULL;
+	return (turn);
+}
+
+t_step  *fill_steps(t_visu *v, char **tab)
+{
+	t_step  *head;
+	t_step  *prev;
+	int i;
+
+	i = 1;
+	head = create_step(tab[0], v);
+	prev = head;
+	while (tab[i])
+	{
+		prev->next = create_step(tab[i], v);
+		prev = prev->next;
+		i++;
+	}
+	return (head);
+}
+
+void    manage_turns(t_visu *v, char *line, t_turn **curr)
+{
+	char    **tab;
+	t_turn  *turn;
+
+	if (v->turns == NULL)
+	{
+		v->turns = create_turn();
+		*curr = v->turns;
+		turn = *curr;
+	}
+	else
+	{
+		(*curr)->next = create_turn();
+		turn = (*curr)->next;
+		*curr = turn;
+	}
+
+	tab = ft_strsplit(line, ' ');
+	turn->step = fill_steps(v, tab);
+	ft_clean_str_arr(tab);
+}
 
 int     read_file(t_visu *visu, int fd)
 {
 	int     i;
 	t_tree  *root;
+	t_turn  *tmp;
+
 	i = 0;
-	// visu->tabfile = 2;///
 	if (!ft_config(fd, &visu->config))
 		return (0);
 	visu->fileline = read_all_file(fd, visu->fileline, 1024);
 	visu->tabfile = ft_strsplit(visu->fileline, '\n');
 	root = tree_create(&visu->config);
-	visu->config->links = ft_create_links(&visu->config);
+	visu->config->links = ft_create_link_v(&visu->config);
 	while (visu->tabfile[i] && visu->tabfile[i][0] != 0
-			&& ft_set_link(visu->tabfile[i], &visu->config, root))
+			&& ft_set_link_v(visu->tabfile[i], &visu->config, root))
 		i++;
-
+	visu->arr = ant_new_list(visu->config->ants);
+	tmp = NULL;
+	while (visu->tabfile[i])
+	{
+		if (!ft_strcmp(visu->tabfile[i], "ERROR!"))
+			return (0);
+		manage_turns(visu, visu->tabfile[i], &tmp);
+		i++;
+	}
 	return (1);
 }
 
@@ -102,7 +183,6 @@ int	ft_config(int fd, t_config **config)
 {
 	char	*line;
 	int		flag[2];
-	t_tree  *root;
 
 	flag[0] = -1;
 	flag[1] = -1;
@@ -111,13 +191,6 @@ int	ft_config(int fd, t_config **config)
 		return (0);
 	else if (!ft_read_rooms(&line, config, fd, flag) || !(*config)->head)
 		return (0);
-//	root = tree_create(config);
-//	if (!ft_read_links(&line, fd, config, root))
-//	{
-//		tree_del(root);
-//	 	return (0);
-//	}
-//	tree_del(root);
 	return (1);
 }
 
