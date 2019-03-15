@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 18:01:44 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/02 23:14:22 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/14 20:25:11 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ t_path	*path_new(t_node **path)
 		if (!p)
 			return (NULL);
 		p->path = path;
-		p->len = path_len(path) - 1;
+		p->len = path_len(path);
+		p->ants_n = 0;
 		return (p);
 	}
 	return (NULL);

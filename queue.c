@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   queue.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:15:52 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/02 23:16:00 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/05 02:43:28 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int			dqueue_pop(t_dqueue **head)
 	int			ret;
 	t_dqueue	*tmp;
 
-	if (head)
+	if (head && (*head))
 	{
 		ret = (*head)->node_id;
 		tmp = (*head);

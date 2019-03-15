@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bfs.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:08:24 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/02 23:48:46 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/14 20:30:48 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,3 +100,33 @@ t_node	**bfs_path(int start, int end, t_graph *g)
 	}
 	return (path);
 }
+
+t_path		**bfs_ways2(int start, int end, t_graph *g)
+{
+	int		count;
+	t_path	**tmp;
+	t_path	**tab;
+	int		capacity;
+	int		i;
+
+	count = 0;
+	tab = (t_path **)malloc(sizeof(t_path *) * 2);
+	capacity = 1;
+	while ((tab[count] = path_new(bfs_path(start, end, g))))
+	{
+		graph_close_path(g, tab[count++], start, end);
+		if (capacity < count + 1)
+		{
+			i = -1;
+			tmp = (t_path **)malloc(sizeof(t_path *) * (capacity * 2));
+			while (++i < count)
+				tmp[i] = tab[i];
+			free(tab);
+			tab = tmp;
+			capacity *= 2;
+		}
+		tab[count] = NULL;
+	}
+	return (tab);
+}
+
