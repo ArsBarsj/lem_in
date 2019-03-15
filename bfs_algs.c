@@ -6,7 +6,7 @@
 /*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/14 20:57:45 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/15 15:26:28 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,11 @@ int		solve(t_graph *g, t_config *cfg)
 	int		min_lines;
 
 	best = bfs_ways2(cfg->start_id, cfg->end_id, g);
+	if (!count_paths(best))
+	{
+		free(best);
+		return (0);
+	}
 	min_lines = get_lines_n(best, g->ants_n);
 	alt = solve_inner2(g, cfg, best, min_lines);
 	ants_select_ways(g, alt);
