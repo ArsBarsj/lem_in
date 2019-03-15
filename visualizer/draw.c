@@ -2,7 +2,7 @@
 #include <stdio.h>
 void    draw_line(t_visu *v, t_vlink *l, int mx, int my)
 {
-	SDL_SetRenderDrawColor(v->screen, 220, 0, 115, 255);
+	SDL_SetRenderDrawColor(v->screen, 0, 0, 0, 255);
 	SDL_RenderDrawLine(v->screen, l->startx + mx, l->starty + my,
 			l->endx + mx, l->endy + my);
 	SDL_RenderDrawLine(v->screen, l->startx + mx + 1, l->starty + my,
@@ -83,4 +83,43 @@ void    draw_room(t_visu *v, t_node *room) {
 		SDL_SetRenderDrawColor(v->screen, 47, 24, 71, 255);
 	SDL_RenderFillRect(v->screen, &v->place);
 	draw_id(v, room);
+}
+
+void    draw_line_path(t_visu *v, t_vlink *l, int mx, int my)
+{
+	SDL_SetRenderDrawColor(v->screen, 244, 66, 86, 255);
+	SDL_RenderDrawLine(v->screen, l->startx + mx, l->starty + my,
+	                   l->endx + mx, l->endy + my);
+	SDL_RenderDrawLine(v->screen, l->startx + mx + 1, l->starty + my,
+	                   l->endx + mx + 1, l->endy + my);
+	SDL_RenderDrawLine(v->screen, l->startx + mx, l->starty + my + 1,
+	                   l->endx + mx, l->endy + my + 1);
+}
+
+void    draw_paths(t_visu *v, t_path **paths, t_config *cfg)
+{
+	int i;
+	int j;
+	t_vlink tmp_link;
+
+	i = 0;
+	while (paths[i])
+	{
+		tmp_link.startx = v->graph->nodes[cfg->start_id]->x;
+		tmp_link.starty = v->graph->nodes[cfg->start_id]->y;
+		tmp_link.endx = paths[i]->path[0]->x;
+		tmp_link.endy = paths[i]->path[0]->y;
+		draw_line_path(v, &tmp_link, v->width_r / 2, v->height_r / 2);
+		j = 1;
+		while (paths[i]->path[j])
+		{
+			tmp_link.startx = paths[i]->path[j - 1]->x;
+			tmp_link.starty = paths[i]->path[j - 1]->y;
+			tmp_link.endx = paths[i]->path[j]->x;
+			tmp_link.endy = paths[i]->path[j]->y;
+			draw_line_path(v, &tmp_link, v->width_r / 2, v->height_r / 2);
+			j++;
+		}
+		i++;
+	}
 }

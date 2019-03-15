@@ -67,8 +67,8 @@ void	start_dance(t_config *cfg)
 		config_del(cfg);
 		error();
 	}
-	// if (g->matrix == NULL || !solve(g, cfg))
-	// 	ft_printf("ERROR\n");
+	 if (g->matrix == NULL || !solve(g, cfg))
+	 	ft_printf("ERROR\n");
 	graph_del(&g);
 	config_del(cfg);
 }

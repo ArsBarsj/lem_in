@@ -10,6 +10,9 @@ void	init_visu(t_visu *visu)
 	visu->fileline = NULL;
 	visu->tabfile = NULL;
 	visu->config = (t_config *)malloc(sizeof(t_config));
+	visu->graph = NULL;
+	visu->paths = NULL;
+	visu->best = NULL;
 	ft_init_config(&visu->config);
 	visu->arr = NULL;
 	visu->turns = NULL;

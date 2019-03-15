@@ -68,6 +68,7 @@ t_step  *create_step(char *step, t_visu *v)
 		tmp = tmp->next;
 	}
 	newstep->next = NULL;
+	return (newstep);
 }
 
 t_turn  *create_turn(void)
@@ -127,14 +128,17 @@ int     read_file(t_visu *visu, int fd)
 	int     i;
 	t_tree  *root;
 	t_turn  *tmp;
+	char    *line;
 
 	i = 0;
-	if (!ft_config(fd, &visu->config))
+	if (!ft_config(fd, &visu->config, &line))
 		return (0);
 	visu->fileline = read_all_file(fd, visu->fileline, 1024);
 	visu->tabfile = ft_strsplit(visu->fileline, '\n');
 	root = tree_create(&visu->config);
 	visu->config->links = ft_create_link_v(&visu->config);
+	ft_set_link_v(line, &visu->config, root);
+	free(line);
 	while (visu->tabfile[i] && visu->tabfile[i][0] != 0
 			&& ft_set_link_v(visu->tabfile[i], &visu->config, root))
 		i++;
@@ -147,6 +151,9 @@ int     read_file(t_visu *visu, int fd)
 		manage_turns(visu, visu->tabfile[i], &tmp);
 		i++;
 	}
+	visu->graph =graph_create(visu->config);
+	visu->best = bfs_ways2(visu->config->start_id, visu->config->end_id, visu->graph);
+	visu->paths = solve_inner2(visu->graph, visu->config, visu->best, get_lines_n(visu->best, visu->config->ants));
 	return (1);
 }
 
@@ -179,17 +186,17 @@ char	*read_all_file(int fd, char *buf, int buf_siz)
 	return (links);
 }
 
-int	ft_config(int fd, t_config **config)
+int	ft_config(int fd, t_config **config, char **line)
 {
-	char	*line;
+//	char	*line;
 	int		flag[2];
 
 	flag[0] = -1;
 	flag[1] = -1;
-	line = NULL;
-	if (!ft_read_ants(&line, config, fd))
+//	line = NULL;
+	if (!ft_read_ants(line, config, fd))
 		return (0);
-	else if (!ft_read_rooms(&line, config, fd, flag) || !(*config)->head)
+	else if (!ft_read_rooms(line, config, fd, flag) || !(*config)->head)
 		return (0);
 	return (1);
 }

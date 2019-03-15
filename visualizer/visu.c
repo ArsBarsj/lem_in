@@ -55,6 +55,8 @@ int main(int ac, char **av)
 		return (1);
 	ft_init_sdl_screen(visu);
 	draw_links(visu);
+	draw_paths(visu, visu->paths, visu->config);
+
 	while (visu->config->head)
 	{
 		draw_room(visu, visu->config->head);

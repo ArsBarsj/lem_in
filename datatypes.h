@@ -148,6 +148,7 @@ int					ant_move(t_ant **a, t_graph *g, t_path *p, int end);
 int					reset_best(t_path ***best, int *nm, t_path ***tmp, t_path **alt);
 void				go_next(t_graph *g, t_path **b, t_config *cfg, int *nm);
 void				skip_nodes(t_graph *g, t_path **b, int *nm);
+t_path	            **solve_inner2(t_graph *g, t_config *cfg, t_path **best, int min_l);
 t_path				**find_new_path(t_graph *g, t_path **b, t_config *cfg, int *nm);
 void				init_search(t_graph *g, t_path **b, t_config *cfg, int *nm);
 int					update_state2(t_graph *g, t_path **ways, t_config *cfg, int *n);
