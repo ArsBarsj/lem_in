@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bfs_alg_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 20:48:40 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/14 20:52:24 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/16 13:06:36 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int		reset_best(t_path ***best, int *nm, t_path ***tmp, t_path **alt)
 	free(*best);
 	*best = alt;
 	nm[2] = count_paths(*best) - 1;
+	nm[0] = 0;
 	return ((*best)[nm[0]]->len - 1);
 }
 
