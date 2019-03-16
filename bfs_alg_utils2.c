@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bfs_alg_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 20:53:43 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/14 20:55:14 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/16 13:33:55 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,11 @@ void	free_tmp_restore(t_path **tmp, t_graph *g)
 	paths_del(&tmp);
 }
 
-
 void	path_close_all(t_graph *g, t_path **p, int start, int end)
 {
-	int	n;
-	int	i;
-	int	j;
+	int		n;
+	int		i;
+	int		j;
 	t_node	**path;
 
 	n = count_paths(p);

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 20:24:11 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/14 20:24:59 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/16 13:27:02 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "datatypes.h"
 
-void	path_join_copy(t_path **path, t_path **src, int n)
+void		path_join_copy(t_path **path, t_path **src, int n)
 {
 	int	i;
 
@@ -25,7 +25,7 @@ void	path_join_copy(t_path **path, t_path **src, int n)
 	}
 }
 
-t_path	**path_join(t_path **dst, t_path **src, int n)
+t_path		**path_join(t_path **dst, t_path **src, int n)
 {
 	t_path	**path;
 	int		dlen;
@@ -53,11 +53,11 @@ t_path	**path_join(t_path **dst, t_path **src, int n)
 	return (path);
 }
 
-t_path	**paths_sort(t_path **p)
+t_path		**paths_sort(t_path **p)
 {
-	int	i;
-	int	j;
-	int	siz;
+	int		i;
+	int		j;
+	int		siz;
 	t_path	*tmp;
 
 	siz = count_paths(p);

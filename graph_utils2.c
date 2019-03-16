@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   graph_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 14:50:06 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/14 16:47:41 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/16 13:28:17 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,11 @@ void		graph_close_node2(t_graph *g, int node)
 	}
 }
 
-void        paths_resote_links(t_path **paths, t_graph *g)
+void		paths_resote_links(t_path **paths, t_graph *g)
 {
-	int     i;
-	int     j;
-	t_node  *current;
+	int		i;
+	int		j;
+	t_node	*current;
 
 	i = 0;
 	while (paths[i])
@@ -88,8 +88,8 @@ void        paths_resote_links(t_path **paths, t_graph *g)
 		while (current && paths[i]->path[j + 1])
 		{
 			current = paths[i]->path[j];
-			g->matrix_copy[current->id][ paths[i]->path[j + 1]->id] = 1;
-			g->matrix_copy[ paths[i]->path[j + 1]->id][current->id] = 1;
+			g->matrix_copy[current->id][paths[i]->path[j + 1]->id] = 1;
+			g->matrix_copy[paths[i]->path[j + 1]->id][current->id] = 1;
 			j++;
 		}
 		i++;

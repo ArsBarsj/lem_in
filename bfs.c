@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bfs.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 20:08:24 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/14 20:30:48 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/16 13:35:25 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include "datatypes.h"
 
-int		bfs(int start_id, int end_id, t_graph *graph)
+int			bfs(int start_id, int end_id, t_graph *graph)
 {
 	int			i;
 	int			visited[graph->verts_n];
@@ -43,7 +43,7 @@ int		bfs(int start_id, int end_id, t_graph *graph)
 	return (2147483647);
 }
 
-int		bfs_modified(int start_id, int end_id, t_graph *g, int *pred)
+int			bfs_modified(int start_id, int end_id, t_graph *g, int *pred)
 {
 	int			i;
 	int			visited[g->verts_n];
@@ -72,7 +72,7 @@ int		bfs_modified(int start_id, int end_id, t_graph *g, int *pred)
 	return (0);
 }
 
-t_node	**bfs_path(int start, int end, t_graph *g)
+t_node		**bfs_path(int start, int end, t_graph *g)
 {
 	int			pred[g->verts_n];
 	int			dist[g->verts_n];
@@ -129,4 +129,3 @@ t_path		**bfs_ways2(int start, int end, t_graph *g)
 	}
 	return (tab);
 }
-

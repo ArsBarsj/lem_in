@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bfs_algs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/15 15:26:28 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/16 13:32:12 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "libft/libft.h"
 #include "datatypes.h"
 
-void		paths_print(t_path **paths)
+void	paths_print(t_path **paths)
 {
 	int		i;
 	int		j;
