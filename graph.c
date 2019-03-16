@@ -6,7 +6,7 @@
 /*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 01:33:36 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/16 13:30:00 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/16 13:41:58 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,20 @@ void		graph_restore_copy(t_graph *g)
 			}
 		}
 	}
+}
+
+int			graph_links_num(t_graph *g, int node)
+{
+	int	j;
+	int	counter;
+
+	j = 0;
+	counter = 0;
+	while (j < g->verts_n)
+	{
+		if (g->matrix[node][j] && node != j)
+			counter++;
+		j++;
+	}
+	return (counter);
 }

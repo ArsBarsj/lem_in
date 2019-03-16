@@ -6,7 +6,7 @@
 /*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 14:50:06 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/16 13:28:17 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/16 13:42:02 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,20 +94,4 @@ void		paths_resote_links(t_path **paths, t_graph *g)
 		}
 		i++;
 	}
-}
-
-int			graph_links_num(t_graph *g, int node)
-{
-	int	j;
-	int	counter;
-
-	j = 0;
-	counter = 0;
-	while (j < g->verts_n)
-	{
-		if (g->matrix[node][j] && node != j)
-			counter++;
-		j++;
-	}
-	return (counter);
 }

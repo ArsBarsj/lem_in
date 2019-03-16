@@ -6,7 +6,7 @@
 /*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/16 13:32:12 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/16 13:41:06 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,6 @@
 #include <unistd.h>
 #include "libft/libft.h"
 #include "datatypes.h"
-
-void	paths_print(t_path **paths)
-{
-	int		i;
-	int		j;
-	t_node	*current;
-	t_node	*next;
-
-	i = 0;
-	while (paths[i])
-	{
-		j = 0;
-		current = paths[i]->path[j];
-		ft_printf("\033[0;31m%d:\033[0m (%s|%d)", i, current->name, current->id);
-		while (current && paths[i]->path[j + 1])
-		{
-			current = paths[i]->path[j];
-			next = paths[i]->path[j + 1];
-			ft_printf("->(%s|%d)", next->name, next->id);
-			j++;
-		}
-		ft_printf(" \033[0;32m[%d] ants= %d\033[0m", j, paths[i]->ants_n);
-		ft_printf("\n");
-		i++;
-	}
-}
 
 int		get_lines_n(t_path **paths, int ants)
 {
