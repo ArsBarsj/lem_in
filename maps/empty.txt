@@ -1,0 +1,13 @@
+3
+##start
+start 10 30
+##end
+end 50 150
+2 90 20
+3 330 200
+start-2
+2-3
+3-start
+end-3
+start-end
+end-2
