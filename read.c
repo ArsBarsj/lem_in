@@ -89,15 +89,15 @@ int			ft_read_rooms(char **line, t_config **config, int fd, int flag[2])
 	return (1);
 }
 
-int			main(int argc, char *argv[])
+int			main(int a, char** b)
 {
 	t_config	*cfg;
 	int			x;
-	(void)argc;
 
+	(void)a;
 	cfg = (t_config *)malloc(sizeof(t_config));
 	ft_init_config(&cfg);
-	x = ft_read_map(open(argv[1], O_RDONLY), &cfg);
+	x = ft_read_map(open(b[1], O_RDONLY), &cfg);
 	ft_printf("\n");
 	if (x && (cfg->start_id < 0 || cfg->end_id < 0))
 	{

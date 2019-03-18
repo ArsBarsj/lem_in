@@ -1,18 +1,14 @@
 #include "visu.h"
-#include <stdio.h>
+
 void    draw_line(t_visu *v, t_vlink *l, int mx, int my)
 {
-	SDL_SetRenderDrawColor(v->screen, 220, 0, 115, 255);
+	SDL_SetRenderDrawColor(v->screen, 0, 0, 0, 255);
 	SDL_RenderDrawLine(v->screen, l->startx + mx, l->starty + my,
 			l->endx + mx, l->endy + my);
 	SDL_RenderDrawLine(v->screen, l->startx + mx + 1, l->starty + my,
 	                        l->endx + mx + 1, l->endy + my);
 	SDL_RenderDrawLine(v->screen, l->startx + mx, l->starty + my + 1,
 	                        l->endx + mx, l->endy + my + 1);
-//	SDL_RenderDrawLine(v->screen, l->startx + mx - 1, l->starty + my,
-//	                        l->endx + mx - 1, l->endy + my);
-//	SDL_RenderDrawLine(v->screen, l->startx + mx, l->starty + my - 1,
-//	                        l->endx + mx, l->endy + my - 1);
 }
 
 void    set_link_coord(t_vlink *l, t_visu *v, int i, int j)
@@ -59,32 +55,41 @@ void    draw_links(t_visu *v)
 	}
 }
 
-void    draw_id(t_visu *v, t_node *room)
+void    draw_line_path(t_visu *v, t_vlink *l, int mx, int my)
 {
-	SDL_Surface     *text;
-
-	text = NULL;
-	if (TTF_SizeUTF8(v->font, room->name, &v->place.w, &v->place.h) == -1)
-		exit(2);
-	if ((v->place.x = room->x + ((v->width_r - v->place.w) / 2)) < 0)
-		v->place.x = 0;
-	if ((v->place.y = room->y + (v->height_r - v->place.h) / 2) < 0)
-		v->place.x = 0;
-	text = TTF_RenderText_Blended(v->font, room->name, v->text_color);
-	v->texture = SDL_CreateTextureFromSurface(v->screen, text);
-	SDL_RenderCopy(v->screen, v->texture, NULL, &v->place);
-	SDL_FreeSurface(text);
-	SDL_DestroyTexture(v->texture);
+	SDL_SetRenderDrawColor(v->screen, 244, 66, 86, 255);
+	SDL_RenderDrawLine(v->screen, l->startx + mx, l->starty + my,
+	                   l->endx + mx, l->endy + my);
+	SDL_RenderDrawLine(v->screen, l->startx + mx + 1, l->starty + my,
+	                   l->endx + mx + 1, l->endy + my);
+	SDL_RenderDrawLine(v->screen, l->startx + mx, l->starty + my + 1,
+	                   l->endx + mx, l->endy + my + 1);
 }
 
-void    draw_room(t_visu *v, t_node *room) {
-	v->place = init_coor(room->x, room->y, v->width_r, v->height_r);
-	if (v->config->start_id == room->id)
-		SDL_SetRenderDrawColor(v->screen, 120, 188, 97, 255);
-	else if (v->config->end_id == room->id)
-		SDL_SetRenderDrawColor(v->screen, 199, 62, 29, 255);
-	else
-		SDL_SetRenderDrawColor(v->screen, 47, 24, 71, 255);
-	SDL_RenderFillRect(v->screen, &v->place);
-	draw_id(v, room);
+void    draw_paths(t_visu *v, t_path **paths, t_config *cfg)
+{
+	int i;
+	int j;
+	t_vlink tmp_link;
+
+	i = 0;
+	while (paths[i])
+	{
+		tmp_link.startx = v->graph->nodes[cfg->start_id]->x;
+		tmp_link.starty = v->graph->nodes[cfg->start_id]->y;
+		tmp_link.endx = paths[i]->path[0]->x;
+		tmp_link.endy = paths[i]->path[0]->y;
+		draw_line_path(v, &tmp_link, v->width_r / 2, v->height_r / 2);
+		j = 1;
+		while (paths[i]->path[j])
+		{
+			tmp_link.startx = paths[i]->path[j - 1]->x;
+			tmp_link.starty = paths[i]->path[j - 1]->y;
+			tmp_link.endx = paths[i]->path[j]->x;
+			tmp_link.endy = paths[i]->path[j]->y;
+			draw_line_path(v, &tmp_link, v->width_r / 2, v->height_r / 2);
+			j++;
+		}
+		i++;
+	}
 }

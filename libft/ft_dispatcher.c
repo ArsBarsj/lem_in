@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_dispatcher.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/23 17:13:52 by fkuhn             #+#    #+#             */
-/*   Updated: 2019/01/09 20:16:27 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/04 16:13:11 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <inttypes.h>
 #include "ft_printf.h"
 
 char	*ft_dispatch_float(t_specifier *spec, va_list *ap)

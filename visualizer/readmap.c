@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include "visu.h"
 
-int		**ft_create_links_v(t_config **config)
+int		**ft_create_link_v(t_config **config)
 {
 	int		i;
 	int		j;
@@ -23,7 +23,7 @@ int		**ft_create_links_v(t_config **config)
 	return (links);
 }
 
-int		ft_set_link_visu(char *line, t_config **config, t_tree *root)
+int		ft_set_link_v(char *line, t_config **config, t_tree *root)
 {
 	char	**splited;
 	t_tree	*from;
@@ -48,24 +48,40 @@ int		ft_set_link_visu(char *line, t_config **config, t_tree *root)
 	return (1);
 }
 
-
+void make_path(t_visu *visu, int i)
+{
+	while (visu->tabfile[i])
+	{
+		if (!ft_strcmp(visu->tabfile[i], "ERROR!"))
+			free_visu(visu);
+		i++;
+	}
+	ft_clean_str_arr(visu->tabfile);
+	visu->graph =graph_create(visu->config);
+	visu->best = bfs_ways2(visu->config->start_id, visu->config->end_id, visu->graph);
+	visu->paths = solve_inner2(visu->graph, visu->config, visu->best, get_lines_n(visu->best, visu->config->ants));
+}
 
 int     read_file(t_visu *visu, int fd)
 {
 	int     i;
 	t_tree  *root;
+	char    *line;
+
 	i = 0;
-	// visu->tabfile = 2;///
-	if (!ft_config(fd, &visu->config))
+	if (!ft_config(fd, &visu->config, &line))
 		return (0);
 	visu->fileline = read_all_file(fd, visu->fileline, 1024);
 	visu->tabfile = ft_strsplit(visu->fileline, '\n');
 	root = tree_create(&visu->config);
-	visu->config->links = ft_create_links_v(&visu->config);
+	visu->config->links = ft_create_link_v(&visu->config);
+	ft_set_link_v(line, &visu->config, root);
+	free(line);
 	while (visu->tabfile[i] && visu->tabfile[i][0] != 0
-			&& ft_set_link_visu(visu->tabfile[i], &visu->config, root))
+			&& ft_set_link_v(visu->tabfile[i], &visu->config, root))
 		i++;
-
+	tree_del(root);
+	make_path(visu, i);
 	return (1);
 }
 
@@ -98,70 +114,15 @@ char	*read_all_file(int fd, char *buf, int buf_siz)
 	return (links);
 }
 
-int	ft_config(int fd, t_config **config)
+int	ft_config(int fd, t_config **config, char **line)
 {
-	char	*line;
 	int		flag[2];
 
 	flag[0] = -1;
 	flag[1] = -1;
-	line = NULL;
-	if (!ft_read_ants(&line, config, fd))
+	if (!ft_read_ants(line, config, fd))
 		return (0);
-	else if (!ft_read_rooms(&line, config, fd, flag) || !(*config)->head)
+	else if (!ft_read_rooms(line, config, fd, flag) || !(*config)->head)
 		return (0);
-	return (1);
-}
-
-int			ft_read_ants(char **line, t_config **config, int fd)
-{
-	while (get_next_line(fd, line) > 0 && (ft_is_comm(*line)
-			|| ft_is_cmd(*line)))
-	{
-		ft_printf("%s\n", *line);
-		if (ft_is_start(*line))
-		{
-			free(*line);
-			return (0);
-		}
-		free(*line);
-	}
-	if (line && *line)
-		ft_putstr(*line);
-	ft_putchar('\n');
-	if (*line && ft_check_ant(*line))
-	{
-		(*config)->ants = ft_atoi(*line);
-		free(*line);
-		return (1);
-	}
-	free(*line);
-	return (0);
-}
-
-int			ft_read_rooms(char **line, t_config **config, int fd, int flag[2])
-{
-	int		id;
-	t_node	*prev;
-
-	id = 0;
-	prev = NULL;
-	while (get_next_line(fd, line) > 0 && ft_check(line))
-	{
-		ft_printf("%s\n", *line);
-		if (is_error(line, config, id, flag))
-			return (0);
-		else if (ft_is_room(*line) && ft_check_room(*line))
-		{
-			prev = ft_add_node(*line, id++, prev);
-			if (id == 1)
-				(*config)->head = prev;
-		}
-		if (ft_strlen(*line) != 0)
-		{
-			free(*line);
-			*line = NULL;
-		}
-	}
 	return (1);
 }

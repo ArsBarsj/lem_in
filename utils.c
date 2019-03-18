@@ -30,6 +30,7 @@ void	ft_clean_str_arr(char **arr)
 		i++;
 	}
 	free(arr);
+	*arr = NULL;
 }
 
 int		ft_all_digit(char *str)

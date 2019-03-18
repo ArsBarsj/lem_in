@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   datatypes.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/03 00:11:30 by ttreutel         ###   ########.fr       */
+/*   Updated: 2019/03/14 20:57:38 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct		s_path
 {
 	t_node			**path;
 	int				len;
+	int				ants_n;
 }					t_path;
 
 typedef struct		s_tree
@@ -88,12 +89,21 @@ void				del_tab(int **tab, int size);
 void				ants_del(t_ant ***ants);
 t_ant				**ant_new_list(int n);
 
+void				get_lines_init_paths(t_path **p, int *ants, int n);
+void				get_lines_divide_ants(t_path **p, int *ants, int n);
+void				get_lines_inner(t_path **p, int ants, int n);
+void				get_lines_init_counters(int *total, int *curr, int *used);
+int					get_lines_max(t_path **p, int used);
+void				get_lines_reset_paths(t_path **p);
+
 t_graph				*graph_create(t_config *cfg);
 t_graph				*graph_new(int verts_n, int ants_n);
 void				graph_del(t_graph **g);
 void				graph_link_add(t_graph *g, int from, int to, int copy);
-void				graph_link_del(t_graph *g, int from, int to, int copy);
+void				graph_link_del(t_graph **g, int from, int to, int copy);
+int					graph_links_num(t_graph *g, int node);
 void				graph_close_node(t_graph *g, int node);
+void				graph_close_node2(t_graph *g, int node);
 void				graph_close_path(t_graph *g,\
 										t_path *path, int start, int end);
 void                paths_resote_links(t_path **paths, t_graph *g);
@@ -118,15 +128,33 @@ t_node				**bfs_path(int start, int end, t_graph *g);
 void				bfs_setup(t_dqueue **q, int start, int *v, t_graph *g);
 void				bfs_update_state(t_dqueue **q, int i, int *v, t_graph *g);
 void				bfs_mod_update(int i, int curr, int *v, int *p);
+t_path				**bfs_ways2(int start, int end, t_graph *g);
 
 t_path				*path_new(t_node **path);
 void				path_del(t_path **p);
 void				paths_del(t_path ***p);
 int					count_paths(t_path **p);
 int					path_len_innr(int *pred, int n);
+t_path				**path_join(t_path **dst, t_path **src, int n);
+void        		paths_print(t_path **paths);
+void       			path_restore_links(t_path *path, t_graph *g);
+int					get_lines_n(t_path **paths, int ants);
+t_path				**paths_sort(t_path **p);
+void				path_close_all(t_graph *g, t_path **p, int start, int end);
+void				path_restore_links(t_path *path, t_graph *g);
 
-int					find_paths_number(t_graph *g, int start, int end);
-t_path				**get_paths(t_graph *g, int start, int end);
 int					solve(t_graph *g, t_config *cfg);
 int					ant_move(t_ant **a, t_graph *g, t_path *p, int end);
+int					reset_best(t_path ***best, int *nm, t_path ***tmp, t_path **alt);
+void				go_next(t_graph *g, t_path **b, t_config *cfg, int *nm);
+void				skip_nodes(t_graph *g, t_path **b, int *nm);
+t_path	            **solve_inner2(t_graph *g, t_config *cfg, t_path **best, int min_l);
+t_path				**find_new_path(t_graph *g, t_path **b, t_config *cfg, int *nm);
+void				init_search(t_graph *g, t_path **b, t_config *cfg, int *nm);
+int					update_state2(t_graph *g, t_path **ways, t_config *cfg, int *n);
+void				update_state(t_graph *g, t_path **ways, t_config *cfg, int n);
+void				free_alt_restore(t_path **alt, t_path **tmp, t_graph *g);
+void				free_tmp_restore(t_path **tmp, t_graph *g);
+
+void				print_matrix(int **m, int size);
 #endif

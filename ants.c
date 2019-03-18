@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ants.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 20:57:43 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/03 18:12:07 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/09 20:38:27 by artemiy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int			ant_move(t_ant **a, t_graph *g, t_path *path, int end)
 		g->matrix_copy[(*a)->node->id][path->path[(*a)->step + 1]->id])
 	{
 		to = g->nodes[path->path[(*a)->step + 1]->id]->id;
-		graph_link_del(g, (*a)->node->id, to, 1);
+		graph_link_del(&g, (*a)->node->id, to, 1);
 		(*a)->node->is_free = 1;
 		(*a)->node = g->nodes[to];
 		(*a)->step++;
