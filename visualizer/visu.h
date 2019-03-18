@@ -33,7 +33,6 @@ typedef struct 		s_visu
 	int             init_TTF;
 	int             init_font;
 	int             init_read;
-
 }					t_visu;
 
 typedef struct      s_vlink

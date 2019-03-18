@@ -6,8 +6,8 @@ void	ft_init_sdl_screen(t_visu *visu)
 		free_visu(visu);
 	visu->init_SDL = 1;
 	if ((visu->window = SDL_CreateWindow("lem-in map", 
-	SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200,
-					1000,  SDL_WINDOW_SHOWN)) == NULL)
+	SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 2000,
+					1200,  SDL_WINDOW_SHOWN)) == NULL)
 		free_visu(visu);
 	visu->init_window = 1;
 	if ((visu->screen = SDL_CreateRenderer(visu->window, -1, 0)) == NULL)
@@ -18,7 +18,7 @@ void	ft_init_sdl_screen(t_visu *visu)
 		free_visu(visu);
 	}
 	visu->init_TTF = 1;
-	visu->font = TTF_OpenFont("font.ttf", 14);
+	visu->font = TTF_OpenFont("visualizer/font.ttf", 14);
 	if (visu->font == NULL)
 		free_visu(visu);
 	visu->init_font = 1;
@@ -45,15 +45,13 @@ void    ft_loop_it(t_visu *v)
 	}
 }
 
-int main(int ac, char **av)
+int main(void)
 {
 	t_visu		*visu;
 
-	(void)ac;
 	visu = (t_visu *)malloc(sizeof(t_visu));
-	int fd = open(av[1], O_RDONLY);
 	init_visu(visu);
-	if (!(visu->init_read = read_file(visu, fd)))
+	if (!(visu->init_read = read_file(visu, 0)))
 		free_visu(visu);
 	ft_init_sdl_screen(visu);
 	draw_links(visu);

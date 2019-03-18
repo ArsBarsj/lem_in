@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 02:19:46 by arseny            #+#    #+#             */
-/*   Updated: 2019/03/02 23:47:47 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/18 21:58:42 by ttreutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	ft_clean_str_arr(char **arr)
 		i++;
 	}
 	free(arr);
-	*arr = NULL;
 }
 
 int		ft_all_digit(char *str)

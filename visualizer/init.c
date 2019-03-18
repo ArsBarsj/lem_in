@@ -13,7 +13,7 @@ void	init_visu(t_visu *visu)
 	visu->best = NULL;
 	ft_init_config(&visu->config);
 	visu->height_r = 25;
-	visu->width_r = 40;
+	visu->width_r = 50;
 	visu->text_color = init_color(255, 255, 255, 255);
 	visu->init_SDL = 0;
 	visu->init_window = 0;
