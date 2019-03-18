@@ -1,7 +1,3 @@
-//
-// Created by arseny on 06.03.19.
-//
-
 #ifndef LEM_IN_VISU_H
 # define LEM_IN_VISU_H
 # include <fcntl.h>
@@ -13,19 +9,6 @@
 # include "../libft/libft.h"
 # include "../datatypes.h"
 #include "../lemin.h"
-
-typedef struct      s_step
-{
-	t_ant           *ant;
-	t_node          *room;
-	struct s_step   *next;
-}                   t_step;
-
-typedef struct      s_turn
-{
-	t_step          *step;
-	struct s_turn   *next;
-}                   t_turn;
 
 typedef struct 		s_visu
 {
@@ -41,11 +24,15 @@ typedef struct 		s_visu
 	t_graph         *graph;
 	t_path          **paths;
 	t_path          **best;
-	t_ant           **arr;
-	t_turn          *turns;
 	int				height_r;
 	int				width_r;
 	SDL_Rect		place;
+	int             init_SDL;
+	int             init_window;
+	int             init_screen;
+	int             init_TTF;
+	int             init_font;
+	int             init_read;
 
 }					t_visu;
 
