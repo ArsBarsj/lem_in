@@ -1,4 +1,4 @@
-NAME=visu
+NAME=../visu
 LIB = ../libft/libft.a
 FLAGS = -Werror -Wall -Wextra -g
 SDLFLAGS = $(shell sdl2-config --cflags)
