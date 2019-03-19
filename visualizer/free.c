@@ -6,7 +6,7 @@
 /*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/19 18:18:25 by ttreutel          #+#    #+#             */
-/*   Updated: 2019/03/19 18:32:03 by ttreutel         ###   ########.fr       */
+/*   Updated: 2019/03/19 18:34:25 by ttreutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	free_visu(t_visu *v)
 {
+	ft_printf("ERROR!\n");
 	if (v->fileline != NULL)
 		free(v->fileline);
 	if (v->graph)

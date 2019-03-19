@@ -6,7 +6,7 @@
 /*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/19 18:19:03 by ttreutel          #+#    #+#             */
-/*   Updated: 2019/03/19 18:31:40 by ttreutel         ###   ########.fr       */
+/*   Updated: 2019/03/19 18:33:24 by ttreutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ int			ft_read_ants(char **line, t_config **config, int fd)
 	while (get_next_line(fd, line) > 0 && (ft_is_comm(*line)
 										|| ft_is_cmd(*line)))
 	{
-		ft_printf("%s\n", *line);
 		if (ft_is_start(*line))
 		{
 			free(*line);
@@ -92,7 +91,6 @@ int			ft_read_rooms(char **line, t_config **config, int fd, int flag[2])
 	prev = NULL;
 	while (get_next_line(fd, line) > 0 && ft_check(line))
 	{
-		ft_printf("%s\n", *line);
 		if (is_error(line, config, id, flag))
 			return (0);
 		else if (ft_is_room(*line) && ft_check_room(*line))
