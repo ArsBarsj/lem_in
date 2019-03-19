@@ -1,23 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   visu.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/19 18:22:24 by ttreutel          #+#    #+#             */
+/*   Updated: 2019/03/19 18:32:18 by ttreutel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "visu.h"
 
 void	ft_init_sdl_screen(t_visu *visu)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 		free_visu(visu);
-	visu->init_SDL = 1;
-	if ((visu->window = SDL_CreateWindow("lem-in map", 
-	SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 2000,
-					1200,  SDL_WINDOW_SHOWN)) == NULL)
+	visu->init_sdl = 1;
+	if ((visu->window = SDL_CreateWindow("lem-in map",
+	SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 2000, 1200,
+									SDL_WINDOW_SHOWN)) == NULL)
 		free_visu(visu);
 	visu->init_window = 1;
 	if ((visu->screen = SDL_CreateRenderer(visu->window, -1, 0)) == NULL)
 		free_visu(visu);
 	visu->init_screen = 1;
-	if(TTF_Init()==-1) {
+	if (TTF_Init() == -1)
+	{
 		ft_printf("TTF_Init: %s\n", TTF_GetError());
 		free_visu(visu);
 	}
-	visu->init_TTF = 1;
+	visu->init_ttf = 1;
 	visu->font = TTF_OpenFont("visualizer/font.ttf", 14);
 	if (visu->font == NULL)
 		free_visu(visu);
@@ -26,9 +39,9 @@ void	ft_init_sdl_screen(t_visu *visu)
 	SDL_RenderClear(visu->screen);
 }
 
-void    ft_loop_it(t_visu *v)
+void	ft_loop_it(t_visu *v)
 {
-	int     loop;
+	int		loop;
 
 	SDL_RenderPresent(v->screen);
 	loop = 1;
@@ -45,7 +58,7 @@ void    ft_loop_it(t_visu *v)
 	}
 }
 
-int main(void)
+int		main(void)
 {
 	t_visu		*visu;
 
@@ -65,4 +78,20 @@ int main(void)
 	ft_loop_it(visu);
 	free_visu(visu);
 	return (0);
+}
+
+void	make_path(t_visu *visu, int i)
+{
+	while (visu->tabfile[i])
+	{
+		if (!ft_strcmp(visu->tabfile[i], "ERROR!"))
+			free_visu(visu);
+		i++;
+	}
+	ft_clean_str_arr(visu->tabfile);
+	visu->graph = graph_create(visu->config);
+	visu->best = bfs_ways2(visu->config->start_id, visu->config->end_id,
+							visu->graph);
+	visu->paths = solve_inner2(visu->graph, visu->config, visu->best,
+					get_lines_n(visu->best, visu->config->ants));
 }

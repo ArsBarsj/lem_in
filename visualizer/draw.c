@@ -1,19 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/19 18:15:48 by ttreutel          #+#    #+#             */
+/*   Updated: 2019/03/19 18:18:05 by ttreutel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "visu.h"
 
-void    draw_line(t_visu *v, t_vlink *l, int mx, int my)
+void	draw_line(t_visu *v, t_vlink *l, int mx, int my)
 {
 	SDL_SetRenderDrawColor(v->screen, 0, 0, 0, 255);
 	SDL_RenderDrawLine(v->screen, l->startx + mx, l->starty + my,
 			l->endx + mx, l->endy + my);
 	SDL_RenderDrawLine(v->screen, l->startx + mx + 1, l->starty + my,
-	                        l->endx + mx + 1, l->endy + my);
+						l->endx + mx + 1, l->endy + my);
 	SDL_RenderDrawLine(v->screen, l->startx + mx, l->starty + my + 1,
-	                        l->endx + mx, l->endy + my + 1);
+						l->endx + mx, l->endy + my + 1);
 }
 
-void    set_link_coord(t_vlink *l, t_visu *v, int i, int j)
+void	set_link_coord(t_vlink *l, t_visu *v, int i, int j)
 {
-	t_node *room;
+	t_node	*room;
 
 	room = v->config->head;
 	while (room && room->id != i)
@@ -33,11 +45,12 @@ void    set_link_coord(t_vlink *l, t_visu *v, int i, int j)
 	v->config->links[j][i] = 0;
 }
 
-void    draw_links(t_visu *v)
+void	draw_links(t_visu *v)
 {
-	int         i;
-	int         j;
+	int		i;
+	int		j;
 	t_vlink tmp_link;
+
 	i = 0;
 	while (i < v->config->rooms_n)
 	{
@@ -55,22 +68,22 @@ void    draw_links(t_visu *v)
 	}
 }
 
-void    draw_line_path(t_visu *v, t_vlink *l, int mx, int my)
+void	draw_line_path(t_visu *v, t_vlink *l, int mx, int my)
 {
 	SDL_SetRenderDrawColor(v->screen, 244, 66, 86, 255);
 	SDL_RenderDrawLine(v->screen, l->startx + mx, l->starty + my,
-	                   l->endx + mx, l->endy + my);
+						l->endx + mx, l->endy + my);
 	SDL_RenderDrawLine(v->screen, l->startx + mx + 1, l->starty + my,
-	                   l->endx + mx + 1, l->endy + my);
+						l->endx + mx + 1, l->endy + my);
 	SDL_RenderDrawLine(v->screen, l->startx + mx, l->starty + my + 1,
-	                   l->endx + mx, l->endy + my + 1);
+						l->endx + mx, l->endy + my + 1);
 }
 
-void    draw_paths(t_visu *v, t_path **paths, t_config *cfg)
+void	draw_paths(t_visu *v, t_path **paths, t_config *cfg)
 {
-	int i;
-	int j;
-	t_vlink tmp_link;
+	int		i;
+	int		j;
+	t_vlink	tmp_link;
 
 	i = 0;
 	while (paths[i])
