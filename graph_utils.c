@@ -6,7 +6,7 @@
 /*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 14:38:20 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/02 23:22:31 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/19 18:45:16 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,6 @@ void	del_tab(int **tab, int size)
 	free(tab);
 }
 
-void	adj_matrix_init(int **m, int size)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	while (++i < size)
-	{
-		j = -1;
-		while (++j < size && !(m[i][j] = 0))
-		{
-			;
-		}
-	}
-}
-
 int		**adjmatrix_new(int verts)
 {
 	int	**adj;
@@ -75,7 +59,8 @@ int		**adjmatrix_new(int verts)
 	while (i < verts)
 	{
 		adj[i] = (int *)malloc(verts * sizeof(int));
-		if (adj[i] == NULL) {
+		if (adj[i] == NULL)
+		{
 			del_tab(adj, i);
 			return (NULL);
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bfs_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 23:48:28 by fkuhn             #+#    #+#             */
-/*   Updated: 2019/03/14 20:57:03 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/19 18:33:45 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	bfs_mod_update(int i, int curr, int *v, int *p)
 		p[i] = curr;
 	}
 }
-
 
 void	path_restore_links(t_path *path, t_graph *g)
 {

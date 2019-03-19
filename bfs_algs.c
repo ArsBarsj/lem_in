@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bfs_algs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 23:42:47 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/15 15:26:28 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/19 18:40:13 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,7 @@
 #include "libft/libft.h"
 #include "datatypes.h"
 
-void		paths_print(t_path **paths)
-{
-	int		i;
-	int		j;
-	t_node	*current;
-	t_node	*next;
-
-	i = 0;
-	while (paths[i])
-	{
-		j = 0;
-		current = paths[i]->path[j];
-		ft_printf("\033[0;31m%d:\033[0m (%s|%d)", i, current->name, current->id);
-		while (current && paths[i]->path[j + 1])
-		{
-			current = paths[i]->path[j];
-			next = paths[i]->path[j + 1];
-			ft_printf("->(%s|%d)", next->name, next->id);
-			j++;
-		}
-		ft_printf(" \033[0;32m[%d] ants= %d\033[0m", j, paths[i]->ants_n);
-		ft_printf("\n");
-		i++;
-	}
-}
-
-int		get_lines_n(t_path **paths, int ants)
+int			get_lines_n(t_path **paths, int ants)
 {
 	int	curr_lines;
 	int	prev_lines;
@@ -69,7 +43,7 @@ int		get_lines_n(t_path **paths, int ants)
 	return (curr_lines - 1);
 }
 
-t_path	**solve_inner2(t_graph *g, t_config *cfg, t_path **best, int min_l)
+t_path		**solve_inner2(t_graph *g, t_config *cfg, t_path **best, int min_l)
 {
 	t_path	**tmp;
 	t_path	**alt;
@@ -98,7 +72,7 @@ t_path	**solve_inner2(t_graph *g, t_config *cfg, t_path **best, int min_l)
 	return (best);
 }
 
-void	ants_select_ways(t_graph *g, t_path **p)
+void		ants_select_ways(t_graph *g, t_path **p)
 {
 	int	ant_i;
 	int	path_i;
@@ -119,7 +93,7 @@ void	ants_select_ways(t_graph *g, t_path **p)
 	}
 }
 
-void	solve_move(t_graph *g, t_config *c, t_path **paths)
+void		solve_move(t_graph *g, t_config *c, t_path **paths)
 {
 	int			total_ants;
 	int			i;
@@ -142,7 +116,7 @@ void	solve_move(t_graph *g, t_config *c, t_path **paths)
 	}
 }
 
-int		solve(t_graph *g, t_config *cfg)
+int			solve(t_graph *g, t_config *cfg)
 {
 	t_path	**best;
 	t_path	**alt;
