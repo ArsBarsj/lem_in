@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 16:36:57 by arseny            #+#    #+#             */
-/*   Updated: 2019/03/18 20:51:08 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/19 19:45:58 by ttreutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,13 @@ int			ft_read_map(int fd, t_config **config)
 	line = NULL;
 	if (!ft_read_ants(&line, config, fd))
 		return (0);
-	else if (!ft_read_rooms(&line, config, fd, flag) || !(*config)->head)
+	else if (!ft_read_rooms(&line, config, fd, flag))
 		return (0);
+	else if (!(*config)->head)
+	{
+		free(line);
+		return (0);
+	}
 	root = tree_create(config);
 	if (!ft_read_links(&line, fd, config, root))
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   datatypes.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/19 18:49:32 by fkuhn            ###   ########.fr       */
+/*   Updated: 2019/03/19 19:51:13 by ttreutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void				graph_close_node(t_graph *g, int node);
 void				graph_close_node2(t_graph *g, int node);
 void				graph_close_path(t_graph *g,\
 										t_path *path, int start, int end);
-void                paths_resote_links(t_path **paths, t_graph *g);
+void				paths_resote_links(t_path **paths, t_graph *g);
 void				graph_restore_copy(t_graph *g);
 int					**adjmatrix_new(int verts);
 void				adj_matrix_init(int **m, int size);
@@ -136,8 +136,8 @@ void				paths_del(t_path ***p);
 int					count_paths(t_path **p);
 int					path_len_innr(int *pred, int n);
 t_path				**path_join(t_path **dst, t_path **src, int n);
-void        		paths_print(t_path **paths);
-void       			path_restore_links(t_path *path, t_graph *g);
+void				paths_print(t_path **paths);
+void				path_restore_links(t_path *path, t_graph *g);
 int					get_lines_n(t_path **paths, int ants);
 t_path				**paths_sort(t_path **p);
 void				path_close_all(t_graph *g, t_path **p, int start, int end);
@@ -145,14 +145,19 @@ void				path_restore_links(t_path *path, t_graph *g);
 
 int					solve(t_graph *g, t_config *cfg);
 int					ant_move(t_ant **a, t_graph *g, t_path *p, int end);
-int					reset_best(t_path ***best, int *nm, t_path ***tmp, t_path **alt);
+int					reset_best(t_path ***best, int *nm, t_path ***tmp,
+								t_path **alt);
 void				go_next(t_graph *g, t_path **b, t_config *cfg, int *nm);
 void				skip_nodes(t_graph *g, t_path **b, int *nm);
-t_path	            **solve_inner2(t_graph *g, t_config *cfg, t_path **best, int min_l);
-t_path				**find_new_path(t_graph *g, t_path **b, t_config *cfg, int *nm);
+t_path				**solve_inner2(t_graph *g, t_config *cfg, t_path **best,
+									int min_l);
+t_path				**find_new_path(t_graph *g, t_path **b, t_config *cfg,
+									int *nm);
 void				init_search(t_graph *g, t_path **b, t_config *cfg, int *nm);
-int					update_state2(t_graph *g, t_path **ways, t_config *cfg, int *n);
-void				update_state(t_graph *g, t_path **ways, t_config *cfg, int n);
+int					update_state2(t_graph *g, t_path **ways, t_config *cfg,
+									int *n);
+void				update_state(t_graph *g, t_path **ways, t_config *cfg,
+									int n);
 void				free_alt_restore(t_path **alt, t_path **tmp, t_graph *g);
 void				free_tmp_restore(t_path **tmp, t_graph *g);
 void				adj_matrix_init(int **m, int size);

@@ -11,7 +11,7 @@ all: $(LIB) $(NAME) $(VISU)
 $(LIB):
 	@make -C libft/ all
 $(VISU):
-	make -C visualizer/ all
+	@make -C visualizer/ all
 $(NAME): $(OBJI)
 	@$(GCC) $(FLAGS) $(OBJI) -L libft -lft -o $(NAME)
 %.o: %.c
