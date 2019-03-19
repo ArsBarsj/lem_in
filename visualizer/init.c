@@ -6,7 +6,7 @@
 /*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/19 18:19:03 by ttreutel          #+#    #+#             */
-/*   Updated: 2019/03/19 18:33:24 by ttreutel         ###   ########.fr       */
+/*   Updated: 2019/03/19 18:57:23 by ttreutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void		init_visu(t_visu *visu)
 	visu->paths = NULL;
 	visu->best = NULL;
 	ft_init_config(&visu->config);
-	visu->height_r = 25;
-	visu->width_r = 50;
+	visu->height_r = 30;
+	visu->width_r = 60;
 	visu->text_color = init_color(255, 255, 255, 255);
 	visu->init_sdl = 0;
 	visu->init_window = 0;
@@ -69,9 +69,6 @@ int			ft_read_ants(char **line, t_config **config, int fd)
 		}
 		free(*line);
 	}
-	if (line && *line)
-		ft_putstr(*line);
-	ft_putchar('\n');
 	if (*line && ft_check_ant(*line))
 	{
 		(*config)->ants = ft_atoi(*line);
