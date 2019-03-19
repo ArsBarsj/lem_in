@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arseny <arseny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 18:18:58 by arseny            #+#    #+#             */
-/*   Updated: 2019/03/07 23:47:53 by arseny           ###   ########.fr       */
+/*   Updated: 2019/03/19 18:59:15 by ttreutel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ void	start_dance(t_config *cfg)
 		config_del(cfg);
 		error();
 	}
-	 if (g->matrix == NULL || !solve(g, cfg))
-	 	ft_printf("ERROR\n");
+	if (g->matrix == NULL || !solve(g, cfg))
+		ft_printf("ERROR\n");
 	graph_del(&g);
 	config_del(cfg);
 }
