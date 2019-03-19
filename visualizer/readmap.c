@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   readmap.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/19 18:19:56 by ttreutel          #+#    #+#             */
+/*   Updated: 2019/03/19 18:22:04 by ttreutel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 #include "visu.h"
 
@@ -48,25 +60,11 @@ int		ft_set_link_v(char *line, t_config **config, t_tree *root)
 	return (1);
 }
 
-void make_path(t_visu *visu, int i)
+int		read_file(t_visu *visu, int fd)
 {
-	while (visu->tabfile[i])
-	{
-		if (!ft_strcmp(visu->tabfile[i], "ERROR!"))
-			free_visu(visu);
-		i++;
-	}
-	ft_clean_str_arr(visu->tabfile);
-	visu->graph =graph_create(visu->config);
-	visu->best = bfs_ways2(visu->config->start_id, visu->config->end_id, visu->graph);
-	visu->paths = solve_inner2(visu->graph, visu->config, visu->best, get_lines_n(visu->best, visu->config->ants));
-}
-
-int     read_file(t_visu *visu, int fd)
-{
-	int     i;
-	t_tree  *root;
-	char    *line;
+	int		i;
+	t_tree	*root;
+	char	*line;
 
 	i = 0;
 	if (!ft_config(fd, &visu->config, &line))
@@ -114,7 +112,7 @@ char	*read_all_file(int fd, char *buf, int buf_siz)
 	return (links);
 }
 
-int	ft_config(int fd, t_config **config, char **line)
+int		ft_config(int fd, t_config **config, char **line)
 {
 	int		flag[2];
 

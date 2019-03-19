@@ -1,4 +1,4 @@
-NAME=visu
+NAME=../visu
 LIB = ../libft/libft.a
 FLAGS = -Werror -Wall -Wextra -g
 SDLFLAGS = $(shell sdl2-config --cflags)
@@ -14,9 +14,9 @@ all: $(LIB) $(NAME)
 $(LIB):
 	make -C ../libft/ all
 $(NAME): $(OBJI)
-	$(GCC) $(OBJI) -o $(NAME) -L ../libft -lft $(FLAGS) $(SDLFLAGS) $(SDLLIB) $(TTFFLAGS) -lSDL2_ttf
+	@$(GCC) $(OBJI) -o $(NAME) -L ../libft -lft $(FLAGS) $(SDLFLAGS) $(SDLLIB) $(TTFFLAGS) -lSDL2_ttf
 %.o: %.c
-	$(GCC) $(FLAGS) -c $< -o $@ $(SDLFLAGS) $(TTFFLAGS)
+	@$(GCC) $(FLAGS) -c $< -o $@ $(SDLFLAGS) $(TTFFLAGS)
 clean:
 	rm -f *.o
 	make -C ../libft/ clean

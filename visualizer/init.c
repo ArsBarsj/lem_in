@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ttreutel <ttreutel@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/19 18:19:03 by ttreutel          #+#    #+#             */
+/*   Updated: 2019/03/19 18:33:24 by ttreutel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "visu.h"
 
-void	init_visu(t_visu *visu)
+void		init_visu(t_visu *visu)
 {
 	visu->window = NULL;
 	visu->screen = NULL;
@@ -13,12 +25,12 @@ void	init_visu(t_visu *visu)
 	visu->best = NULL;
 	ft_init_config(&visu->config);
 	visu->height_r = 25;
-	visu->width_r = 40;
+	visu->width_r = 50;
 	visu->text_color = init_color(255, 255, 255, 255);
-	visu->init_SDL = 0;
+	visu->init_sdl = 0;
 	visu->init_window = 0;
 	visu->init_screen = 0;
-	visu->init_TTF = 0;
+	visu->init_ttf = 0;
 	visu->init_font = 0;
 	visu->init_read = 0;
 }
@@ -48,9 +60,8 @@ SDL_Color	init_color(int r, int g, int b, int a)
 int			ft_read_ants(char **line, t_config **config, int fd)
 {
 	while (get_next_line(fd, line) > 0 && (ft_is_comm(*line)
-	                                       || ft_is_cmd(*line)))
+										|| ft_is_cmd(*line)))
 	{
-		ft_printf("%s\n", *line);
 		if (ft_is_start(*line))
 		{
 			free(*line);
@@ -80,7 +91,6 @@ int			ft_read_rooms(char **line, t_config **config, int fd, int flag[2])
 	prev = NULL;
 	while (get_next_line(fd, line) > 0 && ft_check(line))
 	{
-		ft_printf("%s\n", *line);
 		if (is_error(line, config, id, flag))
 			return (0);
 		else if (ft_is_room(*line) && ft_check_room(*line))
