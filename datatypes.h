@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   datatypes.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 02:30:13 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/14 20:57:38 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/19 18:49:32 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,8 @@ int					update_state2(t_graph *g, t_path **ways, t_config *cfg, int *n);
 void				update_state(t_graph *g, t_path **ways, t_config *cfg, int n);
 void				free_alt_restore(t_path **alt, t_path **tmp, t_graph *g);
 void				free_tmp_restore(t_path **tmp, t_graph *g);
+void				adj_matrix_init(int **m, int size);
+int					graph_links_num(t_graph *g, int node);
 
 void				print_matrix(int **m, int size);
 #endif

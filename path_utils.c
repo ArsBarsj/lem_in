@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: artemiy <artemiy@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkuhn <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 20:24:11 by artemiy           #+#    #+#             */
-/*   Updated: 2019/03/14 20:24:59 by artemiy          ###   ########.fr       */
+/*   Updated: 2019/03/19 18:35:40 by fkuhn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ t_path	**path_join(t_path **dst, t_path **src, int n)
 
 t_path	**paths_sort(t_path **p)
 {
-	int	i;
-	int	j;
-	int	siz;
+	int		i;
+	int		j;
+	int		siz;
 	t_path	*tmp;
 
 	siz = count_paths(p);
